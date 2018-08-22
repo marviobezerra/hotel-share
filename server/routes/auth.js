@@ -1,0 +1,51 @@
+const express = require('express');
+const crypto = require('crypto');
+
+const router = express.Router();
+
+function hashPassword(password) {
+  let hash = crypto.createHash('sha256');
+  hash.update(password);
+  return hash.digest('hex');
+}
+
+module.exports = (passport, User) => {
+
+  router.post('/login', (req, res, next) => {
+    req.body.password = hashPassword(req.body.password);
+    passport.authenticate('local', (err, user) => {
+      if (err) return res.json({success: false});
+      if (!user) return res.json({success: false});
+      req.logIn(user, (err) => {
+        if (err) return res.json({success: false});
+        return res.json({success: true});
+      });
+    })(req, res, next);
+  });
+
+  router.post('/register', (req, res) => {
+    console.log(req.body);
+    (new User({
+      name: {fname: req.body.fname, lname: req.body.lname},
+      email: req.body.email,
+      password: hashPassword(req.body.password),
+      phone: req.body.phone,
+      birthday: new Date(req.body.birthday),
+      gender: req.body.gender,
+    }))
+    .save().then(() => res.json({success: true}))
+    .catch((err) => res.json({success: false}));
+  });
+
+  router.use((req, res, next) => {
+    if (req.user) next();
+    else res.json({success: false});
+  });
+
+  router.post('/logout', (req, res) => {
+    req.logout();
+    res.json({success: true});
+  });
+
+  return router;
+};

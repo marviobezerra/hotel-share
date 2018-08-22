@@ -28,8 +28,8 @@ passport.deserializeUser((id, done) => {
   User.findById(id, (err, user) => done(err, user));
 });
 
-passport.use(new LocalStrategy((email, password, done) => {
-  User.findOne({email}, (err, user) => {
+passport.use(new LocalStrategy((username, password, done) => {
+  User.findOne({email: username}, (err, user) => {
     if (err) return done(err);
     if (!user) return done(null, false);
     if (user.password !== password) return done(null, false);
@@ -40,7 +40,7 @@ passport.use(new LocalStrategy((email, password, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-//app.use(auth(passport));
+app.use(auth(passport, User));
 //app.use(routes);
 
 const port = process.env.PORT || 3000;
