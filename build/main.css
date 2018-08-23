@@ -1,0 +1,76 @@
+input:focus, textarea:focus, button:focus {
+    outline: none;
+}
+
+::placeholder {
+  color: #444;
+}
+
+html, body, #root, #main-content {
+  height: 100%;
+  margin: 0;
+  font-family: "Helvetica";
+}
+
+#main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://wallpaperstudio10.com/static/wpdb/wallpapers/3840x2160/186945.jpg');
+  background-size: cover;
+}
+
+.main-search-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 0 10px;
+  border-radius: 7px;
+  box-shadow: 2px 2px 5px #333;
+}
+
+.main-search-icon {
+  height: 2em;
+  width: 2em;
+  color: #444;
+}
+
+.main-search {
+  font-family: "Helvetica";
+  color: #444;
+  font-size: 1.5em;
+  padding: 10px;
+  border-style: none;
+}
+
+.main-search-options {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 7px 5px 7px;
+}
+
+.main-search-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.center-vertically {
+  display: flex;
+  align-items: center;
+}
+
+.login-icon {
+  height: 1.2em;
+  width: 1.2em;
+  color: #444;
+}
+
+.username-input {
+  font-family: "Helvetica";
+  color: #444;
+  padding: 10px;
+  border-style: none;
+}
