@@ -12,12 +12,19 @@ html, body, #root, #main-content {
   font-family: "Helvetica";
 }
 
+#landing-images {
+  position: absolute;
+  z-index: 0;
+  height:100%;
+  width: 100%
+}
+
 #main-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('https://wallpaperstudio10.com/static/wpdb/wallpapers/3840x2160/186945.jpg');
-  background-size: cover;
+  position: relative;
+  z-index: 10
 }
 
 .main-search-box {
