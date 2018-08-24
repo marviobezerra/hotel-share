@@ -1,9 +1,12 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 
-module.exports = () => {
-  router.post('/search', (req, res) => {
-    res.json({success: true, body: req.body});
+module.exports = (City) => {
+
+  router.get('/cities', (req, res) => {
+    City.find()
+    .then((cities) => res.json({success: true, cities}))
+    .catch(() => res.json({success: false}));
   });
+
   return router;
 }
