@@ -16,11 +16,9 @@ export default class App extends React.Component {
   render() {
       return (
         <div>
-          <Route exact path="/" component={Slideshow} />
+          <Route path="/" component={Slideshow} />
           <div id="main-content">
             {/* Hey there! I am the App component */}
-            <Link to="/login" style={{fontSize: 30}}>Login</Link>
-            <Route path="/login" component={LoginPage} />
             <Route exact path="/" component={Appbar} />
             <Route exact path="/" component={SearchBox} />
             <Route exact path="/" component={BottomNavigation} />
