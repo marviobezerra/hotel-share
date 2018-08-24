@@ -1,7 +1,5 @@
-const express = require('express');
+const router = require('express').Router();
 const crypto = require('crypto');
-
-const router = express.Router();
 
 function hashPassword(password) {
   let hash = crypto.createHash('sha256');
