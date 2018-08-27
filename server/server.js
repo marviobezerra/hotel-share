@@ -9,8 +9,10 @@ const MongoStore = require('connect-mongo')(session);
 const auth = require('./routes/auth');
 const routes = require('./routes/routes')
 const cities = require('../cityData');
+const hotels = require('../hotelData');
 const User = require('./models/user');
 const City = require('./models/city');
+const Hotel = require('./models/hotel');
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to database!');
@@ -20,6 +22,12 @@ mongoose.connection.on('connected', () => {
     .save()
     .then(() => console.log('city saved'))
     .catch(() => console.log('failed saving city'));
+  }
+  for (let i = 0; i < hotels.length; i++) {
+    (new Hotel(hotels[i]))
+    .save()
+    .then(() => console.log('hotel saved'))
+    .catch(() => console.log('failed saving hotel'));
   }
   */
 });
@@ -53,7 +61,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(auth(passport, User));
-app.use(routes(City));
+app.use(routes(City, Hotel));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
