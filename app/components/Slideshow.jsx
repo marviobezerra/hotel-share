@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import SearchBox from './SearchBox.jsx';
 import LoginPage from './LoginPage.jsx';
+import SignUpPage from './SignupPage.jsx'
 import { Fade } from 'react-slideshow-image';
 import sanfrancisco from '../../assets/images/sanfrancisco.jpg'
 import chicago from '../../assets/images/chicago.jpg'
