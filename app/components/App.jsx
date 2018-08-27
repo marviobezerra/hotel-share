@@ -5,6 +5,8 @@ import LoginPage from './LoginPage.jsx';
 import Appbar from './AppBar.jsx';
 import BottomNavigation from './BottomNavigation.jsx';
 import Slideshow from './Slideshow.jsx'
+//import ListingsPage from './ListingsPage.jsx'
+import MediaControlCard from './ListingsPage.jsx'
 
 const clientUrl = "http://localhost:8080";
 
@@ -16,15 +18,13 @@ export default class App extends React.Component {
   render() {
       return (
         <div>
-          <Route path="/" component={Slideshow} />
+          <Route path="/" component={MediaControlCard} />
+          {/*<Route path="/" component={Slideshow} />
           <div id="main-content">
-            {/* Hey there! I am the App component */}
             <Route exact path="/" component={Appbar} />
             <Route exact path="/" component={SearchBox} />
             <Route exact path="/" component={BottomNavigation} />
-            {/* {teamMembers.map(member => <Link to={"/" + member.name}>{member.name}</Link>)}
-            <Route path="/:ta" component={P2Selection}></Route> */}
-            </div>
+          </div>*/}
         </div>
       )
   }
