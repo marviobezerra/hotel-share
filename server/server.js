@@ -5,6 +5,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
+var cors = require('cors')
 
 const auth = require('./routes/auth');
 const routes = require('./routes/routes')
@@ -33,6 +34,7 @@ mongoose.connection.on('connected', () => {
 });
 mongoose.connect(process.env.MONGODB_URI);
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SECRET,
@@ -60,7 +62,7 @@ passport.use(new LocalStrategy((username, password, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(auth(passport, User));
+//app.use(auth(passport, User));
 app.use(routes(City, Hotel));
 
 const port = process.env.PORT || 3000;

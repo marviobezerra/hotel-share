@@ -17,6 +17,7 @@ import newyork from '../../assets/images/newyork.jpg'
 import seattle from '../../assets/images/seattle.jpg'
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
+var axios = require('axios');
 
 const styles = theme => ({
   card: {
@@ -99,29 +100,52 @@ class SimpleMap extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      hotels: [],
       center: {
-        lat: 59.95,
-        lng: 30.33
+        lat: 37.78984,
+        lng: -122.42193
       },
-      zoom: 11
+      zoom: 14
     }
   }
 
+  getHotels() {
+    axios.get('http://localhost:3000/hotels/')
+    .then(res => {
+      let hotels = res.data.hotels;
+      console.log(hotels)
+      this.setState({
+        hotels: hotels
+      })
+      return hotels
+    })
+    .catch(err => {
+      console.log(err)}
+    )
+  }
+
+  componentDidMount() {
+    this.getHotels();
+  }
+
   render() {
-    console.log(process.env)
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.API_KEY}}
+          bootstrapURLKeys={{ key: 'AIzaSyDkMTasDpg-0WS9mgomIOU3CqAQz8zlEaU'}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
-          <AnyReactComponent
-            lat={59.955413}
-            lng={30.337844}
-            text={'Kreyser Avrora'}
-          />
+          {
+            this.state.hotels.map((hotel) => (
+              <AnyReactComponent
+                lat={hotel.location.lat}
+                lng={hotel.location.long}
+                text={hotel.name}
+              />
+            ))
+          }
         </GoogleMapReact>
       </div>
     );
