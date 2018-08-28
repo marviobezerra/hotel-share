@@ -12,13 +12,7 @@ const compareDates = (date1, date2) => {
   return 0;
 }
 
-module.exports = (City, Hotel, Listing) => {
-
-  router.get('/cities', (req, res) => {
-    City.find()
-    .then((cities) => res.json({success: true, cities}))
-    .catch(() => res.json({success: false}));
-  });
+module.exports = (Hotel, Listing) => {
 
   router.get('/hotels/:city', (req, res) => {
     const city = req.params.city.replace('+', ' ');
