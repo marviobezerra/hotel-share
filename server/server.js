@@ -5,17 +5,16 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
+const cors = require('cors');
+
 const auth = require('./routes/auth');
 const routes = require('./routes/routes')
 const cities = require('../cityData');
 const hotels = require('../hotelData');
 const User = require('./models/user');
 const City = require('./models/city');
-const cors = require('cors');
-app.use(cors());
-// app.options('*', cors());
-
 const Hotel = require('./models/hotel');
+const Listing = require('./models/listing');
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to database!');
@@ -36,6 +35,7 @@ mongoose.connection.on('connected', () => {
 });
 mongoose.connect(process.env.MONGODB_URI);
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SECRET,
@@ -63,8 +63,8 @@ passport.use(new LocalStrategy((username, password, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(auth(passport, User));
-app.use(routes(City, Hotel));
+app.use(auth(passport, User, City));
+app.use(routes(Hotel, Listing));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));

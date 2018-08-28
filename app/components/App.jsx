@@ -4,6 +4,8 @@ import SearchBox from './SearchBox.jsx';
 import LoginPage from './LoginPage.jsx';
 import Appbar from './AppBar.jsx';
 import BottomNavigation from './BottomNavigation.jsx';
+//import ListingsPage from './ListingsPage.jsx'
+import MediaControlCard from './ListingsPage.jsx'
 import LandingPage from './LandingPage.jsx';
 
 const clientUrl = "http://localhost:8080";

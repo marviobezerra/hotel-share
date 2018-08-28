@@ -1,5 +1,6 @@
 module.exports = [
   {
+    city: 'San Francisco',
     name: 'Marriott Marquis',
     stars: 4,
     rating: 8.5,
@@ -25,10 +26,10 @@ module.exports = [
       lat: 37.78523,
       long: -122.40448,
     },
-    price: 125,
     listings: [],
   },
   {
+    city: 'San Francisco',
     name: 'Holiday Inn - Golden Gateway',
     stars: 3,
     rating: 8.0,
@@ -58,10 +59,10 @@ module.exports = [
       lat: 37.78984,
       long: -122.42193,
     },
-    price: 83,
     listings: [],
   },
   {
+    city: 'San Francisco',
     name: 'The Fairmont Heritage Place Ghirardelli Square',
     stars: 5,
     rating: 9.0,
@@ -85,7 +86,6 @@ module.exports = [
       lat: 37.80555,
       long: -122.42268,
     },
-    price: 235,
     listings: [],
   },
 ]

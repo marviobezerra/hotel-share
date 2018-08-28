@@ -7,7 +7,13 @@ function hashPassword(password) {
   return hash.digest('hex');
 }
 
-module.exports = (passport, User) => {
+module.exports = (passport, User, City) => {
+
+  router.get('/cities', (req, res) => {
+    City.find()
+    .then((cities) => res.json({success: true, cities}))
+    .catch(() => res.json({success: false}));
+  });
 
   router.post('/login', (req, res, next) => {
     req.body.password = hashPassword(req.body.password);
@@ -28,7 +34,7 @@ module.exports = (passport, User) => {
       email: req.body.email,
       password: hashPassword(req.body.password),
       phone: req.body.phone,
-      birthday: new Date(req.body.birthday),
+      birthday: req.body.birthday,
       gender: req.body.gender,
     }))
     .save().then(() => res.json({success: true}))
