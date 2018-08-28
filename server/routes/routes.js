@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const compareDates = (date1, date2) => {
+  if (!date1 || !date2) return 0;
   let d1 = date1.split('-');
   let d2 = date2.split('-');
   if (parseInt(d1[2]) < parseInt(d2[2])) return -1;
@@ -34,7 +35,7 @@ module.exports = (Hotel, Listing) => {
       hotels = hotels.map((hotel) => {
         if (req.query.stars && hotel.stars < req.query.stars) return null;
         if (req.query.rating && hotel.rating < req.query.rating) return null;
-        if (req.query.from && req.query.to) {
+        if (req.query.from && req.query.to || req.query.price) {
           for (let i = 0; i < hotel.listings.length; i++) {
             if (
               compareDates(hotel.listings[i].from, req.query.from) === 1 ||
@@ -42,8 +43,8 @@ module.exports = (Hotel, Listing) => {
               req.query.price && hotel.listings[i].price > req.query.price
             ) hotel.listings.splice(i, 1);
           }
-          if (!hotel.listings.length) return null;
         }
+        if (!hotel.listings.length) return null;
         return hotel;
       });
       hotels = hotels.filter((hotel) => (hotel));
