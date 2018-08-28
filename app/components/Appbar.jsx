@@ -1,25 +1,43 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/DeleteForever';
 
 export default class Appbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      auth: false,
+      anchorEl: null
+    }
+  }
+
+
   render() {
     return (
-      <div className="root">
-       <Toolbar>
-         <IconButton className="menuButton" color="primary" aria-label="Menu">
-           <MenuIcon />
-         </IconButton>
-         <Typography variant="title" color="secondary" className="flex">
-           Hotel-Share
-         </Typography>
-         <Button color="default">Login</Button>
-         <Button color="inherit">Register</Button>
-       </Toolbar>
+      <div>
+        <AppBar position="static" style={{background: "white"}}>
+          <Toolbar style={{display: "flex"}}>
+            {!this.state.auth ?
+              (<div style={{display: "flex", width: "100%"}}>
+                <div style={{flex: 1}}>
+                  <img src="http://icons.iconarchive.com/icons/dtafalonso/modern-xp/512/ModernXP-73-Globe-icon.png" style={{height: 50}}/>
+                </div>
+                <div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
+                  <Button color="default" onClick={() => this.setState({auth: true})}>Login</Button><Button color="default">Register</Button>
+                </div>
+              </div>) :
+              (<div style={{display: "flex", width: "100%"}}>
+                <div style={{flex: 1}}>
+                  <img src="http://icons.iconarchive.com/icons/dtafalonso/modern-xp/512/ModernXP-73-Globe-icon.png" style={{height: 50}}/>
+                </div>
+                <div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
+                  <Button color="default" onClick={() => this.setState({auth: false})}>Logout</Button>
+                </div>
+              </div>)
+            }
+          </Toolbar>
+        </AppBar>
       </div>
     )
   }

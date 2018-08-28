@@ -33,7 +33,7 @@ class SearchOptions extends React.Component {
           onChange={(e) => this.setState({to: e.target.value})}/>
         </div>
         <div className="main-search-row">
-          <input type="text" className="main-search-guests" placeholder="Guests"
+          <input type="number" className="main-search-guests" placeholder="Guests"
           onChange={(e) => this.setState({guests: e.target.value})}/>
           <button onClick={() => this.submitData()}>Search</button>
         </div>
