@@ -4,12 +4,12 @@ const compareDates = (date1, date2) => {
   if (!date1 || !date2) return 0;
   let d1 = date1.split('-');
   let d2 = date2.split('-');
-  if (parseInt(d1[2]) < parseInt(d2[2])) return -1;
-  if (parseInt(d1[2]) > parseInt(d2[2])) return 1;
-  if (parseInt(d1[1]) < parseInt(d2[1])) return -1;
-  if (parseInt(d1[1]) > parseInt(d2[1])) return 1;
   if (parseInt(d1[0]) < parseInt(d2[0])) return -1;
   if (parseInt(d1[0]) > parseInt(d2[0])) return 1;
+  if (parseInt(d1[1]) < parseInt(d2[1])) return -1;
+  if (parseInt(d1[1]) > parseInt(d2[1])) return 1;
+  if (parseInt(d1[2]) < parseInt(d2[2])) return -1;
+  if (parseInt(d1[2]) > parseInt(d2[2])) return 1;
   return 0;
 }
 

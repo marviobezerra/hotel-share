@@ -5,8 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
 var axios = require('axios');
 
-const serverUrl = "http://localhost:3000";
-
 class SearchOptions extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +12,7 @@ class SearchOptions extends React.Component {
 
   submitData() {
     let { from, to, guests } = this.state;
-    axios.post(serverUrl + '/search', { city: this.props.city, from, to, guests })
+    axios.post('/api/search', { city: this.props.city, from, to, guests })
     .then(res => {
       console.log(res)}
     )

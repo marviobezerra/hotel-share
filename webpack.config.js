@@ -39,5 +39,14 @@ module.exports = {
   stats: {
     colors: true
   },
-  devtool: 'source-map'
+  devtool: 'source-map',
+  devServer: {
+    port: 8080,
+    historyApiFallback: {
+      index: 'index.html'
+    },
+    proxy: {
+      '/api': 'http://localhost:3000'
+    }
+  }
 };

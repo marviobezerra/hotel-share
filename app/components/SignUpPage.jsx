@@ -1,24 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-const serverUrl = "http://localhost:3000";
 
 export default class SignUpPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      fname: '',
+      lname: '',
+      username: '',
+      password: '',
+      phone: '',
+      birthday: '',
+      gender: '',
     }
   }
 
   signup(e) {
     e.preventDefault();
-    const { fname, lname, email, password, phone, birthday, gender } = this.state;
-    axios.post(`${serverUrl}/register`, { fname, lname, email, password, phone, birthday, gender })
+    console.log('STATE:', this.state);
+    axios.post('/api/register', this.state)
     .then(resp => {
-      console.log(resp.data);
       if(resp.data.success) this.props.app.setState({auth: true});
-    })
+    });
   }
 
   render() {
@@ -27,8 +31,8 @@ export default class SignUpPage extends React.Component {
         <div className="center-vertically">
           <img className="login-icon"
             src="https://images.vexels.com/media/users/3/130187/isolated/lists/5e8d2205ecc8cde3235581fc5ecfa430-email-outline-icon.png" />
-          <input tpe="email" className="login-input" placeholder="Email"
-            onChange={(e) => this.setState({email: e.target.value})}/>
+          <input type="email" className="login-input" placeholder="Email"
+            onChange={(e) => this.setState({username: e.target.value})}/>
         </div>
         <div className="center-vertically">
           <img className="login-icon"
@@ -59,5 +63,3 @@ export default class SignUpPage extends React.Component {
     );
   }
 }
-
-// fname className password phone bday gender pic

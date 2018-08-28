@@ -63,8 +63,8 @@ passport.use(new LocalStrategy((username, password, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(auth(passport, User, City));
-app.use(routes(Hotel, Listing));
+app.use('/api', auth(passport, User, City));
+app.use('/api', routes(Hotel, Listing));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));

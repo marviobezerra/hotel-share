@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
-const serverUrl = "http://localhost:3000";
 
 export default class LoginPage extends React.Component {
   constructor(props) {
@@ -14,7 +13,7 @@ export default class LoginPage extends React.Component {
   login(e) {
     e.preventDefault();
     const { username, password } = this.state;
-    axios.post(`${serverUrl}/login`, {username, password})
+    axios.post('/api/login', {username, password})
     .then(resp => {
       if(resp.data.success) this.props.app.setState({auth: true});
     })
