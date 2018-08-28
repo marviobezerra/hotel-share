@@ -6,25 +6,30 @@ input:focus, textarea:focus, button:focus {
   color: #444;
 }
 
-html, body, #root, #main-content {
+html, body, #root {
   height: 100%;
   margin: 0;
   font-family: "Helvetica";
 }
 
-#landing-images {
-  position: absolute;
-  z-index: 0;
-  height:100%;
-  width: 100%
-}
-
-#main-content {
+.landing-page-container {
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 10
+}
+
+.landingpage-links {
+  position: absolute;
+  right: 0%;
+  margin: 10px
+}
+
+.landingpage-link {
+  color: white;
+  text-decoration: none;
+  padding: 10px
 }
 
 .main-search-box {

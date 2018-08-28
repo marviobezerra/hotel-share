@@ -5,14 +5,16 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
-var cors = require('cors')
-
 const auth = require('./routes/auth');
 const routes = require('./routes/routes')
 const cities = require('../cityData');
 const hotels = require('../hotelData');
 const User = require('./models/user');
 const City = require('./models/city');
+const cors = require('cors');
+app.use(cors());
+// app.options('*', cors());
+
 const Hotel = require('./models/hotel');
 
 mongoose.connection.on('connected', () => {

@@ -6,7 +6,7 @@ module.exports = [
       long: -73.94,
       zoom: 11,
     },
-    img: "https://res.allmacwallpaper.com/get/iMac-21-inch-wallpapers/New-York-City-Aerial-View-1920x1080/9736-9.jpg",
+    img: "https://static01.nyt.com/images/2012/05/06/nyregion/06BIG_SPAN/BIG-superJumbo.jpg",
     hotels: [],
   },
   {

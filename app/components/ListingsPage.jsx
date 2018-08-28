@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import GoogleMapReact from 'google-map-react';
 import SearchBox from './SearchBox.jsx';
 import { Fade } from 'react-slideshow-image';
-import Slideshow from './Slideshow.jsx'
 import sanfrancisco from '../../assets/images/sanfrancisco.jpg'
 import chicago from '../../assets/images/chicago.jpg'
 import newyork from '../../assets/images/newyork.jpg'
@@ -80,9 +79,9 @@ const styles = theme => ({
     justifyContent: 'flex-end',
     flex: 1,
   },
-  topBar: {
+  /*topBar: {
     display: 'flex',
-  },
+  },*/
   avatar: {
     margin: 10,
     color: '#fff',
@@ -133,7 +132,7 @@ class SimpleMap extends React.Component {
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyDkMTasDpg-0WS9mgomIOU3CqAQz8zlEaU'}}
+          bootstrapURLKeys={{ key: /*Add key from env.sh here*/}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
@@ -171,7 +170,7 @@ function MediaControlCard(props) {
 
   return (
     <div className={classes.divContainer}>
-      <div className={classes.topBar}>
+      {/*<div className={classes.topBar}>
         <div className={classes.leftTopBar}>
           <img className={classes.logo} src='https://www.shareicon.net/download/2016/11/22/855119_circle_512x512.png'/>
           <SearchBox />
@@ -181,7 +180,7 @@ function MediaControlCard(props) {
             D
           </Avatar>
         </div>
-      </div>
+      </div>*/}
       <div className={classes.largeContainer}>
         <div className={classes.cardContainer}>
           <Card className={classes.card}>

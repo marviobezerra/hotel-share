@@ -3,9 +3,9 @@ const router = require('express').Router();
 module.exports = (City, Hotel) => {
 
   router.get('/cities', (req, res) => {
-    City.find()
+    City.find({})
     .then((cities) => res.json({success: true, cities}))
-    .catch(() => res.json({success: false}));
+    .catch((err) => {res.json({success: false, err: err}); console.log(err)});
   });
 
   router.get('/hotels/', (req, res) => {
