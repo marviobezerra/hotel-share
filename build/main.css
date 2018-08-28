@@ -20,17 +20,6 @@ html, body, #root {
   align-items: center;
 }
 
-.landingpage-links {
-  position: absolute;
-  right: 0%;
-  margin: 10px
-}
-
-.landingpage-link {
-  color: white;
-  text-decoration: none;
-  padding: 10px
-}
 
 .main-search-box {
   display: flex;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
+const serverUrl = "http://localhost:3000";
 
 export default class LoginPage extends React.Component {
   constructor(props) {
@@ -10,12 +11,12 @@ export default class LoginPage extends React.Component {
     }
   }
 
-  login() {
+  login(e) {
+    e.preventDefault();
     const { username, password } = this.state;
-    axios.post('login', {username: username, password: password})
+    axios.post(`${serverUrl}/login`, {username, password})
     .then(resp => {
       if(resp.data.success) this.props.app.setState({auth: true});
-      else console.log(resp);
     })
   }
 
@@ -34,7 +35,7 @@ export default class LoginPage extends React.Component {
           <input type="password" className="login-input" placeholder="Password"
             onChange={(e) => this.setState({password: e.target.value})}/>
         </div>
-        <button className="login-btn" onClick={() => this.login()}>Login</button>
+        <button className="login-btn" onClick={(e) => this.login(e)}>Login</button>
         <Link to="/signup">Don't have an account? Sign Up</Link>
       </div>
     );

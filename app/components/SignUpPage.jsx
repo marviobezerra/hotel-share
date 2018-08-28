@@ -1,7 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+const serverUrl = "http://localhost:3000";
 
 export default class SignUpPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+  }
+
+  signup(e) {
+    e.preventDefault();
+    const { fname, lname, email, password, phone, birthday, gender } = this.state;
+    axios.post(`${serverUrl}/register`, { fname, lname, email, password, phone, birthday, gender })
+    .then(resp => {
+      console.log(resp.data);
+      if(resp.data.success) this.props.app.setState({auth: true});
+    })
+  }
+
   render() {
     return (
       <div className="login-box">
@@ -30,12 +49,11 @@ export default class SignUpPage extends React.Component {
             onChange={(e) => this.setState({password: e.target.value})}/>
         </div>
         <div>
-          <label>Birthday</label><br/>
-          <input type="text" placeholder="Month"/>
-          <input type="text" placeholder="Day"/>
-          <input type="text" placeholder="Year"/>
+          <input type="date" placeholder="Birthdate" onChange={(e) => this.setState({birthday: e.target.value})}/>
+          <input type="number" placeholder="Phone" onChange={(e) => this.setState({phone: e.target.value})}/>
+          <input type="text" placeholder="Gender" onChange={(e) => this.setState({gender: e.target.value})}/>
         </div>
-        <button className="login-btn">Sign Up</button>
+        <button className="login-btn" onClick={(e) => this.signup(e)}>Sign Up</button>
         <Link to="/login">Already have an account? Login</Link>
       </div>
     );

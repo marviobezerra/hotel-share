@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
 import SearchBox from './SearchBox.jsx';
 import LoginPage from './LoginPage.jsx';
 import SignUpPage from './SignupPage.jsx';
@@ -33,8 +33,8 @@ export default class LandingPage extends React.Component {
     return (
       <div style={{backgroundImage: `url(${this.state.url})`, height: "100%", backgroundSize: "100%"}} className="landing-page-container">
         <Route exact path="/" component={SearchBox} />
-        <Route exact path="/login" render={() => <LoginPage app={this.props.app}/>} />
-        <Route exact path="/signup" component={SignUpPage} />
+        <Route exact path="/login" render={() => this.props.app.state.auth ? <Redirect to="/" /> : <LoginPage app={this.props.app} />} />
+        <Route exact path="/signup" render={() => this.props.app.state.auth ? <Redirect to="/" /> : <SignUpPage app={this.props.app} />} />
       </div>
     )
   }
