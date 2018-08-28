@@ -9,11 +9,18 @@ import LandingPage from './LandingPage.jsx';
 const clientUrl = "http://localhost:8080";
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      auth: false
+    }
+  }
+
   render() {
       return (
         <div style={{height: "100%"}}>
-          <Appbar />
-          <Route path="/" component={LandingPage} />
+          <Appbar app={this}/>
+          <Route path="/" render={() => <LandingPage app={this} />} />
         </div>
       )
   }

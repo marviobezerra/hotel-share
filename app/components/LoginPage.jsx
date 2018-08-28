@@ -1,14 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default class LoginPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+  }
+
+  login() {
+    const { username, password } = this.state;
+    axios.post('login', {username: username, password: password})
+    .then(resp => {
+      if(resp.data.success) this.props.app.setState({auth: true});
+      else console.log(resp);
+    })
+  }
+
   render() {
     return (
       <div className="login-box">
         <div className="center-vertically">
           <img className="login-icon"
             src="https://images.vexels.com/media/users/3/130187/isolated/lists/5e8d2205ecc8cde3235581fc5ecfa430-email-outline-icon.png" />
-          <input tpe="email" className="login-input" placeholder="Email"
+          <input type="email" className="login-input" placeholder="Username"
             onChange={(e) => this.setState({username: e.target.value})}/>
         </div>
         <div className="center-vertically">
@@ -17,7 +34,7 @@ export default class LoginPage extends React.Component {
           <input type="password" className="login-input" placeholder="Password"
             onChange={(e) => this.setState({password: e.target.value})}/>
         </div>
-        <button className="login-btn">Login</button>
+        <button className="login-btn" onClick={() => this.login()}>Login</button>
         <Link to="/signup">Don't have an account? Sign Up</Link>
       </div>
     );

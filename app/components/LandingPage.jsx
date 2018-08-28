@@ -24,7 +24,7 @@ export default class LandingPage extends React.Component {
           this.setState({
             city: (this.state.city + 1)%this.state.cities.length,
             url: this.state.cities[(this.state.city + 1)%this.state.cities.length].img,
-          })}, 10000);
+          })}, 5000);
       });
     })
   }
@@ -32,7 +32,9 @@ export default class LandingPage extends React.Component {
   render() {
     return (
       <div style={{backgroundImage: `url(${this.state.url})`, height: "100%", backgroundSize: "100%"}} className="landing-page-container">
-        <SearchBox />
+        <Route exact path="/" component={SearchBox} />
+        <Route exact path="/login" render={() => <LoginPage app={this.props.app}/>} />
+        <Route exact path="/signup" component={SignUpPage} />
       </div>
     )
   }
