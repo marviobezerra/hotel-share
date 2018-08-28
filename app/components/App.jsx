@@ -14,16 +14,28 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      auth: false
+      auth: false,
+      show: false,
     }
   }
-
+  show() {
+    if (!this.state.show) this.setState({show: true});
+  }
+  hide() {
+    if (this.state.show) this.setState({show: false});
+  }
+  login() {
+    this.setState({auth: true, show: false});
+  }
+  logout() {
+    this.setState({auth: false, show: false});
+  }
   render() {
-      return (
-        <div style={{height: "100%"}}>
-          <Appbar app={this}/>
-          <Route path="/" render={() => <LandingPage app={this} />} />
-        </div>
-      )
+    return (
+      <div style={{height: "100%"}}>
+        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()}/>
+        <Route path="/" render={() => <LandingPage auth={this.state.auth} show={this.state.show} hide={() => this.hide()} login={() => this.login()}/>} />
+      </div>
+    )
   }
 }

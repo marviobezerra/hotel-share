@@ -12,7 +12,7 @@ export default class LandingPage extends React.Component {
       cities: [],
       city: 0,
       url: 'https://static01.nyt.com/images/2012/05/06/nyregion/06BIG_SPAN/BIG-superJumbo.jpg',
-      main: true,
+      options: false,
     }
   }
 
@@ -29,19 +29,24 @@ export default class LandingPage extends React.Component {
     })
   }
 
-  searchBox(e) {
-    if (e.target === this) {
+  showOptions() {
+    if (!this.state.options) this.setState({options: true});
+  }
 
+  hide(e) {
+    if (e.target.className === 'landing-page-container') {
+      if (this.state.options) this.setState({options: false});
+      if (this.props.show) this.props.hide();
     }
   }
 
   render() {
     return (
       <div style={{backgroundImage: `url(${this.state.url})`, height: "100%", backgroundSize: "100%"}} className="landing-page-container"
-        onClick={() => <Redirect to="/" />}>
-        <Route exact path="/" component={SearchBox} />
-        <Route exact path="/login" render={() => this.props.app.state.auth ? <Redirect to="/" /> : <LoginPage app={this.props.app} />} />
-        <Route exact path="/signup" render={() => this.props.app.state.auth ? <Redirect to="/" /> : <SignUpPage app={this.props.app} />} />
+        onClick={(e) => this.hide(e)}>
+        <Route exact path="/" render={() => <SearchBox options={this.state.options} showOptions={() => this.showOptions()}/>} />
+        <Route exact path="/login" render={() => this.props.auth || !this.props.show ? <Redirect to="/" /> : <LoginPage login={() => this.props.login()} />} />
+        <Route exact path="/signup" render={() => this.props.auth || !this.props.show ? <Redirect to="/" /> : <SignUpPage hide={() => this.props.hide()}/>} />
       </div>
     )
   }

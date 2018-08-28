@@ -15,7 +15,7 @@ export default class LoginPage extends React.Component {
     const { username, password } = this.state;
     axios.post('/api/login', {username, password})
     .then(resp => {
-      if(resp.data.success) this.props.app.setState({auth: true});
+      if(resp.data.success) this.props.login();
     })
   }
 

@@ -13,7 +13,6 @@ export default class Appbar extends React.Component {
     }
   }
 
-
   render() {
     return (
       <div>
@@ -23,11 +22,14 @@ export default class Appbar extends React.Component {
               <div style={{flex: 1}}>
                 <img src="http://icons.iconarchive.com/icons/dtafalonso/modern-xp/512/ModernXP-73-Globe-icon.png" style={{height: 50}}/>
               </div>
-                {this.props.app.state.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}><Button color="default" onClick={() => this.props.app.setState({auth: false})}>Logout</Button></div>) :
+                {this.props.auth ? (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}><Button color="default" onClick={() => this.props.logout()}>Logout</Button></div>) :
                 (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
                   <Button color="default">
-                    <Link to="/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
-                  </Button><Button color="default"><Link to="/signup" style={{color: "white", textDecoration: "none"}}>Sign Up</Link></Button>
+                    <Link onClick={this.props.show()} to="/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
+                  </Button>
+                  <Button color="default">
+                    <Link onClick={this.props.show()} to="/signup" style={{color: "white", textDecoration: "none"}}>Sign Up</Link>
+                  </Button>
                 </div>)}
               </div>
           </Toolbar>

@@ -18,7 +18,6 @@ export default class SignUpPage extends React.Component {
 
   signup(e) {
     e.preventDefault();
-    console.log('STATE:', this.state);
     axios.post('/api/register', this.state)
     .then(resp => {
       if(resp.data.success) this.props.app.setState({auth: true});
