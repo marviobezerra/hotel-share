@@ -18,7 +18,10 @@ module.exports = (Hotel, Listing) => {
   router.get('/hotels/:city', (req, res) => {
     const city = req.params.city.replace('+', ' ');
     Hotel.find({city})
-    .populate('listings')
+    .populate({
+      path: 'listings',
+      populate: {path: 'user', select: 'name gender'},
+    })
     .then(data => {
       let hotels = [];
       for (let i = 0; i < data.length; i++) {
@@ -35,12 +38,12 @@ module.exports = (Hotel, Listing) => {
       hotels = hotels.map((hotel) => {
         if (req.query.stars && hotel.stars < req.query.stars) return null;
         if (req.query.rating && hotel.rating < req.query.rating) return null;
-        if (req.query.from && req.query.to || req.query.price) {
+        if (req.query.from && req.query.to || req.query.price || req.query.gender) {
           for (let i = 0; i < hotel.listings.length; i++) {
-            if (
-              compareDates(hotel.listings[i].from, req.query.from) === 1 ||
-              compareDates(hotel.listings[i].to, req.query.to) === -1 ||
-              req.query.price && hotel.listings[i].price > req.query.price
+            if ( compareDates(hotel.listings[i].from, req.query.from) === 1
+              || compareDates(hotel.listings[i].to, req.query.to) === -1
+              || req.query.price && req.query.price < hotel.listings[i].price
+              || req.query.gender && req.query.gender !== hotel.listings[i].user.gender
             ) hotel.listings.splice(i, 1);
           }
         }
