@@ -9,22 +9,55 @@ export default class LandingPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cities: [],
-      city: 0,
-      url: 'https://static01.nyt.com/images/2012/05/06/nyregion/06BIG_SPAN/BIG-superJumbo.jpg',
+      cities: [{img: '#'}, {img: '#'}],
+      c: 1,
+      style1: {},
+      style2: {},
       options: false,
-    }
+    };
   }
 
   componentDidMount() {
     axios.get('/api/cities')
     .then(resp => {
-      this.setState({cities: resp.data.cities}, () => {
+      this.setState({
+        cities: resp.data.cities,
+        style1: {opacity: 1, backgroundImage: `url(${resp.data.cities[0].img})`},
+        style2: {opacity: 0, backgroundImage: `url(${resp.data.cities[1].img})`},
+      }, () => {
         setInterval(() => {
-          this.setState({
-            city: (this.state.city + 1)%this.state.cities.length,
-            url: this.state.cities[(this.state.city + 1)%this.state.cities.length].img,
-          })}, 5000);
+          let fadeIn = {
+            animationName: 'fade-in',
+            animationDuration: '1.5s',
+            animationFillMode: 'forwards',
+          };
+          let fadeOut = {
+            animationName: 'fade-out',
+            animationDuration: '1.5s',
+            animationFillMode: 'forwards',
+          };
+          if (this.state.style1.opacity) {
+            this.setState({
+              style1: Object.assign(fadeOut, this.state.style1),
+              style2: Object.assign(fadeIn, this.state.style2),
+            });
+            setTimeout(() => this.setState({c: (this.state.c + 1) % this.state.cities.length}), 200);
+            setTimeout(() => this.setState({
+              style1: {opacity: 0, backgroundImage: `url(${this.state.cities[this.state.c].img})`},
+              style2: {opacity: 1, backgroundImage: this.state.style2.backgroundImage},
+            }), 1500);
+          } else {
+            this.setState({
+              style2: Object.assign(fadeOut, this.state.style2),
+              style1: Object.assign(fadeIn, this.state.style1),
+            });
+            setTimeout(() => this.setState({c: (this.state.c + 1) % this.state.cities.length}), 200);
+            setTimeout(() => this.setState({
+              style2: {opacity: 0, backgroundImage: `url(${this.state.cities[this.state.c].img})`},
+              style1: {opacity: 1, backgroundImage: this.state.style1.backgroundImage},
+            }), 1500);
+          }
+        }, 6000);
       });
     })
   }
@@ -42,9 +75,11 @@ export default class LandingPage extends React.Component {
 
   render() {
     return (
-      <div style={{backgroundImage: `url(${this.state.url})`, height: "100%", backgroundSize: "100%"}} className="landing-page-container"
-        onClick={(e) => this.hide(e)}>
-        <Route exact path="/" render={() => <SearchBox options={this.state.options} showOptions={() => this.showOptions()}/>} />
+      <div className="landing-page-container" onClick={(e) => this.hide(e)}>
+        <div id="background-1" style={this.state.style1} />
+        <div id="background-2" style={this.state.style2} />
+        <Route exact path="/" render={() => <SearchBox options={this.state.options} showOptions={() => this.showOptions()}
+          text={this.state.cities[(this.state.c + this.state.cities.length - 1) % this.state.cities.length].name}/>} />
         <Route exact path="/login" render={() => this.props.auth || !this.props.show ? <Redirect to="/" /> : <LoginPage login={() => this.props.login()} />} />
         <Route exact path="/signup" render={() => this.props.auth || !this.props.show ? <Redirect to="/" /> : <SignUpPage hide={() => this.props.hide()}/>} />
       </div>

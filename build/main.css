@@ -12,6 +12,34 @@ html, body, #root {
   font-family: "Helvetica";
 }
 
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#background-1, #background-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  background-size: 100%;
+}
+
 .landing-page-container {
   height: 100%;
   width: 100%;
@@ -19,7 +47,6 @@ html, body, #root {
   justify-content: center;
   align-items: center;
 }
-
 
 .main-search-box {
   display: flex;
