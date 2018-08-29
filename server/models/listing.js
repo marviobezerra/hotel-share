@@ -11,6 +11,10 @@ const listingSchema = new mongoose.Schema({
     ref: 'Hotel',
     required: true,
   },
+  guests: {
+    type: Number,
+    required: true,
+  },
   from: {
     type: String,
     required: true,

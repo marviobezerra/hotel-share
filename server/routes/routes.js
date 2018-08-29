@@ -13,7 +13,13 @@ const compareDates = (date1, date2) => {
   return 0;
 }
 
-module.exports = (Hotel, Listing) => {
+module.exports = (City, Hotel) => {
+
+  router.get('/cities', (req, res) => {
+    City.find()
+    .then((cities) => res.json({success: true, cities}))
+    .catch(() => res.json({success: false}));
+  });
 
   router.get('/hotels/:city', (req, res) => {
     const city = req.params.city.replace('+', ' ');
@@ -38,12 +44,13 @@ module.exports = (Hotel, Listing) => {
       hotels = hotels.map((hotel) => {
         if (req.query.stars && hotel.stars < req.query.stars) return null;
         if (req.query.rating && hotel.rating < req.query.rating) return null;
-        if (req.query.from && req.query.to || req.query.price || req.query.gender) {
+        if (req.query.from && req.query.to || req.query.price || req.query.gender || req.query.guests) {
           for (let i = 0; i < hotel.listings.length; i++) {
             if ( compareDates(hotel.listings[i].from, req.query.from) === 1
               || compareDates(hotel.listings[i].to, req.query.to) === -1
               || req.query.price && req.query.price < hotel.listings[i].price
               || req.query.gender && req.query.gender !== hotel.listings[i].user.gender
+              || req.query.guests && req.query.guests > hotel.listing[i].guests
             ) hotel.listings.splice(i, 1);
           }
         }
@@ -53,21 +60,6 @@ module.exports = (Hotel, Listing) => {
       hotels = hotels.filter((hotel) => (hotel));
       res.json({success: true, hotels});
     })
-    .catch(() => res.json({success: false}));
-  });
-
-  router.post('/list', (req, res) => {
-    let listing = new Listing({
-      user: req.user._id,
-      hotel: req.body.hotel,
-      from: req.body.from,
-      to: req.body.to,
-      price: req.body.price,
-      booked: false,
-    });
-    listing.save()
-    .then(() => (Hotel.findByIdAndUpdate(req.body.hotel, {$push: {listings: listing._id}})))
-    .then(() => res.json({success: true}))
     .catch(() => res.json({success: false}));
   });
 
