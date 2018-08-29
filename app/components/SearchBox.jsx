@@ -16,7 +16,7 @@ export default class SearchBox extends React.Component {
         <div className="center-vertically">
           <img className="main-search-icon"
             src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png" />
-          <input className="main-search" placeholder="San Francisco"
+          <input className="main-search" placeholder={this.props.text}
             onChange={(e) => this.setState({city: e.target.value})}/>
         </div>
         {this.props.options ? <SearchOptions city={this.state.city}/> : null}
