@@ -12,7 +12,7 @@ export default class SignUpPage extends React.Component {
     this.state = {
       fname: '',
       lname: '',
-      username: '',
+      email: '',
       password: '',
       phone: '',
       birthday: '',
@@ -21,32 +21,16 @@ export default class SignUpPage extends React.Component {
   }
 
   signup(e) {
-    console.log(this.state);
     e.preventDefault();
     axios.post('/api/register', this.state)
     .then(resp => {
-      console.log(resp.data.success);
-      if(resp.data.success) this.props.app.setState({auth: true});
+      if(resp.data.success) this.props.hide();
     });
   }
 
   render() {
     return (
       <div className="login-box">
-        {/* <input type="text" className="login-input" placeholder="First Name"
-          onChange={(e) => this.setState({fname: e.target.value})}/>
-        <input type="text" className="login-input" placeholder="Last Name"
-            onChange={(e) => this.setState({lname: e.target.value})}/>
-        <input type="email" className="login-input" placeholder="Email"
-          onChange={(e) => this.setState({username: e.target.value})}/>
-        <input type="password" className="login-input" placeholder="Password"
-          onChange={(e) => this.setState({password: e.target.value})}/>
-        <input type="date" placeholder="Birthday" onChange={(e) => this.setState({birthday: e.target.value})}/>
-        <input type="number" placeholder="Phone" onChange={(e) => this.setState({phone: e.target.value})}/>
-        <input type="radio" name="gender" value="Female" onClick={(e) => this.setState({gender: e.target.value})}/><label>Female</label>
-        <input type="radio" name="gender" value="Male" onClick={(e) => this.setState({gender: e.target.value})}/><label>Male</label>
-        <button className="login-btn" onClick={(e) => this.signup(e)}>Sign Up</button>
-        <Link to="/login">Already have an account? Login</Link> */}
         {this.state.fname && this.state.lname ? <Avatar style={{backgroundColor: "orange"}}>{this.state.fname[0] + this.state.lname[0]}</Avatar> : null}
         <TextField
           label="First name"
@@ -79,7 +63,7 @@ export default class SignUpPage extends React.Component {
               </InputAdornment>
             ),
           }}
-          onChange={(e) => this.setState({username: e.target.value})}
+          onChange={(e) => this.setState({email: e.target.value})}
         />
         <TextField
           label="Password"
@@ -113,9 +97,6 @@ export default class SignUpPage extends React.Component {
               </InputAdornment>
             ),
           }}
-          // InputLabelProps={{
-          //   shrink: true
-          // }}
           type="date"
           onChange={(e) => this.setState({birthday: e.target.value})}
           style={{width: "95%"}}

@@ -28,7 +28,6 @@ module.exports = (passport, User, City) => {
   });
 
   router.post('/register', (req, res) => {
-    console.log(req.body);
     (new User({
       name: {fname: req.body.fname, lname: req.body.lname},
       email: req.body.email,

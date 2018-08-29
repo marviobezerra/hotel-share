@@ -22,7 +22,7 @@ export default class Appbar extends React.Component {
               <div style={{flex: 1}}>
                 <img src="http://icons.iconarchive.com/icons/dtafalonso/modern-xp/512/ModernXP-73-Globe-icon.png" style={{height: 50}}/>
               </div>
-                {this.props.auth ? (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}><Button color="default" onClick={() => this.props.logout()}>Logout</Button></div>) :
+                {this.props.auth ? (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}><Button color="default" onClick={() => this.props.logout()} style={{color: "white", textDecoration: "none"}}>Logout</Button></div>) :
                 (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
                   <Button color="default">
                     <Link onClick={this.props.show()} to="/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
