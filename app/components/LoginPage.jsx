@@ -1,41 +1,57 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Email from '@material-ui/icons/Email';
+import Lock from '@material-ui/icons/Lock'
+import Button from '@material-ui/core/Button';
+
 
 export default class LoginPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      username: '',
+      password: '',
     }
   }
 
   login(e) {
     e.preventDefault();
-    const { username, password } = this.state;
-    axios.post('/api/login', {username, password})
+    axios.post('/api/login', this.state)
     .then(resp => {
-      if(resp.data.success) this.props.app.setState({auth: true});
+      if(resp.data.success) this.props.login();
     })
   }
 
   render() {
     return (
       <div className="login-box">
-        <div className="center-vertically">
-          <img className="login-icon"
-            src="https://images.vexels.com/media/users/3/130187/isolated/lists/5e8d2205ecc8cde3235581fc5ecfa430-email-outline-icon.png" />
-          <input type="email" className="login-input" placeholder="Username"
-            onChange={(e) => this.setState({username: e.target.value})}/>
-        </div>
-        <div className="center-vertically">
-          <img className="login-icon"
-            src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon-by-vexels.png" />
-          <input type="password" className="login-input" placeholder="Password"
-            onChange={(e) => this.setState({password: e.target.value})}/>
-        </div>
-        <button className="login-btn" onClick={(e) => this.login(e)}>Login</button>
-        <Link to="/signup">Don't have an account? Sign Up</Link>
+        <TextField
+          label="Email"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            ),
+          }}
+          onChange={(e) => this.setState({username: e.target.value})}
+        />
+        <TextField
+          label="Password"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock />
+              </InputAdornment>
+            ),
+          }}
+          type="password"
+          onChange={(e) => this.setState({password: e.target.value})}
+        />
+        <Button variant="contained" onClick={(e) => this.login(e)} style={{margin: 20, backgroundColor: "orange", color: "white"}}>Login</Button>
       </div>
     );
   }

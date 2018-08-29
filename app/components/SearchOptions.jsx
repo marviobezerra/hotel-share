@@ -1,14 +1,21 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
-var axios = require('axios');
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { DateRange, People } from '@material-ui/icons/';
+import { Button } from '@material-ui/core/';
+
 
 class SearchOptions extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      city: '',
+      to: '',
+      from: '',
+      guests: '',
+    }
   }
 
   submitData() {
@@ -22,19 +29,56 @@ class SearchOptions extends React.Component {
     )
   }
 
+  hitEnter(e) {
+    if(e.key == 'Enter') this.submitData();
+  }
+
   render() {
     return (
-      <div className="main-search-options">
+      <div className="main-search-options" onKeyDown={(e) => this.hitEnter(e)} tabIndex="0">
         <div className="main-search-row">
-          <input type="date" className="main-search-from"
-          onChange={(e) => this.setState({from: e.target.value})}/>
-          <input type="date" className="main-search-to"
-          onChange={(e) => this.setState({to: e.target.value})}/>
+          <TextField
+            label="From"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DateRange />
+                </InputAdornment>
+              ),
+            }}
+            type="date"
+            onChange={(e) => this.setState({from: e.target.value})}
+            style={{margin: 2}}
+          />
+          <TextField
+            label="To"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DateRange />
+                </InputAdornment>
+              ),
+            }}
+            type="date"
+            onChange={(e) => this.setState({to: e.target.value})}
+            style={{margin: 2}}
+          />
         </div>
-        <div className="main-search-row">
-          <input type="number" className="main-search-guests" placeholder="Guests"
-          onChange={(e) => this.setState({guests: e.target.value})}/>
-          <button onClick={() => this.submitData()}><Link to="/listings">Search</Link></button>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+          <TextField
+            label="Guests"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <People />
+                </InputAdornment>
+              ),
+            }}
+            type="number"
+            style={{width: "50%", margin: 2}}
+            onChange={(e) => this.setState({guests: e.target.value})}
+          />
+          <Button variant="contained" onClick={() => this.submitData()} style={{margin: 20, backgroundColor: "orange", color: "white"}}><Link to='/listings'>Search</Link></Button>
         </div>
       </div>
     );
