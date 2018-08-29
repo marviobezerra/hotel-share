@@ -7,13 +7,7 @@ function hashPassword(password) {
   return hash.digest('hex');
 }
 
-module.exports = (passport, User, City) => {
-
-  router.get('/cities', (req, res) => {
-    City.find()
-    .then((cities) => res.json({success: true, cities}))
-    .catch(() => res.json({success: false}));
-  });
+module.exports = (passport, User) => {
 
   router.post('/login', (req, res, next) => {
     req.body.password = hashPassword(req.body.password);

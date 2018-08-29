@@ -7,8 +7,9 @@ const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 
+const routes = require('./routes/routes');
 const auth = require('./routes/auth');
-const routes = require('./routes/routes')
+const protected = require('./routes/protected');
 const cities = require('../cityData');
 const hotels = require('../hotelData');
 const User = require('./models/user');
@@ -63,8 +64,9 @@ passport.use(new LocalStrategy((username, password, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api', auth(passport, User, City));
-app.use('/api', routes(Hotel, Listing));
+app.use('/api', routes(City, Hotel));
+app.use('/api', auth(passport, User));
+app.use('/api', protected(Hotel, Listing));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
