@@ -16,12 +16,16 @@ import newyork from '../../assets/images/newyork.jpg'
 import seattle from '../../assets/images/seattle.jpg'
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
+import Marker from './marker.jsx';
 var axios = require('axios');
 
 const styles = theme => ({
   card: {
     display: 'flex',
     paddingBottom: 5
+  },
+  cards: {
+    flexDirection: 'column'
   },
   details: {
     display: 'flex',
@@ -109,8 +113,9 @@ class SimpleMap extends React.Component {
   }
 
   getHotels() {
-    axios.get('http://localhost:3000/hotels/')
+    axios.get('/api/hotels/San+Francisco')
     .then(res => {
+      console.log(res)
       let hotels = res.data.hotels;
       console.log(hotels)
       this.setState({
@@ -128,25 +133,57 @@ class SimpleMap extends React.Component {
   }
 
   render() {
+    const classes = this.props.classStyle
     return (
-      // Important! Always set the container height explicitly
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div className={classes.largeContainer}>
+        <div className={classes.cards}>
+          {
+            this.state.hotels.map((hotel) => (
+              <div className={classes.cardContainer}>
+                <Card className={classes.card}>
+                  <div className={classes.details}>
+                    <CardContent className={classes.content}>
+                      <Typography className={classes.hotelName} variant="headline">{hotel.name}</Typography>
+                      <Typography variant="subheading">
+                        {hotel.rating}/10
+                      </Typography>
+                      <Typography variant="subheading">
+                        Great location in the center of the financial district.
+                      </Typography>
+                    </CardContent>
+                    <div className={classes.controls}>
+                      <Button size="small" color="primary">
+                        from {hotel.stars}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className={classes.cover}>
+                    <img className={classes.carousel} src = {hotel.images[0]}/>
+                  </div>
+                </Card>
+              </div>
+            ))
+          }
+      </div>
+      <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "GOOGLE MAPS API KEY GOES HERE"}}
+          bootstrapURLKeys={{ key: "AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw"}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
           {
             this.state.hotels.map((hotel) => (
-              <AnyReactComponent
+              <Marker
+                id={hotel._id}
+                text={hotel.name}
                 lat={hotel.location.lat}
                 lng={hotel.location.long}
-                text={hotel.name}
               />
             ))
           }
         </GoogleMapReact>
       </div>
+    </div>
     );
   }
 }
@@ -181,32 +218,7 @@ function MediaControlCard(props) {
           </Avatar>
         </div>
       </div>*/}
-      <div className={classes.largeContainer}>
-        <div className={classes.cardContainer}>
-          <Card className={classes.card}>
-            <div className={classes.details}>
-              <CardContent className={classes.content}>
-                <Typography className={classes.hotelName} variant="headline">Marriot</Typography>
-                <Typography variant="subheading">
-                  8.9/10
-                </Typography>
-                <Typography variant="subheading">
-                  Great location in the center of the financial district.
-                </Typography>
-              </CardContent>
-              <div className={classes.controls}>
-                <Button size="small" color="primary">
-                  from $179
-                </Button>
-              </div>
-            </div>
-            <div className={classes.cover}>
-              <img className={classes.carousel} src = 'http://www.hdwallpaperspulse.com/wp-content/uploads/2017/08/12/stunning-hd-chicago-wallpaper.jpeg'/>
-            </div>
-          </Card>
-        </div>
-        <SimpleMap className={classes.hotelMap}/>
-      </div>
+        <SimpleMap classStyle = {classes} className={classes.hotelMap}/>
     </div>
   );
 }

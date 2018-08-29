@@ -7,6 +7,7 @@ import BottomNavigation from './BottomNavigation.jsx';
 //import ListingsPage from './ListingsPage.jsx'
 import MediaControlCard from './ListingsPage.jsx'
 import LandingPage from './LandingPage.jsx';
+import ListingsPage from './ListingsPage.jsx';
 
 const clientUrl = "http://localhost:8080";
 
@@ -22,6 +23,7 @@ export default class App extends React.Component {
       return (
         <div style={{height: "100%"}}>
           <Appbar app={this}/>
+          <Route exact path="/listings" render={() => <ListingsPage app={this} />} />
           <Route path="/" render={() => <LandingPage app={this} />} />
         </div>
       )
