@@ -3,8 +3,9 @@ import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { Email, Lock } from '@material-ui/icons/';
-import { Button } from '@material-ui/core/';
+import Email from '@material-ui/icons/Email';
+import Lock from '@material-ui/icons/Lock'
+import Button from '@material-ui/core/Button';
 
 
 export default class LoginPage extends React.Component {
