@@ -79,6 +79,9 @@ html, body, #root {
   box-shadow: 2px 2px 5px #333;
 }
 
+.login-box > div {
+  margin: 5px
+}
 .login-input {
   font-family: "Helvetica";
   font-size: 1em;
