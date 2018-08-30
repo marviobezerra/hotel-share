@@ -8,6 +8,7 @@ import BottomNavigation from './BottomNavigation.jsx';
 import MediaControlCard from './ListingsPage.jsx'
 import LandingPage from './LandingPage.jsx';
 import ListingsPage from './ListingsPage.jsx';
+import NewListing from './NewListing.jsx';
 
 const clientUrl = "http://localhost:8080";
 
@@ -17,7 +18,7 @@ export default class App extends React.Component {
     this.state = {
       auth: false,
       show: false,
-      height: '0px',
+      style: {height: 0, backgroundColor: 'white'},
       city: '',
       to: '',
       from: '',
@@ -49,24 +50,26 @@ export default class App extends React.Component {
   updateGuests(e) {
     this.setState({guests: e.target.value})
   }
-  updateHeight(newHeight){
-    this.setState({height: newHeight})
+  updateAppBarStyle(newStyle){
+    this.setState({style: newStyle})
+  }
+  renderMain() {
+    return <LandingPage auth={this.state.auth} show={this.state.show}
+      hide={() => this.hide()} login={() => this.login()} updateCity={(val) => this.updateCity(val)}
+      updateTo={() => updateTo()} updateFrom={() => updateFrom()} city={this.state.city}
+      updateGuests={() => updateGuests()} updateHeight={(val) => this.updateHeight(val)}
+    />;
   }
   render() {
     return (
       <div style={{height: "100%"}}>
-        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()}
-          height={this.state.height}
-        />
-
-        <Route exact path="/listings" render={() => <ListingsPage city={this.state.city} updateHeight={(val) => this.updateHeight(val)}
-        />}/>
-
-        <Route path="/" render={() => <LandingPage auth={this.state.auth} show={this.state.show}
-          hide={() => this.hide()} login={() => this.login()} updateCity={(val) => this.updateCity(val)}
-          updateTo={() => updateTo()} updateFrom={() => updateFrom()} city={this.state.city}
-          updateGuests={() => updateGuests()} updateHeight={(val) => this.updateHeight(val)}
-        />} />
+        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style}/>
+        <Route exact path="/listings" render={() => <ListingsPage city={this.state.city} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
+        <Route exact path="/" render={() => this.renderMain()} />
+        <Route exact path="/login" render={() => this.renderMain()} />
+        <Route exact path="/signup" render={() => this.renderMain()} />
+        <Route exact path="/newlisting" render={() => <NewListing updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />} />
+        <Route exact path="/myaccount" render={() => <MyAccount updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />} />
       </div>
     )
   }

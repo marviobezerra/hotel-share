@@ -163,7 +163,7 @@ class SimpleMap extends React.Component {
 
   componentDidMount() {
     console.log(this.props)
-    this.props.updateHeight('50px')
+    this.props.updateAppBarStyle({height: 60});
     this.getHotels();
   }
 
@@ -236,7 +236,18 @@ function ListingsPage(props) {
 
   return (
     <div className={classes.divContainer}>
-        <SimpleMap updateHeight={(val) => props.updateHeight()} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
+      {/*<div className={classes.topBar}>
+        <div className={classes.leftTopBar}>
+          <img className={classes.logo} src='https://www.shareicon.net/download/2016/11/22/855119_circle_512x512.png'/>
+          <SearchBox />
+        </div>
+        <div className={classes.rightTopBar}>
+          <Avatar className={classes.avatar}>
+            D
+          </Avatar>
+        </div>
+      </div>*/}
+        <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
     </div>
   );
 }

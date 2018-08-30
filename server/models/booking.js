@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
-const listingSchema = new mongoose.Schema({
-  user: {
+const bookingSchema = new mongoose.Schema({
+  host: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  guest: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true,
@@ -27,8 +32,12 @@ const listingSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  paid: {
+    type: Boolean,
+    default: false,
+  }
 });
 
-const Listing = mongoose.model('Listing', listingSchema);
+const Booking = mongoose.model('Booking', bookingSchema);
 
-module.exports = Listing;
+module.exports = Booking;

@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     enum: ['Male', 'Female', 'Other'],
     required: true,
   },
-  picture: String,
+  imgUrl: String,
   bio: String,
   languages: [String],
 });
