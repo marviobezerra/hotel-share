@@ -1,14 +1,11 @@
 import React from 'react';
-<<<<<<< HEAD
 import { Route, Link } from 'react-router-dom';
-=======
->>>>>>> 501eef82c2b0beccd3824bcf49fdd7f132eb0758
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { DateRange, People } from '@material-ui/icons/';
 import { Button } from '@material-ui/core/';
-
+import ListingsPage from './ListingsPage.jsx';
 
 class SearchOptions extends React.Component {
   constructor(props) {
@@ -50,7 +47,7 @@ class SearchOptions extends React.Component {
               ),
             }}
             type="date"
-            onChange={(e) => this.setState({from: e.target.value})}
+            onChange={(e) => this.props.updateFrom(e)}
             style={{margin: 2}}
           />
           <TextField
@@ -63,7 +60,7 @@ class SearchOptions extends React.Component {
               ),
             }}
             type="date"
-            onChange={(e) => this.setState({to: e.target.value})}
+            onChange={(e) => this.props.updateTo(e)}
             style={{margin: 2}}
           />
         </div>
@@ -79,9 +76,11 @@ class SearchOptions extends React.Component {
             }}
             type="number"
             style={{width: "50%", margin: 2}}
-            onChange={(e) => this.setState({guests: e.target.value})}
+            onChange={(e) => this.props.updateGuests(e)}
           />
-          <Button variant="contained" onClick={() => this.submitData()} style={{margin: 20, backgroundColor: "orange", color: "white"}}><Link to='/listings'>Search</Link></Button>
+          <Button variant="contained" onClick={() => this.submitData()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+            <Link to='/listings'>Search</Link>
+          </Button>
         </div>
       </div>
     );

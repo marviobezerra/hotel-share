@@ -17,9 +17,12 @@ export default class SearchBox extends React.Component {
           <img className="main-search-icon"
             src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png" />
           <input className="main-search" placeholder={this.props.text}
-            onChange={(e) => this.setState({city: e.target.value})}/>
+            onChange={(e) => this.props.updateCity(e.target.value)}/>
         </div>
-        {this.props.options ? <SearchOptions city={this.state.city}/> : null}
+        {this.props.options ? <SearchOptions city={this.props.city}
+          updateCity={this.props.updateCity} updateTo={this.props.updateTo}
+          updateFrom={this.props.updateFrom} updateGuests={this.props.updateGuests}
+        /> : null}
       </div>
     );
   }

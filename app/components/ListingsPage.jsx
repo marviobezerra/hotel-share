@@ -113,7 +113,8 @@ class SimpleMap extends React.Component {
   }
 
   getHotels() {
-    axios.get('/api/hotels/San+Francisco')
+    console.log(this.props.city)
+    axios.get('/api/hotels/'+this.props.city.replace(' ', '+'))
     .then(res => {
       console.log(res)
       let hotels = res.data.hotels;
@@ -129,11 +130,14 @@ class SimpleMap extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
+    this.props.updateHeight('50px')
     this.getHotels();
   }
 
   render() {
     const classes = this.props.classStyle
+    console.log(this.props)
     return (
       <div className={classes.largeContainer}>
         <div className={classes.cards}>
@@ -167,7 +171,7 @@ class SimpleMap extends React.Component {
       </div>
       <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "Key goes here"}}
+          bootstrapURLKeys={{ key: "AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw"}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
@@ -218,7 +222,7 @@ function MediaControlCard(props) {
           </Avatar>
         </div>
       </div>*/}
-        <SimpleMap classStyle = {classes} className={classes.hotelMap}/>
+        <SimpleMap updateHeight={(val) => props.updateHeight()}city={props.city} classStyle = {classes} className={classes.hotelMap}/>
     </div>
   );
 }
