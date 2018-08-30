@@ -28,7 +28,7 @@ export default class Appbar extends React.Component {
   render() {
     return (
       <div>
-        <AppBar position="static" style={{background: "white", height: "0px"}}>
+        <AppBar position="static" style={this.props.mainPage ? {height: 0, background: 'white'} : null}>
           <Toolbar style={{display: "flex"}}>
             <div style={{display: "flex", width: "100%"}}>
               <div style={{flex: 1}}>

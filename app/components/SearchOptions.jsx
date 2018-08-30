@@ -1,8 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
 import { Route, Link } from 'react-router-dom';
-=======
->>>>>>> 501eef82c2b0beccd3824bcf49fdd7f132eb0758
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
