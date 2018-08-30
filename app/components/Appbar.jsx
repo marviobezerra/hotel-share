@@ -39,7 +39,7 @@ export default class Appbar extends React.Component {
                     aria-haspopup="true"
                     onClick={(e) => this.handleClick(e)}
                     style={{
-                      backgroundColor: '#fd5c63',
+                      backgroundColor: '#008081',
                       color: '#fff'
                     }}
                     >

@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import HotelCard from './HotelCard.jsx'
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -63,7 +61,7 @@ const styles = theme => ({
     flex: 1,
   },
   hotelName: {
-    color: '#fd5c63',
+    color: '#008081',
     fontWeight: 'bold'
   },
   largeContainer : {
@@ -83,13 +81,10 @@ const styles = theme => ({
     justifyContent: 'flex-end',
     flex: 1,
   },
-  /*topBar: {
-    display: 'flex',
-  },*/
   avatar: {
     margin: 10,
     color: '#fff',
-    backgroundColor: '#fd5c63',
+    backgroundColor: '#008081',
   },
   media: {
     height: 50,
@@ -104,6 +99,7 @@ class SimpleMap extends React.Component {
     super(props);
     this.state = {
       hotels: [],
+      selectedHotel: null,
       center: {
         lat: 37.78984,
         lng: -122.42193
@@ -129,6 +125,42 @@ class SimpleMap extends React.Component {
     )
   }
 
+  addSelectedHotel(selected) {
+    let selectedHotels = this.state.selectedHotels
+
+    this.setState({
+      selectedHotel: selected
+    })
+  }
+
+  createCard(classes, hotel) {
+    return (
+      <div className={classes.cardContainer}>
+        <Card className={classes.card}>
+          <div className={classes.details}>
+            <CardContent className={classes.content}>
+              <Typography className={classes.hotelName} variant="headline">{hotel.name}</Typography>
+              <Typography variant="subheading">
+                {hotel.rating}/10
+              </Typography>
+              <Typography variant="subheading">
+                Great location in the center of the financial district.
+              </Typography>
+            </CardContent>
+            <div className={classes.controls}>
+              <Button size="small" color="primary">
+                from {hotel.stars}
+              </Button>
+            </div>
+          </div>
+          <div className={classes.cover}>
+            <img className={classes.carousel} src = {hotel.images[0]}/>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
   componentDidMount() {
     console.log(this.props)
     this.props.updateHeight('50px')
@@ -142,39 +174,28 @@ class SimpleMap extends React.Component {
       <div className={classes.largeContainer}>
         <div className={classes.cards}>
           {
-            this.state.hotels.map((hotel) => (
-              <div className={classes.cardContainer}>
-                <Card className={classes.card}>
-                  <div className={classes.details}>
-                    <CardContent className={classes.content}>
-                      <Typography className={classes.hotelName} variant="headline">{hotel.name}</Typography>
-                      <Typography variant="subheading">
-                        {hotel.rating}/10
-                      </Typography>
-                      <Typography variant="subheading">
-                        Great location in the center of the financial district.
-                      </Typography>
-                    </CardContent>
-                    <div className={classes.controls}>
-                      <Button size="small" color="primary">
-                        from {hotel.stars}
-                      </Button>
-                    </div>
-                  </div>
-                  <div className={classes.cover}>
-                    <img className={classes.carousel} src = {hotel.images[0]}/>
-                  </div>
-                </Card>
+            this.state.selectedHotel ?
+            <div>
+              {/*this.createCard(classes, this.state.selectedHotel)*/}
+              <HotelCard single={true} classes={classes} hotel={this.state.selectedHotel}/>
+              <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Button style={{backgroundColor: '#008081', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
+                  Reset
+                </Button>
               </div>
+            </div>
+             : this.state.hotels.map((hotel) => (
+               <HotelCard single={false} classes={classes} hotel={hotel}/>
             ))
           }
       </div>
       <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw"}}
+          bootstrapURLKeys={{ key: "Google Key Goes Here"}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
+          {console.log(this.state.hotels)}
           {
             this.state.hotels.map((hotel) => (
               <Marker
@@ -182,6 +203,10 @@ class SimpleMap extends React.Component {
                 text={hotel.name}
                 lat={hotel.location.lat}
                 lng={hotel.location.long}
+                price={hotel.listings[0].price}
+                hotel={hotel}
+                addSelectedHotel={(val) => this.addSelectedHotel(val)}
+                selectedHotel={this.state.selectedHotel}
               />
             ))
           }
@@ -192,7 +217,7 @@ class SimpleMap extends React.Component {
   }
 }
 
-function MediaControlCard(props) {
+function ListingsPage(props) {
   const { classes, theme } = props;
 
   const fadeImages = [
@@ -211,25 +236,14 @@ function MediaControlCard(props) {
 
   return (
     <div className={classes.divContainer}>
-      {/*<div className={classes.topBar}>
-        <div className={classes.leftTopBar}>
-          <img className={classes.logo} src='https://www.shareicon.net/download/2016/11/22/855119_circle_512x512.png'/>
-          <SearchBox />
-        </div>
-        <div className={classes.rightTopBar}>
-          <Avatar className={classes.avatar}>
-            D
-          </Avatar>
-        </div>
-      </div>*/}
-        <SimpleMap updateHeight={(val) => props.updateHeight()}city={props.city} classStyle = {classes} className={classes.hotelMap}/>
+        <SimpleMap updateHeight={(val) => props.updateHeight()} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
     </div>
   );
 }
 
-MediaControlCard.propTypes = {
+ListingsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(MediaControlCard);
+export default withStyles(styles, { withTheme: true })(ListingsPage);

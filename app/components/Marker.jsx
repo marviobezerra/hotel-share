@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
@@ -15,57 +19,44 @@ const styles = {
   borderRadius: '100%',
   userSelect: 'none',
   transform: 'translate(-50%, -50%)',
-  /*cursor: `${props => (props.onClick ? 'pointer' : 'default')}`;*/
-   /*'&:hover': {
-    zIndex: 1
-  }*/
 }
 
 export default class Marker extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      badgeColor : 'primary'
+    }
+  }
+
+  componentDidMount() {
+    let currentColor = this.state.badgeColor
+    console.log('Props')
+    console.log(this.props)
+    if(this.props.selectedHotel){
+      if(this.props.selectedHotel.text !== this.props.hotel.name){
+        this.setState({
+          badgeColor: 'primary'
+        })
+      }
+    }
+  }
+
+  addAndSelect() {
+    this.setState({
+        badgeColor : 'secondary'
+    })
+    this.props.addSelectedHotel(this.props.hotel)
+    
+  }
+
   render () {
     return (
-      <IconButton style={styles}>
-        <LocationOnIcon />
-      </IconButton>
-    )
+      <div>
+        <IconButton style={styles} onClick={() => this.addAndSelect()}>
+          <Badge style={{ color: '#fff', margin:'5'}} badgeContent={'$' + this.props.price} color={this.state.badgeColor}/>
+        </IconButton>
+      </div>
+      )
   }
 }
-
-/* const Wrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 18px;
-  height: 18px;
-  background-color: #fd5c63;
-  border: 2px solid #fff;
-  border-radius: 100%;
-  user-select: none;
-  transform: translate(-50%, -50%);
-  cursor: ${props => (props.onClick ? 'pointer' : 'default')};
-  &:hover {
-    z-index: 1;
-  }
-`;
-
-const Marker = props => (
-  <Wrapper
-    alt={props.text}
-    {...props.onClick ? { onClick: props.onClick } : {}}
-  />
-);
-
-function handleClick(e) {
-  console.log(this)
-}
-
-Marker.defaultProps = {
-  onClick: handleClick,
-};
-
-Marker.propTypes = {
-  onClick: PropTypes.func,
-  text: PropTypes.string.isRequired,
-};
-
-export default Marker; */
