@@ -31,7 +31,7 @@ export default class SignUpPage extends React.Component {
   render() {
     return (
       <div className="login-box">
-        {this.state.fname && this.state.lname ? <Avatar style={{backgroundColor: "orange"}}>{this.state.fname[0] + this.state.lname[0]}</Avatar> : null}
+        {this.state.fname && this.state.lname ? <Avatar style={{backgroundColor: "#009090"}}>{this.state.fname[0] + this.state.lname[0]}</Avatar> : null}
         <TextField
           label="First name"
           InputProps={{
@@ -112,7 +112,7 @@ export default class SignUpPage extends React.Component {
             <FormControlLabel value="Male" control={<Radio color="default"/>} label="Male" />
           </RadioGroup>
         </FormControl>
-        <Button variant="contained" onClick={(e) => this.signup(e)} style={{margin: 20, backgroundColor: "orange", color: "white"}}>Sign Up</Button>
+        <Button variant="contained" onClick={(e) => this.signup(e)} style={{margin: 20, backgroundColor: "#009090", color: "white"}}>Sign Up</Button>
       </div>
     );
   }
