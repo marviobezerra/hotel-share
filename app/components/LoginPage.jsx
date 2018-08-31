@@ -51,7 +51,7 @@ export default class LoginPage extends React.Component {
           type="password"
           onChange={(e) => this.setState({password: e.target.value})}
         />
-        <Button variant="contained" onClick={(e) => this.login(e)} style={{margin: 20, backgroundColor: "orange", color: "white"}}>Login</Button>
+        <Button variant="contained" onClick={(e) => this.login(e)} style={{margin: 20, backgroundColor: "#009090", color: "white"}}>Login</Button>
       </div>
     );
   }

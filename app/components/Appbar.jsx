@@ -6,6 +6,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Route, Link } from 'react-router-dom';
 import LoginPage from './LoginPage.jsx';
+import { Avatar } from '@material-ui/core/';
 
 
 export default class Appbar extends React.Component {
@@ -17,7 +18,6 @@ export default class Appbar extends React.Component {
   }
 
   handleClick(event){
-    console.log(this)
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -28,35 +28,39 @@ export default class Appbar extends React.Component {
   render() {
     return (
       <div>
-        <AppBar position="static" style={this.props.mainPage ? {height: 0, background: 'white'} : null}>
+        <AppBar position="static" style={this.props.style}>
           <Toolbar style={{display: "flex"}}>
             <div style={{display: "flex", width: "100%"}}>
-              <div style={{flex: 1}}>
-                <img src="http://icons.iconarchive.com/icons/dtafalonso/modern-xp/512/ModernXP-73-Globe-icon.png" style={{height: 50}}/>
-              </div>
-                {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}><Button
-                  aria-owns={this.state.anchorEl ? 'simple-menu' : null}
-                  aria-haspopup="true"
-                  onClick={(e) => this.handleClick(e)}
-                >
-                  User
-                </Button>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={this.state.anchorEl}
-                  open={Boolean(this.state.anchorEl)}
-                  onClose={() => this.handleClose()}
-                >
-                  <MenuItem onClick={() => this.handleClose()}>My account</MenuItem>
-                  <MenuItem onClick={() => this.props.logout()}>Logout</MenuItem>
-                </Menu></div>) :
-                (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
-                  <Button color="default">
-                    <Link onClick={this.props.show()} to="/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
-                  </Button>
-                  <Button color="default">
-                    <Link onClick={this.props.show()} to="/signup" style={{color: "white", textDecoration: "none"}}>Sign Up</Link>
-                  </Button>
+              <Avatar style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}}>H</Avatar>
+                {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
+                  <Button
+                    aria-owns={this.state.anchorEl ? 'simple-menu' : null}
+                    aria-haspopup="true"
+                    onClick={(e) => this.handleClick(e)}
+                    style={{
+                      backgroundColor: '#009090',
+                      color: '#fff'
+                    }}
+                    >
+                      User
+                    </Button>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={this.state.anchorEl}
+                    open={Boolean(this.state.anchorEl)}
+                    onClose={() => this.handleClose()}
+                  >
+                    <MenuItem onClick={() => this.handleClose()}><Link to="/myaccount" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My account</Link></MenuItem>
+                    <MenuItem onClick={() => this.handleClose()}><Link to="/newlisting" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>List New</Link></MenuItem>
+                    <MenuItem onClick={() => this.props.logout()}>Logout</MenuItem>
+                  </Menu></div>) :
+                  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
+                    <Button color="default">
+                      <Link onClick={this.props.show()} to="/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
+                    </Button>
+                    <Button color="default">
+                      <Link onClick={this.props.show()} to="/signup" style={{color: "white", textDecoration: "none"}}>Sign Up</Link>
+                    </Button>
                 </div>)}
               </div>
           </Toolbar>

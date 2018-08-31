@@ -113,7 +113,8 @@ class SimpleMap extends React.Component {
   }
 
   getHotels() {
-    axios.get('/api/hotels/San+Francisco')
+    console.log(this.props.city)
+    axios.get('/api/hotels/'+this.props.city.replace(' ', '+'))
     .then(res => {
       console.log(res)
       let hotels = res.data.hotels;
@@ -129,11 +130,14 @@ class SimpleMap extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
+    this.props.updateAppBarStyle({height: 60});
     this.getHotels();
   }
 
   render() {
     const classes = this.props.classStyle
+    console.log(this.props)
     return (
       <div className={classes.largeContainer}>
         <div className={classes.cards}>
@@ -188,7 +192,7 @@ class SimpleMap extends React.Component {
   }
 }
 
-function MediaControlCard(props) {
+function ListingsPage(props) {
   const { classes, theme } = props;
 
   const fadeImages = [
@@ -218,14 +222,14 @@ function MediaControlCard(props) {
           </Avatar>
         </div>
       </div>*/}
-        <SimpleMap classStyle = {classes} className={classes.hotelMap}/>
+        <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
     </div>
   );
 }
 
-MediaControlCard.propTypes = {
+ListingsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(MediaControlCard);
+export default withStyles(styles, { withTheme: true })(ListingsPage);
