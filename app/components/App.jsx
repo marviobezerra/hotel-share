@@ -9,6 +9,7 @@ import MediaControlCard from './ListingsPage.jsx'
 import LandingPage from './LandingPage.jsx';
 import ListingsPage from './ListingsPage.jsx';
 import NewListing from './NewListing.jsx';
+import MyAccount from './MyAccount.jsx';
 
 const clientUrl = "http://localhost:8080";
 
@@ -64,8 +65,7 @@ export default class App extends React.Component {
     return (
       <div style={{height: "100%"}}>
         <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style}/>
-        <Route exact path="/listings" render={() => <ListingsPage to={this.state.to} from={this.state.from} guests={this.state.guests}
-           city={this.state.city} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
+        <Route exact path="/listings" render={() => <ListingsPage city={this.state.city} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
         <Route exact path="/" render={() => this.renderMain()} />
         <Route exact path="/login" render={() => this.renderMain()} />
         <Route exact path="/signup" render={() => this.renderMain()} />
