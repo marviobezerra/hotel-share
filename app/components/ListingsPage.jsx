@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import GoogleMapReact from 'google-map-react';
 import SearchBox from './SearchBox.jsx';
+import Chip from '@material-ui/core/Chip';
 import { Fade } from 'react-slideshow-image';
 import sanfrancisco from '../../assets/images/sanfrancisco.jpg'
 import chicago from '../../assets/images/chicago.jpg'
@@ -191,7 +192,7 @@ class SimpleMap extends React.Component {
       </div>
       <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "Google Key Goes Here"}}
+          bootstrapURLKeys={{ key: "Insert Google Key here"}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
@@ -235,19 +236,36 @@ function ListingsPage(props) {
   }
 
   return (
-    <div className={classes.divContainer}>
-      {/*<div className={classes.topBar}>
-        <div className={classes.leftTopBar}>
-          <img className={classes.logo} src='https://www.shareicon.net/download/2016/11/22/855119_circle_512x512.png'/>
-          <SearchBox />
-        </div>
-        <div className={classes.rightTopBar}>
-          <Avatar className={classes.avatar}>
-            D
-          </Avatar>
-        </div>
-      </div>*/}
-        <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
+    <div>
+      <div>
+        <Button>
+          <Chip
+            label="City"
+            color="primary"
+          />
+        </Button>
+        <Button>
+          <Chip
+            label="From"
+            color="primary"
+          />
+        </Button>
+        <Button>
+          <Chip
+            label="To"
+            color="primary"
+          />
+        </Button>
+        <Button>
+          <Chip
+            label="Guests"
+            color="primary"
+          />
+        </Button>
+      </div>
+      <div className={classes.divContainer}>
+          <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
+      </div>
     </div>
   );
 }
