@@ -25,7 +25,8 @@ export default class Marker extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      badgeColor : 'primary'
+      badgeColor : 'primary',
+      renderName : false
     }
   }
 
@@ -43,17 +44,16 @@ export default class Marker extends React.Component {
   }
 
   addAndSelect() {
-    this.setState({
-        badgeColor : 'secondary'
-    })
     this.props.addSelectedHotel(this.props.hotel)
-    
+
   }
 
   render () {
     return (
       <div>
-        <IconButton style={styles} onClick={() => this.addAndSelect()}>
+        {this.state.renderName ? <div style={{backgroundColor: '#fff', color: 'primary'}}>{this.props.text}</div> : <div></div>}
+        <IconButton style={styles} onMouseOver={() => this.setState({renderName: true, badgeColor : 'secondary'})}
+          onMouseLeave={() => this.setState({renderName: false, badgeColor : 'primary'})} onClick={() => this.addAndSelect()}>
           <Badge style={{ color: '#fff', margin:'5'}} badgeContent={'$' + this.props.price} color={this.state.badgeColor}/>
         </IconButton>
       </div>
