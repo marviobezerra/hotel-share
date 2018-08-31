@@ -131,7 +131,7 @@ html, body, #root {
   padding-bottom: 10px
 }
 
-.new-listing-container {
+.new-listing-container, .myaccount-container {
   height: 100%;
   width: 100%;
   display: flex;
@@ -139,7 +139,7 @@ html, body, #root {
   align-items: center;
 }
 
-.new-listing-box {
+.new-listing-box, .myaccount-box {
   background-color: #fff;
   padding: 20px;
   border-radius: 7px;
@@ -147,4 +147,21 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.myaccount-box {
+  width: 40%
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wrap {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap
 }

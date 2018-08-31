@@ -12,12 +12,11 @@ const auth = require('./routes/auth');
 const protected = require('./routes/protected');
 //const cities = require('../cityData');
 //const hotels = require('../hotelData');
+
 const User = require('./models/user');
 const City = require('./models/city');
 const Hotel = require('./models/hotel');
 const Listing = require('./models/listing');
-const Request = require('./models/request');
-const Booking = require('./models/booking');
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to database!');
@@ -68,7 +67,7 @@ app.use(passport.session());
 
 app.use('/api', routes(City, Hotel));
 app.use('/api', auth(passport, User));
-app.use('/api', protected(User, Hotel, Listing, Request, Booking));
+app.use('/api', protected(User, Hotel, Listing));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
