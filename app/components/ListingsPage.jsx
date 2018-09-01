@@ -16,6 +16,8 @@ import seattle from '../../assets/images/seattle.jpg'
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 import Marker from './marker.jsx';
+import AlternateListing from './AlternateListing.jsx'
+import SearchButtons from './SearchButtons.jsx'
 var axios = require('axios');
 
 const styles = theme => ({
@@ -177,8 +179,10 @@ class SimpleMap extends React.Component {
           {
             this.state.selectedHotel ?
             <div>
-              {/*this.createCard(classes, this.state.selectedHotel)*/}
-              <HotelCard single={true} classes={classes} hotel={this.state.selectedHotel}/>
+              {/*this.
+                classes, this.state.selectedHotel)*/}
+              <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
+              {/*<HotelCard single={true} classes={classes} hotel={this.state.selectedHotel}/>*/}
               <div style={{display: 'flex', justifyContent: 'center'}}>
                 <Button style={{backgroundColor: '#008081', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
                   Reset
@@ -186,13 +190,14 @@ class SimpleMap extends React.Component {
               </div>
             </div>
              : this.state.hotels.map((hotel) => (
-               <HotelCard single={false} classes={classes} hotel={hotel}/>
+               <AlternateListing classes={classes} hotel={hotel}/>
+               /*<HotelCard single={false} classes={classes} hotel={hotel}/>*/
             ))
           }
       </div>
       <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "Insert Google Key here"}}
+          bootstrapURLKeys={{ key: 'Insert key here'}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
@@ -237,32 +242,7 @@ function ListingsPage(props) {
 
   return (
     <div>
-      <div>
-        <Button>
-          <Chip
-            label="City"
-            color="primary"
-          />
-        </Button>
-        <Button>
-          <Chip
-            label="From"
-            color="primary"
-          />
-        </Button>
-        <Button>
-          <Chip
-            label="To"
-            color="primary"
-          />
-        </Button>
-        <Button>
-          <Chip
-            label="Guests"
-            color="primary"
-          />
-        </Button>
-      </div>
+      <SearchButtons />
       <div className={classes.divContainer}>
           <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
       </div>
