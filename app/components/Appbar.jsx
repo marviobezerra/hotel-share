@@ -7,13 +7,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Route, Link } from 'react-router-dom';
 import LoginPage from './LoginPage.jsx';
 import { Avatar } from '@material-ui/core/';
-
+import axios from 'axios';
 
 export default class Appbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      anchorEl: null
+      anchorEl: null,
+      avatarImg: ''
     }
   }
 
@@ -33,17 +34,16 @@ export default class Appbar extends React.Component {
             <div style={{display: "flex", width: "100%"}}>
               <Avatar style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}}>H</Avatar>
                 {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
-                  <Button
-                    aria-owns={this.state.anchorEl ? 'simple-menu' : null}
-                    aria-haspopup="true"
-                    onClick={(e) => this.handleClick(e)}
-                    style={{
-                      backgroundColor: '#009090',
-                      color: '#fff'
-                    }}
-                    >
-                      User
-                    </Button>
+                    {this.props.avatarImg ? <Avatar
+                                              aria-owns={this.state.anchorEl ? 'simple-menu' : null}
+                                              aria-haspopup="true"
+                                              onClick={(e) => this.handleClick(e)}
+                                              src={this.props.avatarImg} /> :
+                                            <Button
+                                              aria-owns={this.state.anchorEl ? 'simple-menu' : null}
+                                              aria-haspopup="true"
+                                              onClick={(e) => this.handleClick(e)}
+                                              style={{backgroundColor: "rgba(0, 0, 0, 0.08)", color: "#fff"}}>User</Button>}
                   <Menu
                     id="simple-menu"
                     anchorEl={this.state.anchorEl}

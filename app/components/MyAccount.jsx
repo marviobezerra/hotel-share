@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, Select, MenuItem, InputLabel, InputAdornment } from '@material-ui/core/';
-import { AccountCircle, Email, Phone, Lock, Cake, CropOriginal, InsertPhoto } from '@material-ui/icons/';
+import { TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, Select, MenuItem, InputLabel, InputAdornment, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core/';
+import { AccountCircle, Email, Phone, Lock, Cake, InsertPhoto } from '@material-ui/icons/';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -12,6 +12,8 @@ export default class MyAccount extends React.Component {
       input: {name: {fname: '', lname: ''}, email: '', phone: '', birthday: '', gender: '', imgUrl: '', bio: '', languages: []},
       user: {name: {fname: '', lname: ''}, email: '', phone: '', birthday: '', gender: '', imgUrl: '', bio: '', languages: []},
       extraFields: 0,
+      openDialog: false,
+      dialogUpdate: false,
     }
   }
   componentDidMount() {
@@ -44,21 +46,24 @@ export default class MyAccount extends React.Component {
   }
 
   submitChanges() {
-    console.log("initial state", this.state.user);
-    console.log("edited state", this.state.input);
     let { user, input } = this.state;
     let keys = ["name", "email", "phone", "birthday", "gender", "imgUrl", "bio", "languages"];
     let update = {};
-    for(let i = 0; i < 8; i++) {
+    if(input.name.fname !== user.name.fname || input.name.lname !== user.name.lname) update.name = input.name;
+    for(let i = 1; i < 8; i++) {
       if(input[keys[i]] !== user[keys[i]]) update[keys[i]] = input[keys[i]];
     }
-    console.log(update);
-    axios.post('/api/account', update)
-    .then(res => console.log(res.data.success));
+    if(Object.keys(update).length) {
+      axios.post('/api/account', update)
+      .then(res => {
+        if(res.data.success) this.setState({openDialog: true, dialogUpdate: true})
+      })
+      this.props.updateUser(input);
+    } else {this.setState({openDialog: true, dialogUpdate: false})}
   }
 
   render() {
-    const languages = ['Mandarin', 'Spanish', 'English', 'Hindi', 'Arabic', 'Portuguese', 'Russian', 'Japanese', 'Punjabi', 'German', 'Vietnamese', 'Korean', 'French', 'Urdu', 'Italian', 'Persian', 'Polish', 'Ukranian', 'Romanian', 'Dutch', 'Greek', 'Czech'];
+    const languages = ['Arabic', 'Dutch', 'Czech', 'English', 'French', 'German', 'Greek', 'Hindi', 'Italian', 'Japanese', 'Korean', 'Mandarin', 'Persian', 'Polish', 'Portuguese', 'Punjabi', 'Romanian', 'Russian', 'Spanish', 'Ukranian', 'Urdu', 'Vietnamese'];
     return (
       <div className="myaccount-container">
         <div className="myaccount-box">
@@ -182,6 +187,19 @@ export default class MyAccount extends React.Component {
           <div className="wrap">
             <Button variant="contained" onClick={() => this.setState({extraFields: this.state.extraFields + 1})} style={{backgroundColor: '#009090', color: 'white', marginRight: 20}}><AddIcon />Language</Button>
             <Button variant="contained" onClick={() => this.submitChanges()} style={{backgroundColor: '#009090', color: 'white'}}>Save changes</Button>
+            <Dialog open={this.state.openDialog} onClose={() => this.setState({openDialog: false})}>
+              <DialogTitle>{this.state.dialogUpdate ? "Success" : "Attention"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                    {this.state.dialogUpdate ? "Your profile was successfully updated." : "You have not made any updates."}
+                </DialogContentText>
+                <DialogActions>
+                  <Button onClick={() => this.setState({openDialog: false})}>
+                    Dismiss
+                  </Button>
+                </DialogActions>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
