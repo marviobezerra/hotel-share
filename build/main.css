@@ -137,20 +137,25 @@ html, body, #root {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(0,0,0,0.08);
 }
 
-.new-listing-box, .myaccount-box {
+.new-listing-box, .myaccount-box, .edit-profile-box {
   background-color: #fff;
   padding: 20px;
-  border-radius: 7px;
+  /* border-radius: 7px; */
   box-shadow: 1px 2px 5px #333;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.myaccount-box {
+.edit-profile-box {
   width: 40%
+}
+
+.myaccount-box {
+  width: 50%
 }
 
 .row {
@@ -164,4 +169,20 @@ html, body, #root {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap
+}
+
+.title {
+  flex: 1;
+  margin-right: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.info {
+  flex: 2
+}
+
+tr {
+  display: flex;
+  padding: 5px
 }
