@@ -31,7 +31,6 @@ export default class MyAccount extends React.Component {
   }
 
   render() {
-    console.log(this.state.user);
     return (
       <div style={{height: "100%", fontSize: 14}}>
         {this.state.edit ? <EditProfile updateAppBarStyle={(val) => this.props.updateAppBarStyle(val)} updateUser={(user) => this.props.updateUser(user)} myAccount={this} /> :
