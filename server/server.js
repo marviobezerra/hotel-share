@@ -6,6 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
+const axios = require('axios');
 
 const routes = require('./routes/routes');
 const auth = require('./routes/auth');
@@ -66,7 +67,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api', routes(City, Hotel));
-app.use('/api', auth(passport, User));
+app.use('/api', auth(passport, axios, User));
 app.use('/api', protected(User, Hotel, Listing));
 
 const port = process.env.PORT || 3000;

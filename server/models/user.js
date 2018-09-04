@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
   birthday: {
     type: String,
     required: true,

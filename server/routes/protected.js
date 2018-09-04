@@ -29,6 +29,8 @@ module.exports = (User, Hotel, Listing) => {
 
   router.get('/messages', (req, res) => {
     Message.find({$or: [{to: req.user._id}, {from: req.user._id}]})
+    .populate({path: 'from to', select: 'name imgUrl'})
+    .sort({timestamp: -1})
     .then((messages) => res.json({success: true, messages}))
     .catch(() => res.json({success: false}));
   });
@@ -49,7 +51,7 @@ module.exports = (User, Hotel, Listing) => {
         timestamp: new Date(),
       })).save()))
     .then(() => res.json({success: true}))
-    .catch(() => res.json({success: false}));
+    .catch((err) => res.json({success: false, err}));
   });
 
   router.get('/listings', (req, res) => {
@@ -133,6 +135,7 @@ module.exports = (User, Hotel, Listing) => {
         host: req.user._id,
         guest: request.requester,
         hotel: request.listing.hotel,
+        room: request.listing.room,
         guests: request.listing.guests,
         from: request.listing.from,
         to: request.listing.to,
