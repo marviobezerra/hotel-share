@@ -1,190 +1,78 @@
-import React from 'react';
 import axios from 'axios';
-import { TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, Select, MenuItem, InputLabel, InputAdornment } from '@material-ui/core/';
-import { AccountCircle, Email, Phone, Lock, Cake, CropOriginal, InsertPhoto } from '@material-ui/icons/';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import React from 'react';
+import EditProfile from './EditProfile.jsx';
+import Button from '@material-ui/core/Button';
+
+const styles = {
+  btn: {
+    background: '#009090',
+    color: '#fff',
+    textTransform: 'capitalize',
+    fontSize: 14,
+    fontWeight: 'bold',
+  }
+}
 
 export default class MyAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: {name: {fname: '', lname: ''}, email: '', phone: '', birthday: '', gender: '', imgUrl: '', bio: '', languages: []},
       user: {name: {fname: '', lname: ''}, email: '', phone: '', birthday: '', gender: '', imgUrl: '', bio: '', languages: []},
-      extraFields: 0,
+      edit: false,
     }
   }
+
   componentDidMount() {
     this.props.updateAppBarStyle({height: 60, background: "#009090"});
     axios.get('/api/account')
     .then(res => {
-      if(res.data.success) {
-        this.setState({input: Object.assign({}, res.data.user), user: Object.assign({}, Object.assign(res.data.user, {name: Object.assign({}, res.data.user.name)}))});
-      }
-    })
-    .catch(err => console.log("err", err));
-  }
-
-  editLanguage(e, index) {
-    let lang = this.state.input.languages.slice();
-    lang[index] = e.target.value;
-    this.setState({input: Object.assign(this.state.input, {languages: lang})});
-  }
-
-  saveLanguage(e) {
-    let lang = this.state.input.languages.slice();
-    lang.push(e.target.value);
-    this.setState({extraFields: this.state.extraFields - 1, input: Object.assign(this.state.input, {languages: lang})});
-  }
-
-  removeLanguage(e, index) {
-    let lang = this.state.input.languages.slice();
-    lang.splice(index, 1);
-    this.setState({input: Object.assign(this.state.input, {languages: lang})});
-  }
-
-  submitChanges() {
-    console.log("initial state", this.state.user);
-    console.log("edited state", this.state.input);
-    let { user, input } = this.state;
-    let keys = ["name", "email", "phone", "birthday", "gender", "imgUrl", "bio", "languages"];
-    let update = {};
-    for(let i = 0; i < 8; i++) {
-      if(input[keys[i]] !== user[keys[i]]) update[keys[i]] = input[keys[i]];
-    }
-    console.log(update);
-    axios.post('/api/account', update)
-    .then(res => console.log(res.data.success));
+      if(res.data.success) this.setState({user: Object.assign({}, res.data.user)});
+    });
   }
 
   render() {
-    const languages = ['Mandarin', 'Spanish', 'English', 'Hindi', 'Arabic', 'Portuguese', 'Russian', 'Japanese', 'Punjabi', 'German', 'Vietnamese', 'Korean', 'French', 'Urdu', 'Italian', 'Persian', 'Polish', 'Ukranian', 'Romanian', 'Dutch', 'Greek', 'Czech'];
+    console.log(this.state.user);
     return (
-      <div className="myaccount-container">
-        <div className="myaccount-box">
-          <div className="row">
-            <TextField
-              label="First Name"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                ),
-              }}
-              value={this.state.input.name.fname}
-              style={{marginBottom: 20}}
-              onChange={(e) => this.setState({input: Object.assign(this.state.input, {name: Object.assign(this.state.input.name, {fname: e.target.value})})})}
-            />
-            <TextField
-              label="Last Name"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                ),
-              }}
-              value={this.state.input.name.lname}
-              style={{marginBottom: 20}}
-              onChange={(e) => this.setState({input: Object.assign(this.state.input, {name: Object.assign(this.state.input.name, {lname: e.target.value})})})}
-            />
-          </div>
-          <div className="row">
-            <TextField
-              label="Email"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                ),
-              }}
-              value={this.state.input.email}
-              style={{marginBottom: 20}}
-              onChange={(e) => this.setState({input: Object.assign(this.state.input, {email: e.target.value})})}
-            />
-            <TextField
-              label="Phone"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Phone />
-                  </InputAdornment>
-                ),
-              }}
-              value={this.state.input.phone}
-              style={{marginBottom: 20}}
-              onChange={(e) => this.setState({input: Object.assign(this.state.input, {phone: e.target.value})})}
-            />
-          </div>
-          <div className="row">
-            <TextField
-              label="Birthday"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Cake />
-                  </InputAdornment>
-                ),
-              }}
-              value={this.state.input.birthday}
-              style={{marginBottom: 20}}
-              type="date"
-              onChange={(e) => this.setState({input: Object.assign(this.state.input, {birthday: e.target.value})})}
-            />
-            <FormControl component="fieldset">
-              <RadioGroup
-                aria-label="Gender"
-                value={this.state.input.gender}
-                onChange={(e) => this.setState({input: Object.assign(this.state.input, {gender: e.target.value})})}
-                style={{display: "flex", flexDirection: "row"}}
-              >
-                <FormControlLabel style={{display: "flex", alignItems: "flex-end"}} value="Female" control={<Radio style={{display: "flex", alignItems: "flex-end"}} color="default" />} label="Female" />
-                <FormControlLabel style={{display: "flex", alignItems: "flex-end"}} value="Male" control={<Radio style={{display: "flex", alignItems: "flex-end"}} color="default" />} label="Male" />
-              </RadioGroup>
-            </FormControl>
-          </div>
-          <TextField
-            label="Profile Pic Url"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <InsertPhoto />
-                </InputAdornment>
-              ),
-            }}
-            style={{width: "100%", margin: 20}}
-            value={this.state.input.imgUrl}
-            onChange={(e) => this.setState({input: Object.assign(this.state.input, {imgUrl: e.target.value})})}
-          />
-          <TextField
-            label="Bio"
-            multiline={true}
-            rows={2}
-            rowsMax={4}
-            style={{width: "100%", marginBottom: 20}}
-            value={this.state.input.bio}
-            onChange={(e) => this.setState({input: Object.assign(this.state.input, {bio: e.target.value})})}
-          />
-          <FormControl style={{width: "100%", minWidth: 200}}>
-            <InputLabel>Languages you speak</InputLabel><br/>
-            <div className="row wrap">
-              {this.state.input.languages.map((language, index) =>
-                <div><Select value={language} onChange={(e) => this.editLanguage(e, index)} style={{marginBottom: 20}}>
-                  {languages.map(language => <MenuItem value={language}>{language}</MenuItem>)}</Select>
-                  <Button variant="fab" style={{backgroundColor: '#009090', marginLeft: 5, color: 'white', height: 40, width: 40}} onClick={(e) => this.removeLanguage(e, index)}><DeleteIcon /></Button></div>)}
+      <div style={{height: "100%", fontSize: 14}}>
+        {this.state.edit ? <EditProfile updateAppBarStyle={(val) => this.props.updateAppBarStyle(val)} updateUser={(user) => this.props.updateUser(user)} myAccount={this} /> :
+        <div className="myaccount-container">
+          <div className="myaccount-box">
+            <img src={this.state.user.imgUrl} style={{height: 100, width: 100}} />
+            <div className="display-column">
+              <div className="display-row">
+                <div className="title">Name</div>
+                <div className="info">{this.state.user.name.fname} {this.state.user.name.lname}</div>
+              </div>
+              <div className="display-row">
+                <div className="title">Email</div>
+                <div className="info">{this.state.user.email}</div>
+              </div>
+              <div className="display-row">
+                <div className="title">Phone</div>
+                <div className="info">{this.state.user.phone}</div>
+              </div>
+              <div className="display-row">
+                <div className="title">Birthday</div>
+                <div className="info">{this.state.user.birthday}</div>
+              </div>
+              <div className="display-row">
+                <div className="title">Gender</div>
+                <div className="info">{this.state.user.gender}</div>
+              </div>
+              <div className="display-row">
+                <div className="title">Bio</div>
+                <div className="info">{this.state.user.bio}</div>
+              </div>
+              <div className="display-row">
+                <div className="title">Languages</div>
+                <div className="info"><ul style={{margin: 0, paddingLeft: 20}}>{this.state.user.languages.map(lang => <li>{lang}</li>)}</ul></div>
+              </div>
             </div>
-          </FormControl>
-          {Array(this.state.extraFields).fill(0).map((item, index) => <FormControl style={{minWidth: 200, marginBottom: 20}}>
-                      <Select onChange={(e) => this.saveLanguage(e)}>{languages.map(language => <MenuItem value={language}>{language}</MenuItem>)}</Select>
-                    </FormControl>)}
-          <div className="wrap">
-            <Button variant="contained" onClick={() => this.setState({extraFields: this.state.extraFields + 1})} style={{backgroundColor: '#009090', color: 'white', marginRight: 20}}><AddIcon />Language</Button>
-            <Button variant="contained" onClick={() => this.submitChanges()} style={{backgroundColor: '#009090', color: 'white'}}>Save changes</Button>
+            <Button onClick={() => this.setState({edit: true})} style={styles.btn}>Edit Profile</Button>
           </div>
         </div>
+        }
       </div>
-    );
+    )
   }
 }

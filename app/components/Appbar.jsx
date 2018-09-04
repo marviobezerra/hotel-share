@@ -7,14 +7,31 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Route, Link } from 'react-router-dom';
 import LoginPage from './LoginPage.jsx';
 import { Avatar } from '@material-ui/core/';
+import axios from 'axios';
+import Notifications from '@material-ui/icons/Notifications';
 
 
 export default class Appbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      anchorEl: null
+      anchorEl: null,
+      avatarImg: '',
+      notifications: [],
     }
+  }
+
+  componentDidMount() {
+    axios.get('/api/notifications')
+    .then(res => {
+      if(res.data.success) this.setState({notifications: res.data.notifications})
+    })
+    setInterval(() => {
+      axios.get('/api/notifications')
+      .then(res => {
+        if(res.data.success) this.setState({notifications: res.data.notifications})
+      })
+    }, 5000);
   }
 
   handleClick(event){
@@ -31,23 +48,22 @@ export default class Appbar extends React.Component {
         <AppBar position="static" style={this.props.style}>
           <Toolbar style={{display: "flex"}}>
             <div style={{display: "flex", width: "100%"}}>
-              <Button>
-                <Link to="/" style={{color: "white", textDecoration: "none"}}>
-                  <Avatar style={{backgroundColor: '#fff', color: '#3f51b5'}}>H</Avatar>
-                </Link>
-              </Button>
+              <Link to="/" onClick={() => this.props.updateAppBarStyle({height: 0})} style={{textDecoration: "none"}}><Avatar style={{backgroundColor: '#fff', color: '#3f51b5'}}>H</Avatar></Link>
                 {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
-                  <Button
-                    aria-owns={this.state.anchorEl ? 'simple-menu' : null}
-                    aria-haspopup="true"
-                    onClick={(e) => this.handleClick(e)}
-                    style={{
-                      backgroundColor: '#009090',
-                      color: '#fff'
-                    }}
-                    >
-                      User
-                    </Button>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}>
+                      <Notifications style={{position: 'relative'}} />
+                      {this.state.notifications.length? <Avatar style={{background: 'red', position: 'absolute', top: -5, right: -5, height: 20, width: 20, fontSize: 12}}>{this.state.notifications.length}</Avatar> : null}
+                    </Avatar>
+                    {this.props.avatarImg ? <Avatar
+                                              aria-owns={this.state.anchorEl ? 'simple-menu' : null}
+                                              aria-haspopup="true"
+                                              onClick={(e) => this.handleClick(e)}
+                                              src={this.props.avatarImg} /> :
+                                            <Button
+                                              aria-owns={this.state.anchorEl ? 'simple-menu' : null}
+                                              aria-haspopup="true"
+                                              onClick={(e) => this.handleClick(e)}
+                                              style={{backgroundColor: "rgba(0, 0, 0, 0.08)", color: "#fff"}}>User</Button>}
                   <Menu
                     id="simple-menu"
                     anchorEl={this.state.anchorEl}

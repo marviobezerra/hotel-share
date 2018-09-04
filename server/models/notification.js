@@ -6,9 +6,17 @@ const notificationSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  content: {
+  message: {
     type: String,
     required: true,
+  },
+  category: {
+    type: String,
+    enum: ['Message', 'Request', 'Accept', 'Reject', 'Cancel', 'Other'],
+    required: true,
+  },
+  data: {
+    type: String,
   },
   timestamp: {
     type: Date,

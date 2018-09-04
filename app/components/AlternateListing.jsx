@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import Modal from '@material-ui/core/Modal';
 import seattle from '../../assets/images/seattle.jpg'
 
 const styles = theme => ({
@@ -99,8 +100,19 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
   },
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  },
   subheader: {
     width: '100%',
+  },
+  userImg: {
+    width: '25%',
+    height: '25%'
   }
 });
 
@@ -127,6 +139,7 @@ class ListingWithDialog extends React.Component {
     super(props)
     this.state = {
       open: false,
+      openModal: false,
       scroll: 'paper',
     };
   }
@@ -137,6 +150,15 @@ class ListingWithDialog extends React.Component {
 
   handleClickClose() {
     this.setState({ open: false})
+  }
+
+  handleOpenModal(listing) {
+    this.setState({ openModal: true});
+    console.log(listing)
+  };
+
+  handleCloseModal() {
+    this.setState({ openModal: false})
   }
 
   render() {
@@ -202,9 +224,47 @@ class ListingWithDialog extends React.Component {
                 {hotel.listings.map((listing) => (
                   <div>
                     <ListItem>
-                      <Button>
+                      <Button onClick={() => this.handleOpenModal(listing)}>
                         <ListItemText style={{color:'#008081'}} primary={'Price: $'+listing.price+' From: '+listing.from+' To: '+listing.to} />
                       </Button>
+                      <Modal
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                        open={this.state.openModal}
+                        onClose={() => this.handleCloseModal()}
+                      >
+                        <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
+                          <div style={{display:'inline-flex'}}>
+                            {listing.user.imgUrl ? <img className={classes.userImg} src={listing.user.imgUrl} /> ? listing.user.gender === 'Male' : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} />}
+                            <div>
+                              <Typography variant="subheading" id="simple-modal-description">
+                                {listing.user.fname} {listing.user.lname}
+                              </Typography>
+                              <Typography variant="title" id="modal-title" align='center' color='inherit'>
+                                {listing.user.name.fname} {listing.user.name.lname}
+                              </Typography>
+                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
+                                Email: sample@gmail.com
+                              </Typography>
+                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
+                                Phone: (425)-247-4499
+                              </Typography>
+                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
+                                Languages: Spanish
+                              </Typography>
+                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
+                                French Gender: Male
+                              </Typography>
+                            </div>
+                          </div>
+                          <Typography variant="title" id="modal-title" color="textSecondary">
+                            Price: ${listing.price}
+                          </Typography>
+                          <Typography variant="subheading" id="simple-modal-description" color="primary">
+                            From: {listing.from} To: {listing.to}
+                          </Typography>
+                        </div>
+                      </Modal>
                     </ListItem>
                     <Divider light />
                   </div>
