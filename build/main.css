@@ -132,12 +132,12 @@ html, body, #root {
 }
 
 .new-listing-container, .myaccount-container {
-  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background: rgba(0,0,0,0.08);
+  min-height: 100%
 }
 
 .new-listing-box, .myaccount-box, .edit-profile-box {
@@ -148,6 +148,7 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px;
 }
 
 .edit-profile-box {
@@ -171,18 +172,53 @@ html, body, #root {
   flex-wrap: wrap
 }
 
+.display-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px
+}
+
+.display-row {
+  display: flex;
+  padding: 10px
+}
+
 .title {
   flex: 1;
   margin-right: 20px;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-}
-.info {
-  flex: 2
 }
 
-tr {
-  display: flex;
-  padding: 5px
+.info {
+  flex: 1;
+  overflow: auto;
+}
+
+.notification {
+    position: relative;
+    border-radius: 0.2em;
+    background: rgba(0, 0, 0, 0.08);
+}
+.notification::before {
+    display: block;
+    transform-origin: top center;
+}
+
+.notification::after {
+    font-family: Arial;
+    font-size: 0.7em;
+    font-weight: 700;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    padding: 5px 8px;
+    line-height: 100%;
+    border: 2px #fff solid;
+    border-radius: 60px;
+    background: #3498db;
+    opacity: 0;
+    content: "1";
+    opacity: 0;
 }

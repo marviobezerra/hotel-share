@@ -8,14 +8,30 @@ import { Route, Link } from 'react-router-dom';
 import LoginPage from './LoginPage.jsx';
 import { Avatar } from '@material-ui/core/';
 import axios from 'axios';
+import Notifications from '@material-ui/icons/Notifications';
+
 
 export default class Appbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       anchorEl: null,
-      avatarImg: ''
+      avatarImg: '',
+      notifications: [],
     }
+  }
+
+  componentDidMount() {
+    axios.get('/api/notifications')
+    .then(res => {
+      if(res.data.success) this.setState({notifications: res.data.notifications})
+    })
+    setInterval(() => {
+      axios.get('/api/notifications')
+      .then(res => {
+        if(res.data.success) this.setState({notifications: res.data.notifications})
+      })
+    }, 5000);
   }
 
   handleClick(event){
@@ -32,8 +48,12 @@ export default class Appbar extends React.Component {
         <AppBar position="static" style={this.props.style}>
           <Toolbar style={{display: "flex"}}>
             <div style={{display: "flex", width: "100%"}}>
-              <Avatar style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}}>H</Avatar>
+              <Link to="/" onClick={() => this.props.updateAppBarStyle({height: 0})} style={{textDecoration: "none"}}><Avatar style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}}>H</Avatar></Link>
                 {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}>
+                      <Notifications style={{position: 'relative'}} />
+                      {this.state.notifications.length? <Avatar style={{background: 'red', position: 'absolute', top: -5, right: -5, height: 20, width: 20, fontSize: 12}}>{this.state.notifications.length}</Avatar> : null}
+                    </Avatar>
                     {this.props.avatarImg ? <Avatar
                                               aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                                               aria-haspopup="true"

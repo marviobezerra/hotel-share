@@ -37,6 +37,7 @@ module.exports = (User, Hotel, Listing) => {
     (new Message({
       from: req.user._id,
       to: req.body.to,
+      content: req.body.content,
       timestamp: new Date(),
     })).save()
     .then(() => (

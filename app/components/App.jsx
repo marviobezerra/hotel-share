@@ -5,6 +5,7 @@ import LandingPage from './LandingPage.jsx';
 import ListingsPage from './ListingsPage.jsx';
 import NewListing from './NewListing.jsx';
 import MyAccount from './MyAccount.jsx';
+import axios from 'axios';
 
 const clientUrl = "http://localhost:8080";
 
@@ -14,13 +15,19 @@ export default class App extends React.Component {
     this.state = {
       auth: false,
       show: false,
-      style: {height: 0, backgroundColor: 'white'},
+      style: {height: 0},
       city: '',
       to: '',
       from: '',
       guests: '',
       user: {},
     }
+  }
+  componentDidMount() {
+    axios.get('/api/account')
+    .then(res => {
+      if(res.data.success) this.setState({auth: true, user: res.data.user});
+    });
   }
   show() {
     if (!this.state.show) this.setState({show: true});
@@ -33,6 +40,9 @@ export default class App extends React.Component {
   }
   logout() {
     this.setState({auth: false, show: false});
+  }
+  updateUser(user) {
+    this.setState({user: user});
   }
   updateCity(val) {
     this.setState({city: val})
@@ -57,15 +67,10 @@ export default class App extends React.Component {
       updateUser={(user) => this.updateUser(user)}
     />;
   }
-
-  updateUser(user) {
-    this.setState({user: user});
-  }
-
   render() {
     return (
       <div style={{height: "100%"}}>
-        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} avatarImg={this.state.user.imgUrl} />
+        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} avatarImg={this.state.user.imgUrl} updateAppBarStyle={(val) => this.updateAppBarStyle(val)}/>
         <Route exact path="/listings" render={() => <ListingsPage city={this.state.city} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
         <Route exact path="/" render={() => this.renderMain()} />
         <Route exact path="/login" render={() => this.renderMain()} />
