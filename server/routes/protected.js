@@ -135,6 +135,7 @@ module.exports = (User, Hotel, Listing) => {
         host: req.user._id,
         guest: request.requester,
         hotel: request.listing.hotel,
+        room: request.listing.room,
         guests: request.listing.guests,
         from: request.listing.from,
         to: request.listing.to,
