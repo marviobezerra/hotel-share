@@ -23,7 +23,7 @@ module.exports = (User, Hotel, Listing) => {
 
   router.get('/notifications', (req, res) => {
     Notification.find({user: req.user._id})
-    .then((bookings) => res.json({success: true, bookings}))
+    .then((notifications) => res.json({success: true, notifications}))
     .catch(() => res.json({success: false}));
   });
 
@@ -39,6 +39,14 @@ module.exports = (User, Hotel, Listing) => {
       to: req.body.to,
       timestamp: new Date(),
     })).save()
+    .then(() => (
+      (new Notification({
+        user: req.body.to,
+        message: `You have a new message from ${req.user.name.fname}!`,
+        category: 'Message',
+        data: req.user._id,
+        timestamp: new Date(),
+      })).save()))
     .then(() => res.json({success: true}))
     .catch(() => res.json({success: false}));
   });
@@ -83,7 +91,17 @@ module.exports = (User, Hotel, Listing) => {
       listing.remove();
       return Request.find({listing: listing._id});
     })
-    .then((reqs) => Promise.all(reqs.map((req) => (req.remove()))))
+    .then((requests) => Promise.all(
+      requests.map((request) => {
+        (new Notification({
+          user: request.requester,
+          message: `Your request to ${req.user.name.fname} was canceled because the listing was removed from our site!`,
+          category: 'Reject',
+          timestamp: new Date(),
+        })).save();
+        return request.remove();
+      })
+    ))
     .then(() => res.json({success: true}))
     .catch(() => res.json({success: false}));
   });
@@ -93,6 +111,15 @@ module.exports = (User, Hotel, Listing) => {
       requester: req.user._id,
       listing: req.body.listing,
     })).save()
+    .then(() => (Listing.findById(req.body.listing)))
+    .then((listing) => (
+      (new Notification({
+        user: listing.user,
+        message: `${req.user.name.fname} sent you a booking request!`,
+        category: 'Request',
+        data: listing._id,
+        timestamp: new Date(),
+      })).save()))
     .then(() => res.json({success: true}))
     .ctach(() => res.json({success: false}));
   });
@@ -101,7 +128,7 @@ module.exports = (User, Hotel, Listing) => {
     Request.findById(req.body.request)
     .populate('listing')
     .then((request) => {
-      let booking = new Booking({
+      (new Booking({
         host: req.user._id,
         guest: request.requester,
         hotel: request.listing.hotel,
@@ -109,10 +136,43 @@ module.exports = (User, Hotel, Listing) => {
         from: request.listing.from,
         to: request.listing.to,
         price: request.listing.price,
-      });
-      request.find({listing: request.listing}).remove();
-      request.listing.remove();
-      return booking.save();
+      })).save()
+      .then(() => (
+        (new Notification({
+          user: request.requester,
+          message: `${req.user.name.fname} accepted your booking request!`,
+          category: 'Accept',
+          timestamp: new Date(),
+        })).save()))
+      .then(() => (request.find({listing: request.listing})))
+      .then((requests) => Promise.all(
+        requests.map((request) => {
+          (new Notification({
+            user: request.requester,
+            message: `Your request to ${request.listing.user.name.fname} was canceled because this listing is no longer available!`,
+            category: 'Reject',
+            timestamp: new Date(),
+          })).save();
+          return request.remove();
+        })
+      ));
+      return request.listing.remove();
+    })
+    .then(() => res.json({success: true}))
+    .catch(() => res.json({success: false}));
+  });
+
+  router.post('/reject', (req, res) => {
+    Request.findById(req.body.request)
+    .then((request) => {
+      (new Notification({
+        user: request.requester,
+        message: `${req.user.name.fname} rejected your booking request!`,
+        category: 'Reject',
+        data: request.listing,
+        timestamp: new Date(),
+      })).save();
+      return request.remove();
     })
     .then(() => res.json({success: true}))
     .catch(() => res.json({success: false}));
