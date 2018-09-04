@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import GoogleMapReact from 'google-map-react';
 import SearchBox from './SearchBox.jsx';
 import Chip from '@material-ui/core/Chip';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 import { Fade } from 'react-slideshow-image';
 import sanfrancisco from '../../assets/images/sanfrancisco.jpg'
 import chicago from '../../assets/images/chicago.jpg'
@@ -58,6 +60,10 @@ const styles = theme => ({
   divContainer: {
     display: 'flex',
     flexDirection: 'column'
+  },
+  gridList: {
+    width: '100%',
+    height: '100%',
   },
   hotelMap: {
     paddingBottom: 5,
@@ -176,13 +182,31 @@ class SimpleMap extends React.Component {
     return (
       <div className={classes.largeContainer}>
         <div className={classes.cards}>
-          {
+          <GridList cellHeight={'auto'} className={classes.gridList} cols={1}>
+
+            {
+              this.state.selectedHotel ?
+              <div>
+                <GridListTile key={2}>
+                  <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
+                </GridListTile>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <Button style={{backgroundColor: '#008081', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
+                    Reset
+                  </Button>
+                </div>
+              </div>
+               : this.state.hotels.map((hotel) => (
+                 <GridListTile key={hotel.name}>
+                   <AlternateListing classes={classes} hotel={hotel}/>
+                 </GridListTile>
+              ))
+            }
+          </GridList>
+          {/*
             this.state.selectedHotel ?
             <div>
-              {/*this.
-                classes, this.state.selectedHotel)*/}
               <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
-              {/*<HotelCard single={true} classes={classes} hotel={this.state.selectedHotel}/>*/}
               <div style={{display: 'flex', justifyContent: 'center'}}>
                 <Button style={{backgroundColor: '#008081', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
                   Reset
@@ -191,13 +215,12 @@ class SimpleMap extends React.Component {
             </div>
              : this.state.hotels.map((hotel) => (
                <AlternateListing classes={classes} hotel={hotel}/>
-               /*<HotelCard single={false} classes={classes} hotel={hotel}/>*/
             ))
-          }
+          */}
       </div>
       <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'Insert key here'}}
+          bootstrapURLKeys={{ key: 'Google Key goes here'}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
