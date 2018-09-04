@@ -202,7 +202,9 @@ class ListingWithDialog extends React.Component {
                 {hotel.listings.map((listing) => (
                   <div>
                     <ListItem>
-                      <ListItemText style={{color:'#008081'}} primary={'Price: $'+listing.price+' From: '+listing.from+' To: '+listing.to} />
+                      <Button>
+                        <ListItemText style={{color:'#008081'}} primary={'Price: $'+listing.price+' From: '+listing.from+' To: '+listing.to} />
+                      </Button>
                     </ListItem>
                     <Divider light />
                   </div>

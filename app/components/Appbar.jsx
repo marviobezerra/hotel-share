@@ -31,7 +31,11 @@ export default class Appbar extends React.Component {
         <AppBar position="static" style={this.props.style}>
           <Toolbar style={{display: "flex"}}>
             <div style={{display: "flex", width: "100%"}}>
-              <Avatar style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}}>H</Avatar>
+              <Button>
+                <Link to="/" style={{color: "white", textDecoration: "none"}}>
+                  <Avatar style={{backgroundColor: '#fff', color: '#3f51b5'}}>H</Avatar>
+                </Link>
+              </Button>
                 {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
                   <Button
                     aria-owns={this.state.anchorEl ? 'simple-menu' : null}
