@@ -5,6 +5,8 @@ import LandingPage from './LandingPage.jsx';
 import ListingsPage from './ListingsPage.jsx';
 import NewListing from './NewListing.jsx';
 import MyAccount from './MyAccount.jsx';
+import MyMessages from './MyMessages.jsx';
+
 import axios from 'axios';
 
 const clientUrl = "http://localhost:8080";
@@ -77,6 +79,9 @@ export default class App extends React.Component {
         <Route exact path="/signup" render={() => this.renderMain()} />
         <Route exact path="/newlisting" render={() => <NewListing updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />} />
         {this.state.auth ? <Route exact path="/myaccount" render={() => <MyAccount updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
+        {this.state.auth ? <Route exact path="/mymessages" render={() => <MyMessages updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
+        {this.state.auth ? <Route exact path="/myrequests" render={() => <MyRequests updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
+
       </div>
     )
   }

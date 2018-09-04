@@ -16,8 +16,10 @@ export default class Appbar extends React.Component {
     super(props);
     this.state = {
       anchorEl: null,
+      anchorEl2: null,
       avatarImg: '',
       notifications: [],
+      // message: [], request: [], accept: [], reject: [], cancel: [], other: [],
     }
   }
 
@@ -25,11 +27,26 @@ export default class Appbar extends React.Component {
     axios.get('/api/notifications')
     .then(res => {
       if(res.data.success) this.setState({notifications: res.data.notifications})
+      let notifications = this.state.notifications.slice();
+      this.setState({message: notifications.filter(notification => notification.category === "Message")});
+      this.setState({request: notifications.filter(notification => notification.category === "Request")})
+      this.setState({accept: notifications.filter(notification => notification.category === "Accept")})
+      this.setState({reject: notifications.filter(notification => notification.category === "Reject")})
+      this.setState({cancel: notifications.filter(notification => notification.category === "Cancel")})
+      this.setState({other: notifications.filter(notification => notification.category === "Other")})
     })
     setInterval(() => {
       axios.get('/api/notifications')
       .then(res => {
-        if(res.data.success) this.setState({notifications: res.data.notifications})
+        if(res.data.success) this.setState({notifications: res.data.notifications}, () => {
+          let notifications = this.state.notifications.slice();
+          this.setState({message: notifications.filter(notification => notification.category === "Message")});
+          this.setState({request: notifications.filter(notification => notification.category === "Request")})
+          this.setState({accept: notifications.filter(notification => notification.category === "Accept")})
+          this.setState({reject: notifications.filter(notification => notification.category === "Reject")})
+          this.setState({cancel: notifications.filter(notification => notification.category === "Cancel")})
+          this.setState({other: notifications.filter(notification => notification.category === "Other")})
+        })
       })
     }, 5000);
   }
@@ -50,10 +67,25 @@ export default class Appbar extends React.Component {
             <div style={{display: "flex", width: "100%"}}>
               <Link to="/" onClick={() => this.props.updateAppBarStyle({height: 0})} style={{textDecoration: "none"}}><Avatar style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}}>H</Avatar></Link>
                 {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
-                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}
+                      aria-owns={this.state.anchorEl2 ? 'notification-menu' : null}
+                      aria-haspopup="true"
+                      onClick={(e) => this.setState({ anchorEl2: e.currentTarget })}>
                       <Notifications style={{position: 'relative'}} />
                       {this.state.notifications.length? <Avatar style={{background: 'red', position: 'absolute', top: -5, right: -5, height: 20, width: 20, fontSize: 12}}>{this.state.notifications.length}</Avatar> : null}
                     </Avatar>
+                    <Menu id="notification-menu" anchorEl={this.state.anchorEl2} open={Boolean(this.state.anchorEl2)}
+                      onClose={() => this.setState({anchorEl2: null})}>
+                      <MenuItem onClick={() => this.setState({anchorEl2: null})}>
+
+                        <Link to="/mymessages" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My messages</Link>
+                        {this.state.message.length? <Avatar style={{background: 'red', height: 20, width: 20, fontSize: 12, marginLeft: 10}}>{this.state.message.length}</Avatar> : null}
+                      </MenuItem>
+                      <MenuItem onClick={() => this.setState({anchorEl2: null})}>
+                        <Link to="/myrequests" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My requests</Link>
+                      {this.state.request.length? <Avatar style={{background: 'red', height: 20, width: 20, fontSize: 12, marginLeft: 10}}>{this.state.request.length}</Avatar> : null}
+                      </MenuItem>
+                    </Menu>
                     {this.props.avatarImg ? <Avatar
                                               aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                                               aria-haspopup="true"
