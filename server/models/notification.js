@@ -15,12 +15,16 @@ const notificationSchema = new mongoose.Schema({
     enum: ['Message', 'Request', 'Accept', 'Reject', 'Cancel', 'Other'],
     required: true,
   },
-  data: {
-    type: String,
-  },
   timestamp: {
     type: Date,
     required: true,
+  },
+  read: {
+    type: Boolean,
+    default: false,
+  },
+  data: {
+    type: String,
   },
 });
 
