@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,8 +16,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import TextField from '@material-ui/core/TextField';
+import { Avatar, Snackbar} from '@material-ui/core/';
 import Modal from '@material-ui/core/Modal';
+import CloseIcon from '@material-ui/icons/Close';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import seattle from '../../assets/images/seattle.jpg'
+var axios = require('axios');
 
 const styles = theme => ({
   root: {
@@ -113,7 +119,41 @@ const styles = theme => ({
   userImg: {
     width: '25%',
     height: '25%'
-  }
+  },
+  bootstrapRoot: {
+    padding: 0,
+    'label + &': {
+      marginTop: theme.spacing.unit * 3,
+    },
+  },
+  bootstrapInput: {
+    borderRadius: 4,
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 12px',
+    width: 'calc(100% - 24px)',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+  bootstrapFormLabel: {
+    fontSize: 18,
+  },
 });
 
 const images = [
@@ -140,8 +180,15 @@ class ListingWithDialog extends React.Component {
     this.state = {
       open: false,
       openModal: false,
+      openSnack: false,
       scroll: 'paper',
+      listingMessage: ''
     };
+  }
+
+  handleMessageChange(e) {
+    this.setState({listingMessage: e.target.value})
+    console.log(this.state.listingMessage)
   }
 
   handleClickOpen() {
@@ -159,6 +206,19 @@ class ListingWithDialog extends React.Component {
 
   handleCloseModal() {
     this.setState({ openModal: false})
+  }
+
+  handleMessageSubmit(listing) {
+    console.log(this)
+    let message = this.state.listingMessage
+    axios.post('/api/message/', {to: listing.user._id, content:message})
+    .then(resp => {
+      if(resp.data.success) this.setState({openSnack: true, listingMessage: ''});
+      else {
+        alert(resp)
+      }
+    })
+    .catch((err) => alert(err))
   }
 
   render() {
@@ -234,35 +294,93 @@ class ListingWithDialog extends React.Component {
                         onClose={() => this.handleCloseModal()}
                       >
                         <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
+                          {console.log(listing)}
                           <div style={{display:'inline-flex'}}>
                             {listing.user.imgUrl ? <img className={classes.userImg} src={listing.user.imgUrl} /> ? listing.user.gender === 'Male' : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} />}
-                            <div>
-                              <Typography variant="subheading" id="simple-modal-description">
-                                {listing.user.fname} {listing.user.lname}
-                              </Typography>
+                            <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
                               <Typography variant="title" id="modal-title" align='center' color='inherit'>
                                 {listing.user.name.fname} {listing.user.name.lname}
                               </Typography>
-                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
+                              <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">
                                 Email: sample@gmail.com
                               </Typography>
-                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
-                                Phone: (425)-247-4499
+                              <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">
+                                Languages: Spanish, French
                               </Typography>
-                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
-                                Languages: Spanish
-                              </Typography>
-                              <Typography variant="subheading" id="simple-modal-description" color="textPrimary" align='left'>
-                                French Gender: Male
+                              <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">
+                                Gender: Male
                               </Typography>
                             </div>
                           </div>
-                          <Typography variant="title" id="modal-title" color="textSecondary">
+                          <br/>
+                          <Typography variant="title" id="modal-title" align="center" color="textSecondary">
                             Price: ${listing.price}
                           </Typography>
-                          <Typography variant="subheading" id="simple-modal-description" color="primary">
-                            From: {listing.from} To: {listing.to}
+                          <Typography style={{width:'100%'}} variant="subheading" align="center" id="simple-modal-description" color="primary">
+                            Dates: {listing.from} - {listing.to}
                           </Typography>
+                          <Typography variant="subheading" id="simple-modal-description" align="center" color="primary">
+                            Guests: {listing.guests}
+                          </Typography>
+                          <div>
+                            <div style={{width:'100%'}}>
+                              <Typography variant="subheading" align="center" id="simple-modal-description" color="primary">
+                                Send {listing.user.name.fname} a message!
+                              </Typography>
+                            </div>
+                            <TextField
+                              style={{width:'100%'}}
+                              defaultValue={`Message ${listing.user.name.fname} ${listing.user.name.lname}`}
+                              label="Direct Message"
+                              id="bootstrap-input"
+                              multiline='true'
+                              fullWidth='true'
+                              onChange={(e) => this.handleMessageChange(e)}
+                              InputProps={{
+                                disableUnderline: true,
+                                classes: {
+                                  root: classes.bootstrapRoot,
+                                  input: classes.bootstrapInput,
+                                },
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                                className: classes.bootstrapFormLabel,
+                              }}
+                            />
+                            <div style={{display:'inline-flex'}}>
+                              <Avatar src={'https://i.imgur.com/dGo8DOk.png'} />
+                              <Button style={{backgroundColor:'red'}} onClick={() => this.handleMessageSubmit(listing)}>Submit</Button>
+                              <Snackbar
+                                varient='success'
+                                anchorOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'left',
+                                }}
+                                open={this.state.openSnack}
+                                autoHideDuration={6000}
+                                onClose={() => this.setState({openSnack:false, openModal: false})}
+                                ContentProps={{
+                                  'aria-describedby': 'message-id',
+                                }}
+                                message={
+                                  <span id="message-id">
+                                    <CheckCircleIcon/>
+                                    Sent message to {listing.user.name.fname}!
+                                  </span>}
+                                action={[
+                                  <IconButton
+                                    key="close"
+                                    aria-label="Close"
+                                    color="inherit"
+                                    onClick={() => this.setState({openSnack: false, openModal: false})}
+                                  >
+                                    <CloseIcon />
+                                  </IconButton>,
+                                ]}
+                              />
+                            </div>
+                          </div>
                         </div>
                       </Modal>
                     </ListItem>
