@@ -24,10 +24,8 @@ class SearchButtons extends React.Component {
       anchorEl : null,
       cityFill : false,
       openCity : false,
-      fromFill : false,
-      openFrom : false,
-      toFill : false,
-      openTo : false,
+      dateFill : false,
+      openDates : false,
       guestsFill : false,
       openGuests : false,
     }
@@ -40,15 +38,26 @@ class SearchButtons extends React.Component {
        this.setState({
          anchorEl: currentTarget,
          openGuests: !this.state.openGuests,
+         openCity: false,
+         openDates : false
+       });
+       break;
+     case 'openDates':
+       this.setState({
+         anchorEl: currentTarget,
+         openDates: !this.state.openDates,
+         openCity: false,
+         openGuests: false
        });
        break;
      default:
-
+     this.setState({
+       anchorEl: currentTarget,
+       openCity: !this.state.openCity,
+       openGuests: false,
+       openDates: false
+     });
    }
-   this.setState({
-     anchorEl: currentTarget,
-     openCity: !this.state.openCity,
-   });
  };
 
   render() {
@@ -56,10 +65,8 @@ class SearchButtons extends React.Component {
     const anchorEl = this.state.anchorEl;
     const openCity = this.state.openCity
     const idCity = openCity ? 'simple-popper' : null;
-    const openFrom = this.state.openFrom
-    const idFrom = openFrom ? 'simple-popper' : null;
-    const openTo = this.state.openTo
-    const idTo = openTo ? 'simple-popper' : null;
+    const openDates = this.state.openDates
+    const idDates = openDates ? 'simple-popper' : null;
     const openGuests = this.state.openGuests
     const idGuests = openGuests ? 'simple-popper' : null;
 
@@ -93,16 +100,46 @@ class SearchButtons extends React.Component {
             </Fade>
           )}
         </Popper>
-        <Button color="primary" variant={this.state.fromFill ? "contained": "outlined"}
-          onMouseOver={() => (this.setState({fromFill : true}))} onMouseLeave={() => (this.setState({fromFill : false}))}
-          onClick={() => (this.setState({fromFill : !this.state.fromFill, cityFill: false, toFill: false, guestsFill: false}))}>
-          From
+        <Button color="primary" variant={this.state.dateFill ? "contained": "outlined"}
+          onMouseOver={() => (this.setState({dateFill : true}))} onMouseLeave={() => (this.setState({dateFill : false}))}
+          onClick={(e) => this.handleClick(e, 'openDates')}>
+          Dates
         </Button>
-        <Button color="primary" variant={this.state.toFill ? "contained": "outlined"}
-          onMouseOver={() => (this.setState({toFill : true}))} onMouseLeave={() => (this.setState({toFill : false}))}
-          onClick={() => (this.setState({toFill : !this.state.toFill, fromFill : false, cityFill : false, guestsFill : false}))}>
-          To
-        </Button>
+        <Popper id={idDates} open={openDates} anchorEl={anchorEl} transition>
+          {({ TransitionProps }) => (
+            <Fade {...TransitionProps} timeout={350}>
+              <Paper>
+                <TextField
+                  label="From"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <DateRange />
+                      </InputAdornment>
+                    ),
+                  }}
+                  type="date"
+                  style={{width: "50%", margin: 2}}
+                />
+                <TextField
+                  label="To"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <DateRange />
+                      </InputAdornment>
+                    ),
+                  }}
+                  type="date"
+                  style={{width: "50%", margin: 2}}
+                />
+                <Button variant="contained" style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+                  Update
+                </Button>
+              </Paper>
+            </Fade>
+          )}
+        </Popper>
         <Button color="primary" variant={this.state.guestsFill ? "contained": "outlined"}
           onMouseOver={() => (this.setState({guestsFill : true}))} onMouseLeave={() => (this.setState({guestsFill : false}))}
           onClick={(e) => this.handleClick(e, 'openGuests')}>
