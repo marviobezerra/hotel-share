@@ -1,7 +1,45 @@
 import React from 'react';
 import axios from 'axios';
-import { TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, Select, MenuItem, InputLabel, InputAdornment } from '@material-ui/core/';
-import { DateRange, Group, AttachMoney } from '@material-ui/icons/';
+import green from '@material-ui/core/colors/green';
+import { TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, Select, MenuItem, InputLabel, InputAdornment, Snackbar, SnackbarContent, IconButton } from '@material-ui/core/';
+import { DateRange, Group, AttachMoney, VpnKey, CheckCircle, Close } from '@material-ui/icons/';
+
+const classes = theme => ({
+  bootstrapRoot: {
+    padding: 0,
+    'label + &': {
+      marginTop: theme.spacing.unit * 3,
+    },
+  },
+  bootstrapInput: {
+    borderRadius: 4,
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 12px',
+    width: 'calc(100% - 24px)',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+  bootstrapFormLabel: {
+    fontSize: 18,
+  },
+});
 
 export default class NewListing extends React.Component {
   constructor(props) {
@@ -13,8 +51,10 @@ export default class NewListing extends React.Component {
       from: '',
       to: '',
       price: '',
+      room: 0,
       hotelDoc: {},
       cityHotels: [],
+      openModal: false
     }
   }
   componentDidMount() {
@@ -30,8 +70,16 @@ export default class NewListing extends React.Component {
   submitListing() {
     axios.post('/api/list', this.state)
     .then(res => {
-      console.log("success", res.data.success)
+      if(res.data.success){
+        this.setState({openModal: true})
+      } else {
+        alert("Success", res.data.success)
+      }
     })
+  }
+
+  snackClose() {
+    this.setState({openModal: false})
   }
 
   render() {
@@ -104,8 +152,74 @@ export default class NewListing extends React.Component {
               }}
               onChange={(e) => this.setState({price: e.target.value})}
             />
+            <TextField
+              label="Room Number"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <VpnKey />
+                  </InputAdornment>
+                ),
+              }}
+              type="number"
+              style={{width: "100%"}}
+              onChange={(e) => this.setState({room: e.target.value})}
+            />
+
+            <TextField
+              style={{width:'100%'}}
+              label="Direct Message"
+              id="bootstrap-input"
+              multiline='true'
+              fullWidth='true'
+              onChange={(e) => this.handleMessageChange(e)}
+              InputProps={{
+                disableUnderline: true,
+                classes: {
+                  root: classes.bootstrapRoot,
+                  input: classes.bootstrapInput,
+                },
+              }}
+              InputLabelProps={{
+                shrink: true,
+                className: classes.bootstrapFormLabel,
+              }}
+            />
+
+
             <Button variant="contained" onClick={() => this.submitListing()}>Submit Listing</Button></div>)
             : null}
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              open={this.state.openModal}
+              autoHideDuration={6000}
+              onClose={() => this.snackClose()}
+            >
+              <SnackbarContent
+                className="listingSuccess"
+                aria-describedby="client-snackbar"
+                style={{backgroundColor: green[600]}}
+                message={
+                  <span id="client-snackbar" >
+                    <CheckCircle style={{backgroundColor: green[600]}} />
+                    Posted your {this.state.city} listing
+                  </span>
+                }
+                action={[
+                  <IconButton
+                    key="close"
+                    aria-label="Close"
+                    color="inherit"
+                    onClick={() => this.snackClose()}
+                  >
+                    <Close />
+                  </IconButton>,
+                ]}
+              />
+            </Snackbar>
         </div>
       </div>
     );
