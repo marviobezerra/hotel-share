@@ -8,7 +8,7 @@ import { Route, Link } from 'react-router-dom';
 import LoginPage from './LoginPage.jsx';
 import { Avatar } from '@material-ui/core/';
 import axios from 'axios';
-import Notifications from '@material-ui/icons/Notifications';
+import { Notifications, Chat, CardTravel, Gavel } from '@material-ui/icons/';
 
 
 export default class Appbar extends React.Component {
@@ -24,31 +24,29 @@ export default class Appbar extends React.Component {
   }
 
   componentDidMount() {
+    this.getNotifications();
+    setInterval(() => this.getNotifications(), 5000);
+  }
+
+  getNotifications() {
     axios.get('/api/notifications')
     .then(res => {
-      if(res.data.success) this.setState({notifications: res.data.notifications})
-      let notifications = this.state.notifications.slice();
-      this.setState({message: notifications.filter(notification => notification.category === "Message")});
-      this.setState({request: notifications.filter(notification => notification.category === "Request")})
-      this.setState({accept: notifications.filter(notification => notification.category === "Accept")})
-      this.setState({reject: notifications.filter(notification => notification.category === "Reject")})
-      this.setState({cancel: notifications.filter(notification => notification.category === "Cancel")})
-      this.setState({other: notifications.filter(notification => notification.category === "Other")})
-    })
-    setInterval(() => {
-      axios.get('/api/notifications')
-      .then(res => {
-        if(res.data.success) this.setState({notifications: res.data.notifications}, () => {
+      if(res.data.success) {
+        let allNotifications = res.data.notifications.slice();
+        let unreadNotifications = allNotifications.filter(notification => !notification.read);
+        this.setState({notifications: unreadNotifications}, () => {
           let notifications = this.state.notifications.slice();
-          this.setState({message: notifications.filter(notification => notification.category === "Message")});
-          this.setState({request: notifications.filter(notification => notification.category === "Request")})
-          this.setState({accept: notifications.filter(notification => notification.category === "Accept")})
-          this.setState({reject: notifications.filter(notification => notification.category === "Reject")})
-          this.setState({cancel: notifications.filter(notification => notification.category === "Cancel")})
-          this.setState({other: notifications.filter(notification => notification.category === "Other")})
+          this.setState({
+            message: notifications.filter(notification => notification.category === "Message"),
+            request: notifications.filter(notification => notification.category === "Request"),
+            accept: notifications.filter(notification => notification.category === "Accept"),
+            reject: notifications.filter(notification => notification.category === "Reject"),
+            cancel: notifications.filter(notification => notification.category === "Cancel"),
+            other: notifications.filter(notification => notification.category === "Other")
+          });
         })
-      })
-    }, 5000);
+      }
+    })
   }
 
   handleClick(event){
@@ -58,7 +56,27 @@ export default class Appbar extends React.Component {
   handleClose() {
     this.setState({ anchorEl: null });
   };
-
+  link(category) {
+    console.log(category);
+    if(category === 'Message') return '/messages';
+    //write other types of notifications redirects later!!!
+  }
+  readNotification(id) {
+    this.setState({anchorEl2: null});
+    axios.post('/api/readNotification', {notification: id})
+    .then(res => {
+      console.log(res.data.success);
+      this.getNotifications();
+    })
+  }
+  readMessages() {
+    for(let i = 0; i < this.state.message.length; i++) {
+      axios.post('/api/readNotification', {notification: this.state.message[i]._id})
+      .then(res => {
+        this.getNotifications();
+      })
+    }
+  }
   render() {
     return (
       <div>
@@ -67,6 +85,14 @@ export default class Appbar extends React.Component {
             <div style={{display: "flex", width: "100%"}}>
               <Link to="/" onClick={() => this.props.updateAppBarStyle({height: 0})} style={{textDecoration: "none"}}><Avatar style={{backgroundColor: '#fff', color: '#3f51b5'}}>H</Avatar></Link>
                 {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}>
+                      <Link to='/messages' onClick={() => this.readMessages()}>
+                        <Chat style={{color: 'white', position: 'relative'}}/>
+                        {this.state.message.length? <Avatar style={{background: 'red', position: 'absolute', top: -5, right: -5, height: 20, width: 20, fontSize: 12}}>{this.state.message.length}</Avatar> : null}
+                      </Link>
+                    </Avatar>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}><Link to='/bookings'><CardTravel style={{color: 'white', position: 'relative'}}/></Link></Avatar>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}><Link to='/requests'><Gavel style={{color: 'white', position: 'relative'}}/></Link></Avatar>
                     <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}
                       aria-owns={this.state.anchorEl2 ? 'notification-menu' : null}
                       aria-haspopup="true"
@@ -76,21 +102,16 @@ export default class Appbar extends React.Component {
                     </Avatar>
                     <Menu id="notification-menu" anchorEl={this.state.anchorEl2} open={Boolean(this.state.anchorEl2)}
                       onClose={() => this.setState({anchorEl2: null})}>
-                      <MenuItem onClick={() => this.setState({anchorEl2: null})}>
-
-                        <Link to="/mymessages" onClick={() => this.props.app.setState({clickedConvo: false})} style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My messages</Link>
-                        {this.state.message.length? <Avatar style={{background: 'red', height: 20, width: 20, fontSize: 12, marginLeft: 10}}>{this.state.message.length}</Avatar> : null}
-                      </MenuItem>
-                      <MenuItem onClick={() => this.setState({anchorEl2: null})}>
-                        <Link to="/myrequests" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My requests</Link>
-                      {this.state.request.length? <Avatar style={{background: 'red', height: 20, width: 20, fontSize: 12, marginLeft: 10}}>{this.state.request.length}</Avatar> : null}
-                      </MenuItem>
+                      {this.state.notifications.map(notification =>
+                      <MenuItem style={{fontSize: 12}}>
+                        <Link to={this.link(notification.category)} onClick={() => this.readNotification(notification._id)}>{notification.message}</Link>
+                      </MenuItem>)}
                     </Menu>
-                    {this.props.avatarImg ? <Avatar
+                    {this.props.app.state.user.imgUrl ? <Avatar
                                               aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                                               aria-haspopup="true"
                                               onClick={(e) => this.handleClick(e)}
-                                              src={this.props.avatarImg} /> :
+                                              src={this.props.app.state.user.imgUrl} /> :
                                             <Button
                                               aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                                               aria-haspopup="true"
@@ -102,7 +123,7 @@ export default class Appbar extends React.Component {
                     open={Boolean(this.state.anchorEl)}
                     onClose={() => this.handleClose()}
                   >
-                    <MenuItem onClick={() => this.handleClose()}><Link to="/myaccount" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My account</Link></MenuItem>
+                    <MenuItem onClick={() => this.handleClose()}><Link to="/account" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>Account</Link></MenuItem>
                     <MenuItem onClick={() => this.handleClose()}><Link to="/newlisting" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>List New</Link></MenuItem>
                     <MenuItem onClick={() => this.props.logout()}>Logout</MenuItem>
                   </Menu></div>) :

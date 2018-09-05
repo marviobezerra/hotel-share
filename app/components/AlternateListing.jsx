@@ -188,7 +188,6 @@ class ListingWithDialog extends React.Component {
 
   handleMessageChange(e) {
     this.setState({listingMessage: e.target.value})
-    console.log(this.state.listingMessage)
   }
 
   handleClickOpen() {
@@ -201,7 +200,6 @@ class ListingWithDialog extends React.Component {
 
   handleOpenModal(listing) {
     this.setState({ openModal: true});
-    console.log(listing)
   };
 
   handleCloseModal() {
@@ -209,7 +207,6 @@ class ListingWithDialog extends React.Component {
   }
 
   handleMessageSubmit(listing) {
-    console.log(this)
     let message = this.state.listingMessage
     axios.post('/api/message/', {to: listing.user._id, content:message})
     .then(resp => {
@@ -277,7 +274,7 @@ class ListingWithDialog extends React.Component {
               {hotel.rating}/10
             </Typography>
             <Typography variant="subheading">
-              Great location in the center of the financial district.
+              {hotel.description}
             </Typography>
             <div>
               <List >
@@ -293,10 +290,9 @@ class ListingWithDialog extends React.Component {
                         open={this.state.openModal}
                         onClose={() => this.handleCloseModal()}
                       >
+                        {console.log(listing)}
                         <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
-                          {console.log(listing)}
                           <div style={{display:'inline-flex'}}>
-                            {console.log(listing.user)}
                             {listing.user.imgUrl ? <img className={classes.userImg} src={listing.user.imgUrl} /> ? listing.user.gender === 'Male' : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} />}
                             <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
                               <Typography variant="title" id="modal-title" align='center' color='inherit'>

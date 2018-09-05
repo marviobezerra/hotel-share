@@ -4,8 +4,10 @@ import Appbar from './AppBar.jsx';
 import LandingPage from './LandingPage.jsx';
 import ListingsPage from './ListingsPage.jsx';
 import NewListing from './NewListing.jsx';
-import MyAccount from './MyAccount.jsx';
-import MyMessages from './MyMessages.jsx';
+import Account from './Account.jsx';
+import Messages from './Messages.jsx';
+import Bookings from './Bookings.jsx';
+
 
 import axios from 'axios';
 
@@ -45,20 +47,27 @@ export default class App extends React.Component {
     this.setState({auth: false, show: false});
     axios.post('/api/logout')
   }
+  updateForce() {
+    this.forceUpdate()
+  }
   updateUser(user) {
     this.setState({user: user});
   }
   updateCity(val) {
     this.setState({city: val})
+    return this.state.city
   }
-  updateTo(e) {
-    this.setState({to: e.target.value})
+  updateTo(val) {
+    this.setState({to: val})
+    return this.state.to
   }
-  updateFrom(e) {
-    this.setState({from: e.target.value})
+  updateFrom(val) {
+    this.setState({from: val})
+    return this.state.from
   }
-  updateGuests(e) {
-    this.setState({guests: e.target.value})
+  updateGuests(val) {
+    this.setState({guests: val})
+    return this.state.guests
   }
   updateAppBarStyle(newStyle){
     this.setState({style: newStyle})
@@ -66,24 +75,30 @@ export default class App extends React.Component {
   renderMain() {
     return <LandingPage auth={this.state.auth} show={this.state.show}
       hide={() => this.hide()} login={() => this.login()} updateCity={(val) => this.updateCity(val)}
-      updateTo={() => updateTo()} updateFrom={() => updateFrom()} city={this.state.city}
-      updateGuests={() => updateGuests()}
+      updateTo={(val) => this.updateTo(val)} updateFrom={(val) => this.updateFrom(val)} city={this.state.city}
+      from={this.state.from} to={this.state.to} guests={this.state.guests}
+      updateGuests={(val) => this.updateGuests(val)}
       updateUser={(user) => this.updateUser(user)}
     />;
   }
   render() {
     return (
       <div style={{height: "100%"}}>
-        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} avatarImg={this.state.user.imgUrl} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>
-        <Route exact path="/listings" render={() => <ListingsPage avatarImg={this.state.user.imgUrl} city={this.state.city} to={this.state.to} from={this.state.from} guests={this.state.guests} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
+        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>
+        <Route exact path="/listings" render={() => <ListingsPage avatarImg={this.state.user.imgUrl}
+          city={this.state.city} from={this.state.from} to={this.state.to} guests={this.state.guests}
+          updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateCity={(val) => this.updateCity(val)}
+          updateTo={(val) => this.updateTo(val)} updateFrom={(val) => this.updateFrom(val)} updateGuests={(val) => this.updateGuests(val)}
+          updateForce={() => this.updateFoce()}
+        />}/>
         <Route exact path="/" render={() => this.renderMain()} />
         <Route exact path="/login" render={() => this.renderMain()} />
         <Route exact path="/signup" render={() => this.renderMain()} />
         <Route exact path="/newlisting" render={() => <NewListing updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />} />
-        {this.state.auth ? <Route exact path="/myaccount" render={() => <MyAccount updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
-        {this.state.auth ? <Route exact path="/mymessages" render={() => <MyMessages updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} user={this.state.user} app={this}/>} /> : <Redirect to="/" />}
-        {this.state.auth ? <Route exact path="/myrequests" render={() => <MyRequests updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
-
+        {this.state.auth ? <Route exact path="/account" render={() => <Account updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
+        {this.state.auth ? <Route exact path="/messages" render={() => <Messages updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} user={this.state.user} app={this}/>} /> : <Redirect to="/" />}
+        {this.state.auth ? <Route exact path="/requests" render={() => <Requests updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
+        {this.state.auth ? <Route exact path="/bookings" render={() => <Bookings updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
       </div>
     )
   }

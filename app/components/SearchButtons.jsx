@@ -19,15 +19,20 @@ const styles = theme => ({
 
 class SearchButtons extends React.Component {
   constructor(props){
+    console.log(props)
     super(props)
     this.state = {
       anchorEl : null,
       cityFill : false,
       openCity : false,
+      updatedCity: null,
       dateFill : false,
       openDates : false,
+      updatedTo: null,
+      updatedFrom: null,
       guestsFill : false,
       openGuests : false,
+      updatedGuests: null
     }
   }
 
@@ -59,6 +64,32 @@ class SearchButtons extends React.Component {
      });
    }
  };
+
+  updateHotels(getHotels) {
+    let state = this.state
+    let city;
+    let todo;
+    let from ;
+    let guests;
+
+    if(state.updatedCity) city = this.props.updateCity(state.updatedCity)
+    if(state.updatedTo) to = this.props.updateTo(state.updatedTo)
+    if(state.updatedFrom) from = this.props.updateFrom(state.updatedFrom)
+    if(state.updatedGuests) guests = this.props.updateGuests(state.updatedGuests)
+
+    Promise.all(city, todo, from, guests)
+    .then(() => getHotels())
+
+    this.setState({
+      updatedTo: null,
+      updatedFrom: null,
+      updatedCity: null,
+      updatedGuests: null,
+      openCity: false,
+      openDates: false,
+      openGuests: false,
+    })
+  }
 
   render() {
     const { classes } = this.props;
@@ -92,8 +123,9 @@ class SearchButtons extends React.Component {
                   }}
                   type="text"
                   style={{width: "50%", margin: 2}}
+                  onChange={((e) => this.setState({updatedCity: e.target.value}))}
                 />
-                <Button variant="contained" style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+                <Button variant="contained" onClick={() => this.updateHotels(this.props.getHotels)} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
                   Update
                 </Button>
               </Paper>
@@ -120,6 +152,7 @@ class SearchButtons extends React.Component {
                   }}
                   type="date"
                   style={{width: "50%", margin: 2}}
+                  onChange={(e) => this.setState({updatedFrom: e.target.value})}
                 />
                 <TextField
                   label="To"
@@ -132,8 +165,9 @@ class SearchButtons extends React.Component {
                   }}
                   type="date"
                   style={{width: "50%", margin: 2}}
+                  onChange={(e) => this.setState({updatedTo: e.target.value})}
                 />
-                <Button variant="contained" style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+                <Button variant="contained" onClick={() => this.updateHotels()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
                   Update
                 </Button>
               </Paper>
@@ -160,8 +194,9 @@ class SearchButtons extends React.Component {
                   }}
                   type="number"
                   style={{width: "50%", margin: 2}}
+                  onChange={(e) => this.setState({updatedGuests: e.target.value})}
                 />
-                <Button variant="contained" style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+                <Button variant="contained" onClick={() => this.updateHotels()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
                   Update
                 </Button>
               </Paper>

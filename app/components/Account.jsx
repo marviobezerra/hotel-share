@@ -13,7 +13,7 @@ const styles = {
   }
 }
 
-export default class MyAccount extends React.Component {
+export default class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,9 +33,9 @@ export default class MyAccount extends React.Component {
   render() {
     return (
       <div style={{height: "100%", fontSize: 14}}>
-        {this.state.edit ? <EditProfile updateAppBarStyle={(val) => this.props.updateAppBarStyle(val)} updateUser={(user) => this.props.updateUser(user)} myAccount={this} /> :
-        <div className="myaccount-container">
-          <div className="myaccount-box">
+        {this.state.edit ? <EditProfile updateAppBarStyle={(val) => this.props.updateAppBarStyle(val)} updateUser={(user) => this.props.updateUser(user)} Account={this} /> :
+        <div className="account-container">
+          <div className="account-box">
             <img src={this.state.user.imgUrl} style={{height: 100, width: 100}} />
             <div className="display-column">
               <div className="display-row">

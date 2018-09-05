@@ -19,8 +19,9 @@ class SearchOptions extends React.Component {
   }
 
   submitData() {
-    let { from, to, guests } = this.state;
-    axios.post('/api/search', { city: this.props.city, from, to, guests })
+    let { from, to, guests, city } = this.props;
+    console.log(from, to, guests, city);
+    axios.get(`api/hotels/${city.replace(' ', '+')}`)
     .then(res => {
       console.log(res)}
     )
@@ -47,7 +48,7 @@ class SearchOptions extends React.Component {
               ),
             }}
             type="date"
-            onChange={(e) => this.props.updateFrom(e)}
+            onChange={(e) => this.props.updateFrom(e.target.value)}
             style={{margin: 2}}
           />
           <TextField
@@ -60,7 +61,7 @@ class SearchOptions extends React.Component {
               ),
             }}
             type="date"
-            onChange={(e) => this.props.updateTo(e)}
+            onChange={(e) => this.props.updateTo(e.target.value)}
             style={{margin: 2}}
           />
         </div>
@@ -76,11 +77,11 @@ class SearchOptions extends React.Component {
             }}
             type="number"
             style={{width: "50%", margin: 2}}
-            onChange={(e) => this.props.updateGuests(e)}
+            onChange={(e) => this.props.updateGuests(e.target.value)}
           />
-          <Button variant="contained" onClick={() => this.submitData()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
-            <Link to='/listings'>Search</Link>
-          </Button>
+          <Link to='/listings'>
+          <Button variant="contained" style={{margin: 20, backgroundColor: "orange", color: "white"}} />
+          </Link>
         </div>
       </div>
     );
