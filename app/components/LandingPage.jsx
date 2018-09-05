@@ -79,7 +79,9 @@ export default class LandingPage extends React.Component {
         <div id="background-1" style={this.state.style1} />
         <div id="background-2" style={this.state.style2} />
         <Route exact path="/" render={() => <SearchBox options={this.state.options} showOptions={() => this.showOptions()}
-          city={this.props.city} updateCity={(val) => this.props.updateCity(val)}
+          city={this.props.city} from={this.props.from} to={this.props.to} guests={this.props.guests}
+          updateCity={(val) => this.props.updateCity(val)} updateFrom={(val) => this.props.updateFrom(val)}
+          updateTo={(val) => this.props.updateTo(val)} updateGuests={(val) => this.props.updateGuests(val)}
           text={this.state.cities[(this.state.c + this.state.cities.length - 1) % this.state.cities.length].name}/>} />
         <Route exact path="/login" render={() => this.props.auth || !this.props.show ? <Redirect to="/" /> :
         <LoginPage login={() => this.props.login()} updateUser={(user) => this.props.updateUser(user)}/>} />

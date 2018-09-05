@@ -50,7 +50,7 @@ module.exports = (City, Hotel) => {
               || compareDates(hotel.listings[i].to, req.query.to) === -1
               || req.query.price && req.query.price < hotel.listings[i].price
               || req.query.gender && req.query.gender !== hotel.listings[i].user.gender
-              || req.query.guests && req.query.guests > hotel.listing[i].guests
+              || req.query.guests && req.query.guests > hotel.listings[i].guests
             ) hotel.listings.splice(i, 1);
           }
         }

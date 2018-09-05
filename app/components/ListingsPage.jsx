@@ -118,12 +118,9 @@ class SimpleMap extends React.Component {
   }
 
   getHotels() {
-    console.log(this.props.city)
     axios.get('/api/hotels/'+this.props.city.replace(' ', '+'))
     .then(res => {
-      console.log(res)
       let hotels = res.data.hotels;
-      console.log(hotels)
       this.setState({
         hotels: hotels
       })
@@ -266,7 +263,7 @@ function ListingsPage(props) {
     <div>
       <SearchButtons />
       <div className={classes.divContainer}>
-          <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} classStyle = {classes} className={classes.hotelMap}/>
+          <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} from={props.from} to={props.to} guests={props.guests} classStyle = {classes} className={classes.hotelMap}/>
       </div>
     </div>
   );
