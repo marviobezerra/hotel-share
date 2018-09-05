@@ -19,9 +19,9 @@ export default class SearchBox extends React.Component {
           <input className="main-search" placeholder={this.props.text}
             onChange={(e) => this.props.updateCity(e.target.value)}/>
         </div>
-        {this.props.options ? <SearchOptions city={this.props.city}
-          updateCity={this.props.updateCity} updateTo={this.props.updateTo}
-          updateFrom={this.props.updateFrom} updateGuests={this.props.updateGuests}
+        {this.props.options ? <SearchOptions city={this.props.city} from={this.props.from} to={this.props.to} guests={this.props.guests}
+          updateCity={(val) => this.props.updateCity(val)} updateTo={(val) => this.props.updateTo(val)}
+          updateFrom={(val) => this.props.updateFrom(val)} updateGuests={(val) => this.props.updateGuests(val)}
         /> : null}
       </div>
     );

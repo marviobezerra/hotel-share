@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Avatar } from '@material-ui/core/';
 
-export default class MyMessages extends React.Component {
+export default class Messages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
