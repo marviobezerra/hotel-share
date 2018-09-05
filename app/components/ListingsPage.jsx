@@ -202,24 +202,10 @@ class SimpleMap extends React.Component {
               ))
             }
           </GridList>
-          {/*
-            this.state.selectedHotel ?
-            <div>
-              <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
-              <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Button style={{backgroundColor: '#008081', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
-                  Reset
-                </Button>
-              </div>
-            </div>
-             : this.state.hotels.map((hotel) => (
-               <AlternateListing classes={classes} hotel={hotel}/>
-            ))
-          */}
       </div>
       <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'Google Key Goes Here'}}
+          bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
