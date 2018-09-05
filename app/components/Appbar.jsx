@@ -78,7 +78,7 @@ export default class Appbar extends React.Component {
                       onClose={() => this.setState({anchorEl2: null})}>
                       <MenuItem onClick={() => this.setState({anchorEl2: null})}>
 
-                        <Link to="/mymessages" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My messages</Link>
+                        <Link to="/mymessages" onClick={() => this.props.app.setState({clickedConvo: false})} style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>My messages</Link>
                         {this.state.message.length? <Avatar style={{background: 'red', height: 20, width: 20, fontSize: 12, marginLeft: 10}}>{this.state.message.length}</Avatar> : null}
                       </MenuItem>
                       <MenuItem onClick={() => this.setState({anchorEl2: null})}>
