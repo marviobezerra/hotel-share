@@ -70,7 +70,7 @@ const styles = theme => ({
     flex: 1,
   },
   hotelName: {
-    color: '#008081',
+    color: '#3f51b5',
     fontWeight: 'bold'
   },
   largeContainer : {
@@ -93,7 +93,7 @@ const styles = theme => ({
   avatar: {
     margin: 10,
     color: '#fff',
-    backgroundColor: '#008081',
+    backgroundColor: '#3f51b5',
   },
   media: {
     height: 50,
@@ -187,7 +187,7 @@ class SimpleMap extends React.Component {
                   <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
                 </GridListTile>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <Button style={{backgroundColor: '#008081', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
+                  <Button style={{backgroundColor: '#3f51b5', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
                     Reset
                   </Button>
                 </div>

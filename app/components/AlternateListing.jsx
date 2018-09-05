@@ -296,6 +296,7 @@ class ListingWithDialog extends React.Component {
                         <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
                           {console.log(listing)}
                           <div style={{display:'inline-flex'}}>
+                            {console.log(listing.user)}
                             {listing.user.imgUrl ? <img className={classes.userImg} src={listing.user.imgUrl} /> ? listing.user.gender === 'Male' : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} />}
                             <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
                               <Typography variant="title" id="modal-title" align='center' color='inherit'>

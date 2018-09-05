@@ -37,8 +37,9 @@ module.exports = (City, Hotel) => {
           stars: data[i].stars,
           rating: data[i].rating,
           images: data[i].images,
+          description: data[i].description,
           location: data[i].location,
-          listings:data[i].listings,
+          listings: data[i].listings,
         };
       }
       hotels = hotels.map((hotel) => {
@@ -51,7 +52,10 @@ module.exports = (City, Hotel) => {
               || req.query.price && req.query.price < hotel.listings[i].price
               || req.query.gender && req.query.gender !== hotel.listings[i].user.gender
               || req.query.guests && req.query.guests > hotel.listings[i].guests
-            ) hotel.listings.splice(i, 1);
+            ) {
+              hotel.listings.splice(i, 1);
+              i--;
+            }
           }
         }
         if (!hotel.listings.length) return null;

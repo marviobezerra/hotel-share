@@ -51,7 +51,7 @@ export default class Marker extends React.Component {
   render () {
     return (
       <div>
-        {this.state.renderName ? <div style={{backgroundColor: '#fff', color: 'primary'}}>{this.props.text}</div> : <div></div>}
+        {this.state.renderName ? <div style={{backgroundColor: '#fff', color: 'primary'}}><h2 style={{weight:'bold'}}>{this.props.text}</h2></div> : <div></div>}
         <IconButton style={styles} onMouseOver={() => this.setState({renderName: true, badgeColor : 'secondary'})}
           onMouseLeave={() => this.setState({renderName: false, badgeColor : 'primary'})} onClick={() => this.addAndSelect()}>
           <Badge style={{ color: '#fff', margin:'5'}} badgeContent={'$' + this.props.price} color={this.state.badgeColor}/>
