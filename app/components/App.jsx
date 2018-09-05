@@ -1,15 +1,13 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
+
 import Appbar from './AppBar.jsx';
 import LandingPage from './LandingPage.jsx';
 import ListingsPage from './ListingsPage.jsx';
 import NewListing from './NewListing.jsx';
 import MyAccount from './MyAccount.jsx';
 import MyMessages from './MyMessages.jsx';
-
-import axios from 'axios';
-
-const clientUrl = "http://localhost:8080";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -76,14 +74,12 @@ export default class App extends React.Component {
       <div style={{height: "100%"}}>
         <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} avatarImg={this.state.user.imgUrl} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>
         <Route exact path="/listings" render={() => <ListingsPage avatarImg={this.state.user.imgUrl} city={this.state.city} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
-        <Route exact path="/" render={() => this.renderMain()} />
-        <Route exact path="/login" render={() => this.renderMain()} />
-        <Route exact path="/signup" render={() => this.renderMain()} />
+        <Route exact path="/" render={() => <Redirect to='/main' />} />
+        <Route path="/main" render={() => this.renderMain()} />
         <Route exact path="/newlisting" render={() => <NewListing updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />} />
         {this.state.auth ? <Route exact path="/myaccount" render={() => <MyAccount updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
         {this.state.auth ? <Route exact path="/mymessages" render={() => <MyMessages updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} user={this.state.user} app={this}/>} /> : <Redirect to="/" />}
         {this.state.auth ? <Route exact path="/myrequests" render={() => <MyRequests updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
-
       </div>
     )
   }

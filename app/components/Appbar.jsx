@@ -108,10 +108,10 @@ export default class Appbar extends React.Component {
                   </Menu></div>) :
                   (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
                     <Button color="default">
-                      <Link onClick={this.props.show()} to="/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
+                      <Link onClick={this.props.show()} to="/main/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
                     </Button>
                     <Button color="default">
-                      <Link onClick={this.props.show()} to="/signup" style={{color: "white", textDecoration: "none"}}>Sign Up</Link>
+                      <Link onClick={this.props.show()} to="/main/signup" style={{color: "white", textDecoration: "none"}}>Sign Up</Link>
                     </Button>
                 </div>)}
               </div>

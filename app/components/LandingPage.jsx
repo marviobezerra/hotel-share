@@ -18,6 +18,7 @@ export default class LandingPage extends React.Component {
   }
 
   componentDidMount() {
+    console.log('rerendered');
     axios.get('/api/cities')
     .then(resp => {
       this.setState({
@@ -78,12 +79,12 @@ export default class LandingPage extends React.Component {
       <div className="landing-page-container" onClick={(e) => this.hide(e)}>
         <div id="background-1" style={this.state.style1} />
         <div id="background-2" style={this.state.style2} />
-        <Route exact path="/" render={() => <SearchBox options={this.state.options} showOptions={() => this.showOptions()}
+        <Route exact path="/main" render={() => <SearchBox options={this.state.options} showOptions={() => this.showOptions()}
           city={this.props.city} updateCity={(val) => this.props.updateCity(val)}
           text={this.state.cities[(this.state.c + this.state.cities.length - 1) % this.state.cities.length].name}/>} />
-        <Route exact path="/login" render={() => this.props.auth || !this.props.show ? <Redirect to="/" /> :
+        <Route exact path="/main/login" render={() => this.props.auth || !this.props.show ? <Redirect to="/main" /> :
         <LoginPage login={() => this.props.login()} updateUser={(user) => this.props.updateUser(user)}/>} />
-        <Route exact path="/signup" render={() => this.props.auth || !this.props.show ? <Redirect to="/" /> :
+        <Route exact path="/main/signup" render={() => this.props.auth || !this.props.show ? <Redirect to="/main" /> :
         <SignUpPage hide={() => this.props.hide()}/>} />
       </div>
     )
