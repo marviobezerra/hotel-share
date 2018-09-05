@@ -118,7 +118,7 @@ class SimpleMap extends React.Component {
   }
 
   getHotels() {
-    console.log(this.props.city)
+    console.log(this.props)
     axios.get('/api/hotels/'+this.props.city.replace(' ', '+'))
     .then(res => {
       console.log(res)
