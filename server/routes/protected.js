@@ -27,6 +27,12 @@ module.exports = (User, Hotel, Listing) => {
     .catch(() => res.json({success: false}));
   });
 
+  router.post('/readNotification', (req, res) => {
+    Notification.findByIdAndUpdate(req.body.notification, {$set: {read: true}})
+    .then(() => res.json({success: true}))
+    .catch(() => res.json({success: false}));
+  });
+
   router.get('/messages', (req, res) => {
     Message.find({$or: [{to: req.user._id}, {from: req.user._id}]})
     .populate({path: 'from to', select: 'name imgUrl'})
@@ -135,6 +141,7 @@ module.exports = (User, Hotel, Listing) => {
         host: req.user._id,
         guest: request.requester,
         hotel: request.listing.hotel,
+        room: request.listing.room,
         guests: request.listing.guests,
         from: request.listing.from,
         to: request.listing.to,

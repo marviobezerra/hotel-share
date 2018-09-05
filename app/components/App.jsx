@@ -74,8 +74,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div style={{height: "100%"}}>
-        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} avatarImg={this.state.user.imgUrl} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this} />
-        <Route exact path="/listings" render={() => <ListingsPage city={this.state.city} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
+        <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} avatarImg={this.state.user.imgUrl} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>
+        <Route exact path="/listings" render={() => <ListingsPage avatarImg={this.state.user.imgUrl} city={this.state.city} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
         <Route exact path="/" render={() => this.renderMain()} />
         <Route exact path="/login" render={() => this.renderMain()} />
         <Route exact path="/signup" render={() => this.renderMain()} />

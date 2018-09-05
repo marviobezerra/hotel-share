@@ -178,7 +178,6 @@ class SimpleMap extends React.Component {
 
   render() {
     const classes = this.props.classStyle
-    console.log(this.props)
     return (
       <div className={classes.largeContainer}>
         <div className={classes.cards}>
@@ -220,7 +219,7 @@ class SimpleMap extends React.Component {
       </div>
       <div style={{ height: '100vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'Google Key goes here'}}
+          bootstrapURLKeys={{ key: 'Google Key Goes Here'}}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
         >
