@@ -216,6 +216,8 @@ class ListingWithDialog extends React.Component {
       }
     })
     .catch((err) => alert(err))
+
+    {/*axios.post('/request', {to: listing.to, from: listing.from, listing: listing._id})*/}
   }
 
   render() {

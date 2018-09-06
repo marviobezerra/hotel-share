@@ -1,8 +1,13 @@
 import axios from 'axios';
 import React from 'react';
 import _ from 'underscore';
-import { Avatar, Typography, Divider, List, ListItem, Button, ListItemText } from '@material-ui/core/';
-import { People } from '@material-ui/icons/';
+import GoogleMapReact from 'google-map-react';
+import geocoder from 'geocoder';
+import { Avatar, Typography, Divider, List, ListItem, Button,
+   ListItemText, ListItemIcon, IconButton, Dialog, DialogContent} from '@material-ui/core/';
+import { People, LocationOn} from '@material-ui/icons/';
+
+const AnyReactComponent = ({ text }) => <div><LocationOn style={{color:'red'}}/></div>;
 
 export default class Bookings extends React.Component {
   constructor(props) {
@@ -10,8 +15,37 @@ export default class Bookings extends React.Component {
     this.state = {
       bookingsHost: [],
       bookingsGuest: [],
+      openMap: false,
+      lat: null,
+      long: null,
+      booking: {}
     }
   }
+
+  handleMapClose() {
+    this.setState({
+      openMap: false,
+      lat: null,
+      long: null,
+      booking: {}
+    })
+  }
+
+  /* handleOpenMap(latitude, longitude, bkg) {
+    this.setState({
+      openMap: true,
+      lat: latitude,
+      long: longitude,
+      booking: bkg
+    })
+  }
+
+  setAddress() {
+    geocoder.reverseGeocode( this.state.lat, this.state.long, function ( err, data ) {
+        // do something with data
+        console.log(data)
+    });
+  } */
 
   renderGuest(bg) {
     return (
@@ -20,8 +54,15 @@ export default class Bookings extends React.Component {
           <Typography variant="subheader" align='left' color='inherit'> {bg.from} - {bg.to} </Typography>
         </ListItem>
         <ListItem>
+          <Avatar alt="" src={bg.hotel.images[0]} />
+          <Typography variant="subheader" align='left' color='inherit'> {bg.hotel.name} </Typography>
+          <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}>
+            <LocationOn />
+          </IconButton>
+        </ListItem>
+        <ListItem>
           <Avatar alt="" src={bg.host.imgUrl} />
-          <ListItemText primary={`${bg.guest.name.fname} ${bg.guest.name.lname}`} />
+          <ListItemText primary={`${bg.host.name.fname} ${bg.host.name.lname}`} />
           <ListItemText style={{color:'green'}} primary={`${'$' + bg.price} `} />
         </ListItem>
         <Divider light />
@@ -37,7 +78,16 @@ export default class Bookings extends React.Component {
         </ListItem>
         <ListItem>
           <Avatar alt="" src={bg.hotel.images[0]} />
-          <Typography variant="subheader" align='left' color='inherit'> {bg.hotel.name} </Typography>
+          <ListItemText primary={`${bg.hotel.name}`} />
+          <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}
+            >
+            <LocationOn />
+          </IconButton>
+        </ListItem>
+        <ListItem>
+          <Avatar alt="" src={bg.guest.imgUrl} />
+          <ListItemText primary={`${bg.guest.name.fname} ${bg.guest.name.lname}`} />
+          <ListItemText style={{color:'green'}} primary={`${'$' + bg.price} `} />
         </ListItem>
         <Divider light />
     </List>
@@ -67,8 +117,27 @@ export default class Bookings extends React.Component {
     const orderedBks = this.orderBookings(this.state.bookingsGuest);
     return (
       <div className="bookings-container">
+        <Dialog
+          open={this.state.openMap}
+          onClose={() => this.handleMapClose()}
+          scroll={this.state.scroll}
+          aria-labelledby="scroll-dialog-title"
+        >
+          <DialogContent style={{ height: '75vh', width: '75vh'}}>
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
+              defaultCenter={{lat: this.state.lat, lng: this.state.long}}
+              defaultZoom={14}
+            >
+              <AnyReactComponent
+                lat={this.state.lat}
+                lng={this.state.long}
+              />
+            </GoogleMapReact>
+          </DialogContent>
+          </Dialog>
         <div className="guest-box">
-          <Typography variant="title" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Host </Typography>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Host </Typography>
           {this.state.bookingsGuest.length ? Object.keys(orderedBks).map((city) =>
             <div>
               <List>
@@ -81,7 +150,7 @@ export default class Bookings extends React.Component {
           ): null}
         </div>
         <div className="host-box">
-          <Typography variant="title" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Guest </Typography>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Guest </Typography>
           {this.state.bookingsGuest.length ? Object.keys(orderedBks).map((city) =>
             <div>
               <List>
@@ -90,7 +159,6 @@ export default class Bookings extends React.Component {
                 </ListItem>
                 {orderedBks[city].map(bg => this.renderHost(bg))}
               </List>
-              <Divider light />
             </div>
           ): null}
         </div>
