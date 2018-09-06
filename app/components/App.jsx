@@ -80,7 +80,6 @@ export default class App extends React.Component {
     />;
   }
   render() {
-    console.log(this.state.user._id);
     return (
       <div style={{height: "100%"}}>
         <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>

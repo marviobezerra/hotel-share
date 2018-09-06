@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const listingSchema = new mongoose.Schema({
-  user: {
+  host: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true,
