@@ -82,17 +82,20 @@ module.exports = (User, Hotel, Listing) => {
 
   router.get('/requestsGuest', (req, res) => {
     Request.find({guest: req.user._id})
-    .populate([{path: 'listing'}, {path: 'from to', select: 'name imgUrl'}])
+    .populate([
+      {path: 'listing', populate: {path: 'hotel', select: 'name city'}},
+      {path: 'host', select: 'name imgUrl'}])
     .then((requests) => res.json({success: true, requests}))
     .catch(() => res.json({success: false}));
   });
 
   router.get('/requestsHost', (req, res) => {
-    Listing.find({host: req.user._id})
-    .then((listings) => {
-      Promise.all(listings.map((listing) => (Request.find({listing: listing._id}))))
-      .then((reqs) => res.json({success: true, requests: reqs.map((requests, i) => ({listing: listings[i], requests}))}));
-    }).catch(() => res.json({success: false}));
+    Request.find({host: req.user._id})
+    .populate([
+      {path: 'listing', populate: {path: 'hotel', select: 'name city'}},
+      {path: 'guest', select: 'name imgUrl'}])
+    .then((requests) => res.json({success: true, requests}))
+    .catch(() => res.json({success: false}));
   });
 
   router.get('/bookingsGuest', (req, res) => {
