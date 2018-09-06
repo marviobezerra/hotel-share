@@ -219,7 +219,14 @@ class ListingWithDialog extends React.Component {
 
     console.log(listing)
 
-    {/*axios.post('/request', {to: listing.to, from: listing.from, listing: listing._id})*/}
+    axios.post('/request', {to: this.props.to, from: this.props.from, listing: listing._id})
+    .then(resp => {
+      if(resp.data.success) this.setState({openSnack: true, listingMessage: ''});
+      else {
+        alert(resp)
+      }
+    })
+    .catch((err) => alert(err))
   }
 
   render() {
@@ -409,7 +416,7 @@ function AlternateListing(props) {
   let image = images[0]
   return (
     <div>
-      <ListingWithDialog classes={classes} hotel={props.hotel}/>
+      <ListingWithDialog classes={classes} hotel={props.hotel} to={props.to} from={props.from}/>
     </div>
   );
 }

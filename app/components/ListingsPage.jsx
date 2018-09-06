@@ -177,7 +177,7 @@ class SimpleMap extends React.Component {
                 this.state.selectedHotel ?
                 <div>
                   <GridListTile key={2}>
-                    <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
+                    <AlternateListing to={this.props.to} from={this.props.from} classes={classes} hotel={this.state.selectedHotel}/>
                   </GridListTile>
                   <div style={{display: 'flex', justifyContent: 'center'}}>
                     <Button style={{backgroundColor: '#3f51b5', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
@@ -187,7 +187,7 @@ class SimpleMap extends React.Component {
                 </div>
                  : this.state.hotels.map((hotel) => (
                    <GridListTile key={hotel.name}>
-                     <AlternateListing classes={classes} hotel={hotel}/>
+                     <AlternateListing to={this.props.to} from={this.props.from} classes={classes} hotel={hotel}/>
                    </GridListTile>
                 ))
               }
