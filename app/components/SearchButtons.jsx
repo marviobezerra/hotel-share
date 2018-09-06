@@ -78,7 +78,9 @@ class SearchButtons extends React.Component {
     if(state.updatedGuests) guests = this.props.updateGuests(state.updatedGuests)
 
     Promise.all(city, todo, from, guests)
-    .then(() => getHotels())
+    .then(() => {
+      this.props.setCityData()
+      getHotels()})
 
     this.setState({
       updatedTo: null,

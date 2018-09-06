@@ -26,10 +26,10 @@ var axios = require('axios');
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    /* display: 'flex',
+    flexWrap: 'wrap',*/
     minWidth: 300,
-    width: '100%',
+    maxWidth: '100%',
   },
   image: {
     position: 'relative',
@@ -293,7 +293,7 @@ class ListingWithDialog extends React.Component {
                   <div>
                     <ListItem>
                       <Button onClick={() => this.handleOpenModal(listing)}>
-                        <ListItemText style={{color:'#008081'}} primary={'Price: $'+listing.price+' From: '+listing.from+' To: '+listing.to} />
+                        <ListItemText style={{color:'#009090'}} primary={'Price: $'+listing.price+' From: '+listing.from+' To: '+listing.to} />
                       </Button>
                       <Modal
                         aria-labelledby="simple-modal-title"
@@ -400,9 +400,6 @@ class ListingWithDialog extends React.Component {
           <DialogActions>
             <Button onClick={() => this.handleClickClose()} color="primary">
               Go Back
-            </Button>
-            <Button onClick={() => this.handleClickClose()} color="primary">
-              Subscribe
             </Button>
           </DialogActions>
       </Dialog>

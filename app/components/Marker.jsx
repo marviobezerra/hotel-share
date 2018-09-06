@@ -21,6 +21,15 @@ const styles = {
   transform: 'translate(-50%, -50%)',
 }
 
+const badgeStyles = theme => ({
+  margin: {
+    margin: theme.spacing.unit * 2,
+  },
+  padding: {
+    padding: `0 ${theme.spacing.unit * 2}px`,
+  },
+});
+
 export default class Marker extends React.Component {
   constructor(props){
     super(props)
@@ -50,10 +59,13 @@ export default class Marker extends React.Component {
     return (
       <div>
         {this.state.renderName ? <div style={{backgroundColor: '#fff', color: 'primary'}}><h2 style={{weight:'bold'}}>{this.props.text}</h2></div> : <div></div>}
-        <IconButton style={styles} onMouseOver={() => this.setState({renderName: true, badgeColor : 'secondary'})}
-          onMouseLeave={() => this.setState({renderName: false, badgeColor : 'primary'})} onClick={() => this.addAndSelect()}>
-          <Badge style={{ color: '#fff', margin:'5'}} badgeContent={'$' + this.props.price} color={this.state.badgeColor}/>
-        </IconButton>
+          <IconButton style={styles} onMouseOver={() => this.setState({renderName: true, badgeColor : 'secondary'})}
+            onMouseLeave={() => this.setState({renderName: false, badgeColor : 'primary'})} onClick={() => this.addAndSelect()}>
+            <Badge style={{marginRight: 15}} badgeContent={this.props.price} color="primary">
+              <LocationOnIcon style={{color:'red'}}/>
+            </Badge>
+            {/*<Badge style={{ color: '#fff', margin:'5'}} badgeContent={'$' + this.props.price} color={this.state.badgeColor}/>*/}
+          </IconButton>
       </div>
       )
   }
