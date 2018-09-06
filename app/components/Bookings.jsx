@@ -54,7 +54,7 @@ export default class Bookings extends React.Component {
         </ListItem>
         <ListItem>
           <Avatar alt="" src={bg.hotel.images[0]} />
-          <Typography variant="subheader" align='left' color='inherit'> {bg.hotel.name} </Typography>
+          <ListItemText primary={`${bg.hotel.name}`} />
           <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}>
             <LocationOn />
           </IconButton>
@@ -78,8 +78,7 @@ export default class Bookings extends React.Component {
         <ListItem>
           <Avatar alt="" src={bg.hotel.images[0]} />
           <ListItemText primary={`${bg.hotel.name}`} />
-          <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}
-            >
+          <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}>
             <LocationOn />
           </IconButton>
         </ListItem>
@@ -124,7 +123,7 @@ export default class Bookings extends React.Component {
         >
           <DialogContent style={{ height: '75vh', width: '75vh'}}>
             <GoogleMapReact
-              bootstrapURLKeys={{ key: 'Google Key Here'}}
+              bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
               defaultCenter={{lat: this.state.lat, lng: this.state.long}}
               defaultZoom={14}
             >

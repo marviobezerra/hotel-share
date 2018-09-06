@@ -27,14 +27,13 @@ mongoose.connection.on('connected', () => {
     .save()
     .then(() => console.log('city saved'))
     .catch(() => console.log('failed saving city'));
-  }
-  for (let i = 0; i < hotels.length; i++) {
+  } */
+  /* for (let i = 0; i < hotels.length; i++) {
     (new Hotel(hotels[i]))
     .save()
     .then(() => console.log('hotel saved'))
     .catch(() => console.log('failed saving hotel'));
-  }
-  */
+  }*/
 });
 mongoose.connect(process.env.MONGODB_URI);
 
