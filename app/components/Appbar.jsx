@@ -95,7 +95,7 @@ export default class Appbar extends React.Component {
         <AppBar position="static" style={this.props.style}>
           <Toolbar style={{display: "flex"}}>
             <div style={{display: "flex", width: "100%"}}>
-              <Link to="/" onClick={() => this.props.updateAppBarStyle({height: 0})} style={{textDecoration: "none"}}><Avatar style={{backgroundColor: '#fff', color: '#3f51b5'}}>H</Avatar></Link>
+              <Link to="/" onClick={() => this.props.updateAppBarStyle({height: 0})} style={{textDecoration: "none"}}><Avatar style={{background: "rgba(0, 0, 0, 0.08)", color: "white"}}>H</Avatar></Link>
                 {this.props.auth ?  (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
                     <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}>
                       <Link to='/messages' onClick={() => this.readMessages()}>
@@ -118,7 +118,6 @@ export default class Appbar extends React.Component {
                       <Link to={this.notificationLink(notification.category)} onClick={() => this.readNotification(notification._id)}>
                         <MenuItem style={{fontSize: 12}}>
                         <span>{notification.message}</span>
-                        {/* onClick={() => this.readNotification(notification._id)} */}
                         </MenuItem>
                       </Link>)}
                     </Menu>
@@ -131,7 +130,7 @@ export default class Appbar extends React.Component {
                                               aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                                               aria-haspopup="true"
                                               onClick={(e) => this.handleClick(e)}
-                                              style={{backgroundColor: "rgba(0, 0, 0, 0.08)", color: "#fff"}}>User</Button>}
+                                              style={{backgroundColor: "rgba(0, 0, 0, 0.08)", color: "white"}}>User</Button>}
                   <Menu
                     id="simple-menu"
                     anchorEl={this.state.anchorEl}

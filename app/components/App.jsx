@@ -76,8 +76,8 @@ export default class App extends React.Component {
       hide={() => this.hide()} login={() => this.login()} updateCity={(val) => this.updateCity(val)}
       updateTo={(val) => this.updateTo(val)} updateFrom={(val) => this.updateFrom(val)} city={this.state.city}
       from={this.state.from} to={this.state.to} guests={this.state.guests}
-      updateGuests={(val) => this.updateGuests(val)}
-      updateUser={(user) => this.updateUser(user)}
+      updateGuests={(val) => this.updateGuests(val)} updateUser={(user) => this.updateUser(user)}
+      updateAppBarStyle={(val) => this.updateAppBarStyle(val)}
     />;
   }
   render() {

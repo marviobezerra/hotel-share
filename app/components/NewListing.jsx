@@ -52,6 +52,7 @@ export default class NewListing extends React.Component {
       from: '',
       to: '',
       price: 0,
+      info: '',
       hotelDoc: {},
       cityHotels: [],
       openModal: false,
@@ -142,7 +143,7 @@ export default class NewListing extends React.Component {
               onChange={(e) => this.setState({to: e.target.value})}
             />
             <TextField
-              label="Price"
+              label="Price for 1 night"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -167,16 +168,15 @@ export default class NewListing extends React.Component {
               style={{width: "100%"}}
               onChange={(e) => this.setState({room: e.target.value})}
             />
-
             <TextField
               style={{width:'100%'}}
-              label="Direct Message"
+              label="Additional information..."
               id="bootstrap-input"
               multiline='true'
               fullWidth='true'
-              onChange={(e) => this.handleMessageChange(e)}
+              onChange={(e) => this.setState({info: e.target.value})}
               InputProps={{
-                disableUnderline: true,
+                // disableUnderline: true,
                 classes: {
                   root: classes.bootstrapRoot,
                   input: classes.bootstrapInput,
@@ -187,9 +187,9 @@ export default class NewListing extends React.Component {
                 className: classes.bootstrapFormLabel,
               }}
             />
-
-
-            <Button variant="contained" onClick={() => this.submitListing()}>Submit Listing</Button></div>)
+            <Button variant="contained"
+              onClick={() => this.submitListing()}
+              style={{backgroundColor: "#009090", color: "white", marginTop: 20}}>Submit Listing</Button></div>)
             : null}
             <Snackbar
               anchorOrigin={{

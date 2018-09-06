@@ -141,7 +141,7 @@ html, body, #root {
 }
 
 .new-listing-box, .account-box, .edit-profile-box {
-  /* background-color: #fff; */
+  background-color: #fff;
   padding: 20px;
   /* border-radius: 7px; */
   box-shadow: 1px 2px 5px #333;

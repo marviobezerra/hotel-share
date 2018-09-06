@@ -46,6 +46,7 @@ module.exports = (City, Hotel) => {
         if (req.query.stars && hotel.stars < req.query.stars) return null;
         if (req.query.rating && hotel.rating < req.query.rating) return null;
         if (req.query.from && req.query.to || req.query.price || req.query.gender || req.query.guests) {
+          console.log("inside where i should not be");
           for (let i = 0; i < hotel.listings.length; i++) {
             if ( compareDates(hotel.listings[i].from, req.query.from) === 1
               || compareDates(hotel.listings[i].to, req.query.to) === -1

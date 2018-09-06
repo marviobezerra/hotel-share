@@ -18,7 +18,7 @@ export default class LandingPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log('rerendered');
+    this.props.updateAppBarStyle({height: 0});
     axios.get('/api/cities')
     .then(resp => {
       this.setState({
