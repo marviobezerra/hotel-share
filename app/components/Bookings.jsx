@@ -2,7 +2,6 @@ import axios from 'axios';
 import React from 'react';
 import _ from 'underscore';
 import GoogleMapReact from 'google-map-react';
-import geocoder from 'geocoder';
 import { Avatar, Typography, Divider, List, ListItem, Button,
    ListItemText, ListItemIcon, IconButton, Dialog, DialogContent} from '@material-ui/core/';
 import { People, LocationOn} from '@material-ui/icons/';
@@ -31,7 +30,7 @@ export default class Bookings extends React.Component {
     })
   }
 
-  /* handleOpenMap(latitude, longitude, bkg) {
+  handleOpenMap(latitude, longitude, bkg) {
     this.setState({
       openMap: true,
       lat: latitude,
@@ -40,12 +39,12 @@ export default class Bookings extends React.Component {
     })
   }
 
-  setAddress() {
+  /* setAddress() {
     geocoder.reverseGeocode( this.state.lat, this.state.long, function ( err, data ) {
         // do something with data
         console.log(data)
     });
-  } */
+  }*/
 
   renderGuest(bg) {
     return (
