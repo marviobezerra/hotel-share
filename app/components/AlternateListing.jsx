@@ -208,7 +208,7 @@ class ListingWithDialog extends React.Component {
 
   handleMessageSubmit(listing) {
     let message = this.state.listingMessage
-    axios.post('/api/message/', {to: listing.user._id, content:message})
+    axios.post('/api/message/', {to: listing.host._id, content:message})
     .then(resp => {
       if(resp.data.success) this.setState({openSnack: true, listingMessage: ''});
       else {
@@ -294,10 +294,10 @@ class ListingWithDialog extends React.Component {
                       >
                         <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
                           <div style={{display:'inline-flex'}}>
-                            {listing.user.imgUrl ? <img className={classes.userImg} src={listing.user.imgUrl} /> ? listing.user.gender === 'Male' : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} />}
+                            {listing.host.imgUrl ? <img className={classes.userImg} src={listing.host.imgUrl} /> ? listing.host.gender === 'Male' : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} />}
                             <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
                               <Typography variant="title" id="modal-title" align='center' color='inherit'>
-                                {listing.user.name.fname} {listing.user.name.lname}
+                                {listing.host.name.fname} {listing.host.name.lname}
                               </Typography>
                               <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">
                                 Email: sample@gmail.com
@@ -323,12 +323,12 @@ class ListingWithDialog extends React.Component {
                           <div>
                             <div style={{width:'100%'}}>
                               <Typography variant="subheading" align="center" id="simple-modal-description" color="primary">
-                                Send {listing.user.name.fname} a message!
+                                Send {listing.host.name.fname} a message!
                               </Typography>
                             </div>
                             <TextField
                               style={{width:'100%'}}
-                              defaultValue={`Message ${listing.user.name.fname} ${listing.user.name.lname}`}
+                              defaultValue={`Message ${listing.host.name.fname} ${listing.host.name.lname}`}
                               label="Direct Message"
                               id="bootstrap-input"
                               multiline='true'
@@ -364,7 +364,7 @@ class ListingWithDialog extends React.Component {
                                 message={
                                   <span id="message-id">
                                     <CheckCircleIcon/>
-                                    Sent message to {listing.user.name.fname}!
+                                    Sent message to {listing.host.name.fname}!
                                   </span>}
                                 action={[
                                   <IconButton

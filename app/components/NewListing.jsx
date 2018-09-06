@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import green from '@material-ui/core/colors/green';
 import { TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, Select, MenuItem, InputLabel, InputAdornment, Snackbar, SnackbarContent, IconButton } from '@material-ui/core/';
-import { DateRange, Group, AttachMoney, VpnKey, CheckCircle, Close } from '@material-ui/icons/';
+import { DateRange, Group, AttachMoney, VpnKey, CheckCircle, Close, Error } from '@material-ui/icons/';
 
 const classes = theme => ({
   bootstrapRoot: {
@@ -55,7 +55,8 @@ export default class NewListing extends React.Component {
       info: '',
       hotelDoc: {},
       cityHotels: [],
-      openModal: false,
+      openSuccessModal: false,
+      openFailModal: false,
     }
   }
   componentDidMount() {
@@ -72,15 +73,18 @@ export default class NewListing extends React.Component {
     axios.post('/api/list', this.state)
     .then(res => {
       if(res.data.success){
-        this.setState({openModal: true})
+        this.setState({openSuccessModal: true})
       } else {
-        alert("Success", res.data.success)
+        this.setState({openFailModal: true})
       }
     })
   }
 
-  snackClose() {
-    this.setState({openModal: false})
+  snackSuccessClose() {
+    this.setState({openSuccessModal: false})
+  }
+  snackFailClose() {
+    this.setState({openFailModal: false})
   }
 
   render() {
@@ -156,7 +160,7 @@ export default class NewListing extends React.Component {
               onChange={(e) => this.setState({price: e.target.value})}
             />
             <TextField
-              label="Room Number"
+              label="Room Type"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -193,20 +197,20 @@ export default class NewListing extends React.Component {
             : null}
             <Snackbar
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: 'top',
+                horizontal: 'center',
               }}
-              open={this.state.openModal}
+              open={this.state.openSuccessModal}
               autoHideDuration={6000}
-              onClose={() => this.snackClose()}
+              onClose={() => this.snackSuccessClose()}
             >
               <SnackbarContent
                 className="listingSuccess"
                 aria-describedby="client-snackbar"
-                style={{backgroundColor: green[600]}}
+                style={{backgroundColor: "#009090"}}
                 message={
-                  <span id="client-snackbar" >
-                    <CheckCircle style={{backgroundColor: green[600]}} />
+                  <span id="client-snackbar" style={{display: "flex", alignItems: "center"}}>
+                    <CheckCircle style={{backgroundColor: "#009090", marginRight: 20}} />
                     Posted your {this.state.city} listing
                   </span>
                 }
@@ -215,7 +219,38 @@ export default class NewListing extends React.Component {
                     key="close"
                     aria-label="Close"
                     color="inherit"
-                    onClick={() => this.snackClose()}
+                    onClick={() => this.snackSuccessClose()}
+                  >
+                    <Close />
+                  </IconButton>,
+                ]}
+              />
+            </Snackbar>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                open={this.state.openFailModal}
+                autoHideDuration={6000}
+                onClose={() => this.snackFailClose()}
+              >
+              <SnackbarContent
+                className="listingSuccess"
+                aria-describedby="client-snackbar"
+                style={{backgroundColor: "#b03030"}}
+                message={
+                  <span id="client-snackbar" style={{display: "flex", alignItems: "center"}}>
+                    <Error style={{backgroundColor: "b03030", marginRight: 20}} />
+                    Could not post your {this.state.city} listing, please fill in all fields...
+                  </span>
+                }
+                action={[
+                  <IconButton
+                    key="close"
+                    aria-label="Close"
+                    color="inherit"
+                    onClick={() => this.snackFailClose()}
                   >
                     <Close />
                   </IconButton>,

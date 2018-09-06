@@ -118,11 +118,12 @@ module.exports = (User, Hotel, Listing) => {
       from: req.body.from,
       to: req.body.to,
       price: req.body.price,
+      info: req.body.info
     });
     listing.save()
     .then(() => (Hotel.findByIdAndUpdate(req.body.hotel, {$push: {listings: listing._id}})))
     .then(() => res.json({success: true}))
-    .catch(() => res.json({success: false}));
+    .catch((err) => res.json({success: false, err: err}));
   });
 
   router.post('/unlist', (req, res) => {
