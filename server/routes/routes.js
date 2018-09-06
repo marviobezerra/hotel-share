@@ -22,8 +22,13 @@ module.exports = (City, Hotel) => {
   });
 
   router.get('/hotels/:city', (req, res) => {
-    const city = req.params.city.replace('+', ' ');
-    Hotel.find({city})
+    Hotel.find({city: req.params.city.replace('+', ' ')})
+    .then((hotels) => res.json({success: true, hotels}))
+    .catch(() => res.json({success: false}));
+  });
+
+  router.get('/search/:city', (req, res) => {
+    Hotel.find({city: req.params.city.replace('+', ' ')})
     .populate({
       path: 'listings',
       populate: {path: 'user', select: 'name gender'},

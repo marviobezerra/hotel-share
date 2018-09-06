@@ -36,10 +36,14 @@ const bookingSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  info: {
+    type: String,
+    required: true,
+  },
   paid: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);
