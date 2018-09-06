@@ -19,7 +19,12 @@ export default class Appbar extends React.Component {
       anchorEl2: null,
       avatarImg: '',
       notifications: [],
-      message: [], request: [], accept: [], reject: [], cancel: [], other: [],
+      message: [],
+      request: [],
+      accept: [],
+      reject: [],
+      cancel: [],
+      other: [],
     }
   }
 
@@ -135,7 +140,21 @@ export default class Appbar extends React.Component {
                   >
                     <MenuItem onClick={() => this.handleClose()}><Link to="/account" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>Account</Link></MenuItem>
                     <MenuItem onClick={() => this.handleClose()}><Link to="/newlisting" style={{color: "rgba(0, 0, 0, 0.87)", textDecoration: "none"}}>List New</Link></MenuItem>
-                    <MenuItem onClick={() => this.props.logout()}>Logout</MenuItem>
+                    <MenuItem onClick={() => {
+                      this.setState({
+                        anchorEl: null,
+                        anchorEl2: null,
+                        avatarImg: '',
+                        notifications: [],
+                        message: [],
+                        request: [],
+                        accept: [],
+                        reject: [],
+                        cancel: [],
+                        other: [],
+                      });
+                      this.props.logout();
+                    }}>Logout</MenuItem>
                   </Menu></div>) :
                   (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
                     <Link onClick={this.props.show()} to="/main/login" style={{textDecoration: "none"}}>

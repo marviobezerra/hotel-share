@@ -117,14 +117,31 @@ class SimpleMap extends React.Component {
     }
   }
 
+  createQueryString(to, from, guests) {
+    let queryString = "?"
+    if(to) queryString += ("to=" + to + "&")
+    if(from) queryString += ("from=" + from + "&")
+    if(guests) queryString += ("guests=" + guests)
+
+    return queryString
+  }
+
   getHotels() {
-    axios.get('/api/hotels/'+this.props.city.replace(' ', '+'))
+    console.log('getHotels')
+    console.log(this)
+    console.log(this.props)
+    console.log(this.props.city)
+
+    let queryString = (this.props.city.replace(' ', '+') + this.createQueryString(this.props.to, this.props.from, this.props.guests))
+    console.log(queryString)
+    axios.get('/api/hotels/'+ this.props.city.replace(' ', '+') + this.createQueryString(this.props.to, this.props.from, this.props.guests))
     .then(res => {
-      console.log(res.data.hotels);
+      console.log(res)
       let hotels = res.data.hotels;
       this.setState({
         hotels: hotels
       })
+      console.log(res)
       return hotels
     })
     .catch(err => {
@@ -140,34 +157,6 @@ class SimpleMap extends React.Component {
     })
   }
 
-  createCard(classes, hotel) {
-    return (
-      <div className={classes.cardContainer}>
-        <Card className={classes.card}>
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography className={classes.hotelName} variant="headline">{hotel.name}</Typography>
-              <Typography variant="subheading">
-                {hotel.rating}/10
-              </Typography>
-              <Typography variant="subheading">
-                Great location in the center of the financial district.
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}>
-              <Button size="small" color="primary">
-                from {hotel.stars}
-              </Button>
-            </div>
-          </div>
-          <div className={classes.cover}>
-            <img className={classes.carousel} src = {hotel.images[0]}/>
-          </div>
-        </Card>
-      </div>
-    )
-  }
-
   componentDidMount() {
     this.props.updateAppBarStyle({height: 60});
     this.getHotels();
@@ -176,66 +165,57 @@ class SimpleMap extends React.Component {
   render() {
     const classes = this.props.classStyle
     return (
-      <div className={classes.largeContainer}>
-        <div className={classes.cards}>
-          <GridList cellHeight={'auto'} className={classes.gridList} cols={1}>
+      <div className={classes.divContainer}>
+        <SearchButtons updateCity={(val) => this.props.updateCity(val)} getHotels={() => this.getHotels()}
+        updateTo={(val) => this.props.updateTo(val)} updateFrom={(val) => this.props.updateFrom(val)} updateGuests={(val) => this.props.updateGuests(val)}/>
 
-            {
-              this.state.selectedHotel ?
-              <div>
-                <GridListTile key={2}>
-                  <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
-                </GridListTile>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <Button style={{backgroundColor: '#3f51b5', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
-                    Reset
-                  </Button>
+        <div className={classes.largeContainer}>
+          <div className={classes.cards}>
+            <GridList cellHeight={'auto'} className={classes.gridList} cols={1}>
+
+              {
+                this.state.selectedHotel ?
+                <div>
+                  <GridListTile key={2}>
+                    <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
+                  </GridListTile>
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Button style={{backgroundColor: '#3f51b5', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
+                      Reset
+                    </Button>
+                  </div>
                 </div>
-              </div>
-               : this.state.hotels.map((hotel) => (
-                 <GridListTile key={hotel.name}>
-                   <AlternateListing classes={classes} hotel={hotel}/>
-                 </GridListTile>
+                 : this.state.hotels.map((hotel) => (
+                   <GridListTile key={hotel.name}>
+                     <AlternateListing classes={classes} hotel={hotel}/>
+                   </GridListTile>
+                ))
+              }
+            </GridList>
+        </div>
+        <div style={{ height: '100vh', width: '100%'}}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: 'Google Key Here'}}
+            defaultCenter={this.state.center}
+            defaultZoom={this.state.zoom}
+          >
+            {console.log(this.state.hotels)}
+            {
+              this.state.hotels.map((hotel) => (
+                <Marker
+                  id={hotel._id}
+                  text={hotel.name}
+                  lat={hotel.location.lat}
+                  lng={hotel.location.long}
+                  price={hotel.listings[0].price}
+                  hotel={hotel}
+                  addSelectedHotel={(val) => this.addSelectedHotel(val)}
+                  selectedHotel={this.state.selectedHotel}
+                />
               ))
             }
-          </GridList>
-          {/*
-            this.state.selectedHotel ?
-            <div>
-              <AlternateListing classes={classes} hotel={this.state.selectedHotel}/>
-              <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Button style={{backgroundColor: '#008081', color: '#fff'}} onClick={() => this.setState({selectedHotel: null})}>
-                  Reset
-                </Button>
-              </div>
-            </div>
-             : this.state.hotels.map((hotel) => (
-               <AlternateListing classes={classes} hotel={hotel}/>
-            ))
-          */}
-      </div>
-      <div style={{ height: '100vh', width: '100%'}}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: 'Google Key Goes Here'}}
-          defaultCenter={this.state.center}
-          defaultZoom={this.state.zoom}
-        >
-          {console.log(this.state.hotels)}
-          {
-            this.state.hotels.map((hotel) => (
-              <Marker
-                id={hotel._id}
-                text={hotel.name}
-                lat={hotel.location.lat}
-                lng={hotel.location.long}
-                price={hotel.listings[0].price}
-                hotel={hotel}
-                addSelectedHotel={(val) => this.addSelectedHotel(val)}
-                selectedHotel={this.state.selectedHotel}
-              />
-            ))
-          }
-        </GoogleMapReact>
+          </GoogleMapReact>
+        </div>
       </div>
     </div>
     );
@@ -259,12 +239,17 @@ function ListingsPage(props) {
   indicators: true
   }
 
+  console.log("ListingsPage: " + props)
+  console.log(props)
+
   return (
     <div>
-      <SearchButtons />
-      <div className={classes.divContainer}>
-          <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} from={props.from} to={props.to} guests={props.guests} classStyle = {classes} className={classes.hotelMap}/>
-      </div>
+      <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} from={props.from}
+        to={props.to} guests={props.guests} classStyle = {classes} className={classes.hotelMap}
+        updateCity={(val) => props.updateCity(val)} updateTo={(val) => props.updateTo(val)}
+         updateFrom={(val) => props.updateFrom(val)} updateGuests={(val) => props.updateGuests(val)}
+         updateForce={() => props.updateForce()}
+       />
     </div>
   );
 }

@@ -46,20 +46,27 @@ export default class App extends React.Component {
     this.setState({auth: false, show: false});
     axios.post('/api/logout')
   }
+  updateForce() {
+    this.forceUpdate()
+  }
   updateUser(user) {
     this.setState({user: user});
   }
   updateCity(val) {
     this.setState({city: val})
+    return this.state.city
   }
   updateTo(val) {
     this.setState({to: val})
+    return this.state.to
   }
   updateFrom(val) {
     this.setState({from: val})
+    return this.state.from
   }
   updateGuests(val) {
     this.setState({guests: val})
+    return this.state.guests
   }
   updateAppBarStyle(newStyle){
     this.setState({style: newStyle})
@@ -77,7 +84,12 @@ export default class App extends React.Component {
     return (
       <div style={{height: "100%"}}>
         <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>
-        <Route exact path="/listings" render={() => <ListingsPage avatarImg={this.state.user.imgUrl} city={this.state.city} from={this.state.from} to={this.state.to} guests={this.state.guests} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
+        <Route exact path="/listings" render={() => <ListingsPage avatarImg={this.state.user.imgUrl}
+          city={this.state.city} from={this.state.from} to={this.state.to} guests={this.state.guests}
+          updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateCity={(val) => this.updateCity(val)}
+          updateTo={(val) => this.updateTo(val)} updateFrom={(val) => this.updateFrom(val)} updateGuests={(val) => this.updateGuests(val)}
+          updateForce={() => this.updateFoce()}
+        />}/>
         <Route exact path="/" render={() => <Redirect to='/main' />} />
         <Route path="/main" render={() => this.renderMain()} />
         <Route exact path="/newlisting" render={() => <NewListing updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />} />

@@ -78,9 +78,9 @@ class SearchOptions extends React.Component {
             style={{width: "50%", margin: 2}}
             onChange={(e) => this.props.updateGuests(e.target.value)}
           />
-          <Button variant="contained" onClick={() => this.submitData()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
-            <Link to='/listings'>Search</Link>
-          </Button>
+          <Link to='/listings'>
+          <Button variant="contained" style={{margin: 20, backgroundColor: "orange", color: "white"}} />
+          </Link>
         </div>
       </div>
     );

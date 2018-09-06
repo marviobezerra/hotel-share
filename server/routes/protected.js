@@ -61,26 +61,43 @@ module.exports = (User, Hotel, Listing) => {
   });
 
   router.get('/listings', (req, res) => {
-    Listing.find({user: req.user._id})
+    Listing.find({host: req.user._id})
     .then((listings) => res.json({success: true, listings}))
     .catch(() => res.json({success: false}));
   });
 
+  router.get('/requestsGuest', (req, res) => {
+    Request.find({guest: req.user._id})
+    .populate([{path: 'listing'}, {path: 'from to', select: 'name imgUrl'}])
+    .then((requests) => res.json({success: true, requests}))
+    .catch(() => res.json({success: false}));
+  });
+
+  router.get('/requestsHost', (req, res) => {
+    Listing.find({host: req.user._id})
+    .then((listings) => {
+      Promise.all(listings.map((listing) => (Request.find({listing: listing._id}))))
+      .then((reqs) => res.json({success: true, requests: reqs.map((requests, i) => ({listing: listings[i], requests}))}));
+    }).catch(() => res.json({success: false}));
+  });
+
   router.get('/bookingsGuest', (req, res) => {
     Booking.find({guest: req.user._id})
+    .populate([{path: 'hotel', select: 'city name images description location'}, {path: 'host guest', select: 'name imgUrl'}])
     .then((bookings) => res.json({success: true, bookings}))
     .catch(() => res.json({success: false}));
   });
 
   router.get('/bookingsHost', (req, res) => {
     Booking.find({host: req.user._id})
+    .populate([{path: 'hotel', select: 'city name images description location'}, {path: 'host guest', select: 'name imgUrl'}])
     .then((bookings) => res.json({success: true, bookings}))
     .catch(() => res.json({success: false}));
   });
 
   router.post('/list', (req, res) => {
     let listing = new Listing({
-      user: req.user._id,
+      host: req.user._id,
       hotel: req.body.hotel,
       room: req.body.room,
       guests: req.body.guests,
@@ -103,7 +120,7 @@ module.exports = (User, Hotel, Listing) => {
     .then((requests) => Promise.all(
       requests.map((request) => {
         (new Notification({
-          user: request.requester,
+          user: request.guest,
           message: `Your request to ${req.user.name.fname} was canceled because the listing was removed from our site!`,
           category: 'Reject',
           timestamp: new Date(),
@@ -116,19 +133,23 @@ module.exports = (User, Hotel, Listing) => {
   });
 
   router.post('/request', (req, res) => {
-    (new Request({
-      requester: req.user._id,
-      listing: req.body.listing,
-    })).save()
-    .then(() => (Listing.findById(req.body.listing)))
+    Listing.findById(req.body.listing)
     .then((listing) => (
-      (new Notification({
-        user: listing.user,
-        message: `${req.user.name.fname} sent you a booking request!`,
-        category: 'Request',
-        data: listing._id,
-        timestamp: new Date(),
-      })).save()))
+      (new Request({
+        host: listing.host,
+        listing: listing._id,
+        guest: req.user._id,
+        from: req.body.from,
+        to: req.body.to,
+      })).save()
+      .then(() => (
+        (new Notification({
+          user: listing.host,
+          message: `${req.user.name.fname} sent you a booking request!`,
+          category: 'Request',
+          timestamp: new Date(),
+        })).save()))
+    ))
     .then(() => res.json({success: true}))
     .catch(() => res.json({success: false}));
   });
@@ -139,34 +160,39 @@ module.exports = (User, Hotel, Listing) => {
     .then((request) => {
       (new Booking({
         host: req.user._id,
-        guest: request.requester,
+        guest: request.guest,
         hotel: request.listing.hotel,
         room: request.listing.room,
         guests: request.listing.guests,
-        from: request.listing.from,
-        to: request.listing.to,
+        from: request.from,
+        to: request.to,
         price: request.listing.price,
       })).save()
       .then(() => (
         (new Notification({
-          user: request.requester,
+          user: request.guest,
           message: `${req.user.name.fname} accepted your booking request!`,
           category: 'Accept',
           timestamp: new Date(),
         })).save()))
-      .then(() => (request.find({listing: request.listing})))
-      .then((requests) => Promise.all(
+      .then(() => (request.remove()))
+      .then(() => (Request.find({listing: request.listing})))
+      .then((requests) => (Promise.all(
+        //need to handle request dates
         requests.map((request) => {
           (new Notification({
-            user: request.requester,
+            user: request.guest,
             message: `Your request to ${request.listing.user.name.fname} was canceled because this listing is no longer available!`,
             category: 'Reject',
             timestamp: new Date(),
           })).save();
           return request.remove();
         })
-      ));
-      return request.listing.remove();
+      )))
+      .then(() => {
+        //need to handle listing dates
+        return request.listing.remove();
+      })
     })
     .then(() => res.json({success: true}))
     .catch(() => res.json({success: false}));
@@ -176,7 +202,7 @@ module.exports = (User, Hotel, Listing) => {
     Request.findById(req.body.request)
     .then((request) => {
       (new Notification({
-        user: request.requester,
+        user: request.guest,
         message: `${req.user.name.fname} rejected your booking request!`,
         category: 'Reject',
         data: request.listing,
