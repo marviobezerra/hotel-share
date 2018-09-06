@@ -7,6 +7,20 @@ const Payment = require('../models/payment');
 const Message = require('../models/message');
 const Notification = require('../models/notification');
 
+const getNewListingDates = (listingFrom, listingTo, from, to) => {
+  let dates = {};
+  if (listingFrom !== from) dates.dates1 = {from: listingFrom, to: from};
+  if (listingTo !== rto) dates.dates2 = {from: to, to: listingTo};
+  return dates;
+}
+
+const addToDate = (dateString, n) => {
+  let date = new Date(`${dateString}Z`);
+  date.setUTCDate(date.getUTCDate() + n);
+  d = [date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()];
+  return d.map((e) => (`${e}`.length > 1 ? `${e}` : `0${e}`)).join('-');
+}
+
 module.exports = (User, Hotel, Listing) => {
 
   router.get('/account', (req, res) => {
@@ -104,11 +118,12 @@ module.exports = (User, Hotel, Listing) => {
       from: req.body.from,
       to: req.body.to,
       price: req.body.price,
+      info: req.body.info
     });
     listing.save()
     .then(() => (Hotel.findByIdAndUpdate(req.body.hotel, {$push: {listings: listing._id}})))
     .then(() => res.json({success: true}))
-    .catch(() => res.json({success: false}));
+    .catch((err) => res.json({success: false, err: err}));
   });
 
   router.post('/unlist', (req, res) => {
@@ -167,6 +182,7 @@ module.exports = (User, Hotel, Listing) => {
         from: request.from,
         to: request.to,
         price: request.listing.price,
+        info: request.listing.info,
       })).save()
       .then(() => (
         (new Notification({

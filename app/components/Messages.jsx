@@ -26,28 +26,31 @@ export default class Messages extends React.Component {
     axios.get('/api/messages')
     .then(res => {
       if(res.data.success) {
-        this.setState({messages: res.data.messages}, () => {
-          if(this.state.messages.length) {
-            let messages = this.state.messages.slice();
-            let usersIds = [messages[0].from._id];
-            let foundUser = false;
-            for(let i = 0; i < messages.length; i++) {
-              for(let j = 0; j < usersIds.length; j++) {
-                if(messages[i].from._id === usersIds[j]) {
-                  foundUser = true;
+        if(res.data.messages.length) {
+          this.setState({messages: res.data.messages}, () => {
+            if(this.state.messages.length) {
+              let messages = this.state.messages.slice();
+              let usersIds = [messages[0].from._id];
+              let foundUser = false;
+              for(let i = 0; i < messages.length; i++) {
+                for(let j = 0; j < usersIds.length; j++) {
+                  if(messages[i].from._id === usersIds[j]) {
+                    foundUser = true;
+                  }
                 }
+                if(!foundUser) usersIds.push(messages[i].from._id);
+                foundUser = false;
               }
-              if(!foundUser) usersIds.push(messages[i].from._id);
-              foundUser = false;
+              usersIds = usersIds.filter(id => id !== this.props.user._id)
+              let sortedMsgs = [];
+              for(let i = 0; i < usersIds.length; i++) {
+                sortedMsgs.push(messages.filter(msg => msg.from._id === usersIds[i] || msg.to._id === usersIds[i]));
+              }
+              this.setState({sortedMsgs: sortedMsgs, isLoaded: true});
             }
-            usersIds = usersIds.filter(id => id !== this.props.user._id)
-            let sortedMsgs = [];
-            for(let i = 0; i < usersIds.length; i++) {
-              sortedMsgs.push(messages.filter(msg => msg.from._id === usersIds[i] || msg.to._id === usersIds[i]));
-            }
-            this.setState({sortedMsgs: sortedMsgs, isLoaded: true});
-          }
-        });
+          });
+        }
+        else this.setState({isLoaded: true});
       }
     });
   }

@@ -59,14 +59,14 @@ export default class EditProfile extends React.Component {
         if(res.data.success) this.setState({openDialog: true, dialogUpdate: true})
       })
       this.props.updateUser(input);
-      this.props.myAccount.setState({user: input})
+      this.props.account.setState({user: input})
     } else {this.setState({openDialog: true, dialogUpdate: false})}
   }
 
   render() {
     const languages = ['Arabic', 'Dutch', 'Czech', 'English', 'French', 'German', 'Greek', 'Hindi', 'Italian', 'Japanese', 'Korean', 'Mandarin', 'Persian', 'Polish', 'Portuguese', 'Punjabi', 'Romanian', 'Russian', 'Spanish', 'Ukranian', 'Urdu', 'Vietnamese'];
     return (
-      <div className="myaccount-container">
+      <div className="account-container">
         <div className="edit-profile-box">
           <div className="row">
             <TextField
@@ -174,7 +174,8 @@ export default class EditProfile extends React.Component {
             onChange={(e) => this.setState({input: Object.assign(this.state.input, {bio: e.target.value})})}
           />
           <FormControl style={{width: "100%", minWidth: 200}}>
-            <InputLabel>Languages you speak</InputLabel><br/>
+            {this.state.input.languages.length ?
+              <InputLabel>Languages you speak</InputLabel> : null}
             <div className="row wrap">
               {this.state.input.languages.map((language, index) =>
                 <div><Select value={language} onChange={(e) => this.editLanguage(e, index)} style={{marginBottom: 20}}>
@@ -195,7 +196,7 @@ export default class EditProfile extends React.Component {
                     {this.state.dialogUpdate ? "Your profile was successfully updated." : "You have not made any updates."}
                 </DialogContentText>
                 <DialogActions>
-                  <Button onClick={() => this.props.myAccount.setState({edit: false})}>
+                  <Button onClick={() => this.props.account.setState({edit: false})}>
                     Dismiss
                   </Button>
                 </DialogActions>

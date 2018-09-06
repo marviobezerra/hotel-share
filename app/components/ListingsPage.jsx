@@ -195,7 +195,7 @@ class SimpleMap extends React.Component {
         </div>
         <div style={{ height: '100vh', width: '100%'}}>
           <GoogleMapReact
-            bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
+            bootstrapURLKeys={{key: 'Google Key'}}
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}
           >
@@ -207,7 +207,7 @@ class SimpleMap extends React.Component {
                   text={hotel.name}
                   lat={hotel.location.lat}
                   lng={hotel.location.long}
-                  price={hotel.listings[0].price}
+                  price={hotel.listings[0] ? hotel.listings[0].price : 0}
                   hotel={hotel}
                   addSelectedHotel={(val) => this.addSelectedHotel(val)}
                   selectedHotel={this.state.selectedHotel}
