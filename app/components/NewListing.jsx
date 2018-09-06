@@ -64,7 +64,7 @@ export default class NewListing extends React.Component {
 
   getCityHotels(e) {
     this.setState({city: e.target.value});
-    axios.get(`/api/hotels/${e.target.value}`)
+    axios.get(`/api/hotels/${e.target.value.replace(' ', '+')}`)
     .then(res => this.setState({cityHotels: res.data.hotels}));
   }
 
