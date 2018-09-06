@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
+
 import Appbar from './AppBar.jsx';
 import LandingPage from './LandingPage.jsx';
 import ListingsPage from './ListingsPage.jsx';
@@ -8,10 +10,6 @@ import Account from './Account.jsx';
 import Messages from './Messages.jsx';
 import Bookings from './Bookings.jsx';
 
-
-import axios from 'axios';
-
-const clientUrl = "http://localhost:8080";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -80,14 +78,13 @@ export default class App extends React.Component {
       <div style={{height: "100%"}}>
         <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>
         <Route exact path="/listings" render={() => <ListingsPage avatarImg={this.state.user.imgUrl} city={this.state.city} from={this.state.from} to={this.state.to} guests={this.state.guests} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />}/>
-        <Route exact path="/" render={() => this.renderMain()} />
-        <Route exact path="/login" render={() => this.renderMain()} />
-        <Route exact path="/signup" render={() => this.renderMain()} />
+        <Route exact path="/" render={() => <Redirect to='/main' />} />
+        <Route path="/main" render={() => this.renderMain()} />
         <Route exact path="/newlisting" render={() => <NewListing updateAppBarStyle={(val) => this.updateAppBarStyle(val)} />} />
-        {this.state.auth ? <Route exact path="/account" render={() => <Account updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
+        {this.state.auth ? <Route exact path="/account" render={() => <Account updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/main" />}
         {this.state.auth ? <Route exact path="/messages" render={() => <Messages updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} user={this.state.user} app={this}/>} /> : <Redirect to="/" />}
-        {this.state.auth ? <Route exact path="/requests" render={() => <Requests updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
-        {this.state.auth ? <Route exact path="/bookings" render={() => <Bookings updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/" />}
+        {this.state.auth ? <Route exact path="/requests" render={() => <Requests updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/main" />}
+        {this.state.auth ? <Route exact path="/bookings" render={() => <Bookings updateAppBarStyle={(val) => this.updateAppBarStyle(val)} updateUser={(user) => this.updateUser(user)} />} /> : <Redirect to="/main" />}
       </div>
     )
   }

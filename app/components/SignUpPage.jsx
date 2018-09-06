@@ -17,6 +17,8 @@ export default class SignUpPage extends React.Component {
       phone: '',
       birthday: '',
       gender: '',
+      verify: false,
+      code: '',
     }
   }
 
@@ -24,14 +26,41 @@ export default class SignUpPage extends React.Component {
     e.preventDefault();
     axios.post('/api/register', this.state)
     .then(resp => {
-      if(resp.data.success) this.props.hide();
+      if (resp.data.success) this.setState({verify: true});
+    });
+  }
+
+  verify(e) {
+    e.preventDefault();
+    axios.post('/api/verify', {phone: this.state.phone, code: this.state.code})
+    .then(resp => {
+      if (resp.data.success) this.props.hide();
     });
   }
 
   render() {
+    if (this.state.verify) return (
+      <div className="login-box">
+        <TextField
+          label="Code sent to phone"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock />
+              </InputAdornment>
+            ),
+          }}
+          value={this.state.code}
+          onChange={(e) => {
+            if (e.target.value.length < 5) this.setState({code: e.target.value})
+          }}
+        />
+        <Button variant="contained" onClick={(e) => this.verify(e)} style={{margin: 20, backgroundColor: "#009090", color: "white"}}>Verify</Button>
+      </div>
+    );
     return (
       <div className="login-box">
-        {this.state.fname && this.state.lname ? <Avatar style={{backgroundColor: "#009090"}}>{this.state.fname[0] + this.state.lname[0]}</Avatar> : null}
+        {/*{this.state.fname && this.state.lname ? <Avatar style={{backgroundColor: "#009090"}}>{this.state.fname[0] + this.state.lname[0]}</Avatar> : null}*/}
         <TextField
           label="First name"
           InputProps={{
