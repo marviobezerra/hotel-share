@@ -217,7 +217,7 @@ class ListingWithDialog extends React.Component {
     })
     .catch((err) => alert(err))
 
-    console.log(listing)
+    /*console.log(listing)
 
     axios.post('/request', {to: this.props.to, from: this.props.from, listing: listing._id})
     .then(resp => {
@@ -226,7 +226,7 @@ class ListingWithDialog extends React.Component {
         alert(resp)
       }
     })
-    .catch((err) => alert(err))
+    .catch((err) => alert(err)) */
   }
 
   render() {
