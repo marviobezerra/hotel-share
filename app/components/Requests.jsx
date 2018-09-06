@@ -63,7 +63,7 @@ export default class Bookings extends React.Component {
               </div>
               <span className="hotel-name">{reqGuest.listing.hotel.name}</span>
             </div>
-            <Button style={{background: "#009090", color: "white", marginTop: 10, dis}}>Cancel</Button>
+            <Button style={{background: "#009090", color: "white", marginTop: 10}}>Cancel</Button>
           </div>)}
         </div>
         <div className="requests-host-box">

@@ -217,16 +217,27 @@ class ListingWithDialog extends React.Component {
     })
     .catch((err) => alert(err))
 
-    /*console.log(listing)
+    console.log(this.props)
+    console.log(listing)
 
-    axios.post('/request', {to: this.props.to, from: this.props.from, listing: listing._id})
+    let requestTo = this.props.to;
+    if(!this.props.to){
+      requestTo = listing.to
+    }
+    let requestFrom = this.props.from
+    if(!this.props.from){
+      requestFrom = listing.from
+    }
+
+    axios.post('/api/request', {to: requestTo, from: requestFrom, listing: listing._id})
     .then(resp => {
       if(resp.data.success) this.setState({openSnack: true, listingMessage: ''});
       else {
+        console.log(resp)
         alert(resp)
       }
     })
-    .catch((err) => alert(err)) */
+    .catch((err) => (alert(err), console.log(err)))
   }
 
   render() {
