@@ -280,3 +280,41 @@ html, body, #root {
 .host-box {
   flex: 1;
 }
+
+.requests-guest-box, .requests-host-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.host-info {
+  display: flex;
+}
+
+.reqGuest-line {
+  display: flex;
+  flex-direction: column;
+  background-color: #00909030;
+  padding: 30px;
+  margin-bottom: 10px;
+}
+
+.hotel-info-city {
+  margin-bottom: 10px;
+
+}
+.hotel-info-city > span {
+  padding-right: 10px;
+  margin-bottom: 10px;
+
+}
+.hotel-name {
+  font-size: 18px;
+  color: #009090;
+  font-weight: bold;
+}
+.host-center {
+  display: flex;
+  align-items: center;
+}
