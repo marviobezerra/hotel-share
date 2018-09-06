@@ -47,14 +47,14 @@ export default class NewListing extends React.Component {
     this.state = {
       city: '',
       hotel: '',
+      room: '',
       guests: '',
       from: '',
       to: '',
-      price: '',
-      room: 0,
+      price: 0,
       hotelDoc: {},
       cityHotels: [],
-      openModal: false
+      openModal: false,
     }
   }
   componentDidMount() {
@@ -150,6 +150,8 @@ export default class NewListing extends React.Component {
                   </InputAdornment>
                 ),
               }}
+              type="number"
+              style={{width: "100%"}}
               onChange={(e) => this.setState({price: e.target.value})}
             />
             <TextField
@@ -161,7 +163,7 @@ export default class NewListing extends React.Component {
                   </InputAdornment>
                 ),
               }}
-              type="number"
+              type="text"
               style={{width: "100%"}}
               onChange={(e) => this.setState({room: e.target.value})}
             />
