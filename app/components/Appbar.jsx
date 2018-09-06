@@ -128,12 +128,12 @@ export default class Appbar extends React.Component {
                     <MenuItem onClick={() => this.props.logout()}>Logout</MenuItem>
                   </Menu></div>) :
                   (<div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
-                    <Button color="default">
-                      <Link onClick={this.props.show()} to="/login" style={{color: "white", textDecoration: "none"}}>Login</Link>
-                    </Button>
-                    <Button color="default">
-                      <Link onClick={this.props.show()} to="/signup" style={{color: "white", textDecoration: "none"}}>Sign Up</Link>
-                    </Button>
+                    <Link onClick={this.props.show()} to="/main/login" style={{textDecoration: "none"}}>
+                      <Button color="default" style={{color: "white"}}>Login</Button>
+                    </Link>
+                    <Link onClick={this.props.show()} to="/main/signup" style={{textDecoration: "none"}}>
+                      <Button color="default" style={{color: "white"}}>Sign up</Button>
+                    </Link>
                 </div>)}
               </div>
           </Toolbar>

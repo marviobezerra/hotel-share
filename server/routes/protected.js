@@ -68,12 +68,14 @@ module.exports = (User, Hotel, Listing) => {
 
   router.get('/bookingsGuest', (req, res) => {
     Booking.find({guest: req.user._id})
+    .populate([{path: 'hotel', select: 'city name images description location'}, {path: 'host guest', select: 'name imgUrl'}])
     .then((bookings) => res.json({success: true, bookings}))
     .catch(() => res.json({success: false}));
   });
 
   router.get('/bookingsHost', (req, res) => {
     Booking.find({host: req.user._id})
+    .populate([{path: 'hotel', select: 'city name images description location'}, {path: 'host guest', select: 'name imgUrl'}])
     .then((bookings) => res.json({success: true, bookings}))
     .catch(() => res.json({success: false}));
   });

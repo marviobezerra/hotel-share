@@ -20,7 +20,6 @@ class SearchOptions extends React.Component {
 
   submitData() {
     let { from, to, guests, city } = this.props;
-    console.log(from, to, guests, city);
     axios.get(`api/hotels/${city.replace(' ', '+')}`)
     .then(res => {
       console.log(res)}

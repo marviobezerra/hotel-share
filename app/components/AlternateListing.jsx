@@ -290,7 +290,6 @@ class ListingWithDialog extends React.Component {
                         open={this.state.openModal}
                         onClose={() => this.handleCloseModal()}
                       >
-                        {console.log(listing)}
                         <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
                           <div style={{display:'inline-flex'}}>
                             {listing.user.imgUrl ? <img className={classes.userImg} src={listing.user.imgUrl} /> ? listing.user.gender === 'Male' : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} />}

@@ -158,7 +158,6 @@ class SimpleMap extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     this.props.updateAppBarStyle({height: 60});
     this.getHotels();
   }
@@ -196,7 +195,7 @@ class SimpleMap extends React.Component {
         </div>
         <div style={{ height: '100vh', width: '100%'}}>
           <GoogleMapReact
-            bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
+            bootstrapURLKeys={{ key: 'Google Key Here'}}
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}
           >
