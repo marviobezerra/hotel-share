@@ -9,6 +9,7 @@ import NewListing from './NewListing.jsx';
 import Account from './Account.jsx';
 import Messages from './Messages.jsx';
 import Bookings from './Bookings.jsx';
+import Requests from './Requests.jsx';
 
 
 export default class App extends React.Component {
