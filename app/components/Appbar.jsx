@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Redirect } from 'react-router-dom';
 import LoginPage from './LoginPage.jsx';
 import { Avatar } from '@material-ui/core/';
 import axios from 'axios';
@@ -19,7 +19,7 @@ export default class Appbar extends React.Component {
       anchorEl2: null,
       avatarImg: '',
       notifications: [],
-      // message: [], request: [], accept: [], reject: [], cancel: [], other: [],
+      message: [], request: [], accept: [], reject: [], cancel: [], other: [],
     }
   }
 
@@ -57,9 +57,9 @@ export default class Appbar extends React.Component {
     this.setState({ anchorEl: null });
   };
   link(category) {
-    console.log(category);
     if(category === 'Message') return '/messages';
     //write other types of notifications redirects later!!!
+    if(category === 'Request') return '/requests';
   }
   readNotification(id) {
     this.setState({anchorEl2: null});
@@ -76,6 +76,13 @@ export default class Appbar extends React.Component {
         this.getNotifications();
       })
     }
+  }
+  notificationLink(category) {
+    console.log(category);
+    if (category === 'Message') return '/messages';
+    if (category === 'Request' || category === 'Reject') return '/requests';
+    if (category === 'Accept' || category === 'Cancel') return '/bookings';
+    return '/main';
   }
   render() {
     return (
@@ -103,9 +110,12 @@ export default class Appbar extends React.Component {
                     <Menu id="notification-menu" anchorEl={this.state.anchorEl2} open={Boolean(this.state.anchorEl2)}
                       onClose={() => this.setState({anchorEl2: null})}>
                       {this.state.notifications.map(notification =>
-                      <MenuItem style={{fontSize: 12}}>
-                        <Link to={this.link(notification.category)} onClick={() => this.readNotification(notification._id)}>{notification.message}</Link>
-                      </MenuItem>)}
+                      <Link to={this.notificationLink(notification.category)} onClick={() => this.readNotification(notification._id)}>
+                        <MenuItem style={{fontSize: 12}}>
+                        <span>{notification.message}</span>
+                        {/* onClick={() => this.readNotification(notification._id)} */}
+                        </MenuItem>
+                      </Link>)}
                     </Menu>
                     {this.props.app.state.user.imgUrl ? <Avatar
                                               aria-owns={this.state.anchorEl ? 'simple-menu' : null}

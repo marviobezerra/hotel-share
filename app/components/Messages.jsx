@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { Avatar } from '@material-ui/core/';
+import { Avatar, CircularProgress } from '@material-ui/core/';
+
 
 export default class Messages extends React.Component {
   constructor(props) {
@@ -10,6 +11,9 @@ export default class Messages extends React.Component {
       messages: [],
       sortedMsgs: [],
       newMsg: '',
+      clickedMsg: [],
+      isLoaded: false,
+      clickedMsgIndex: 0,
     }
   }
 
@@ -41,7 +45,7 @@ export default class Messages extends React.Component {
             for(let i = 0; i < usersIds.length; i++) {
               sortedMsgs.push(messages.filter(msg => msg.from._id === usersIds[i] || msg.to._id === usersIds[i]));
             }
-            this.setState({sortedMsgs: sortedMsgs});
+            this.setState({sortedMsgs: sortedMsgs, isLoaded: true});
           }
         });
       }
@@ -52,67 +56,77 @@ export default class Messages extends React.Component {
     return `${months[new Date(timestamp).getDate()]} ${new Date(timestamp).getDay()}`
   }
   getConvo(e, msg, index) {
-    this.setState({clickedMsgIndex: index}, () => this.props.app.setState({clickedConvo: true}));
+    this.setState({clickedMsg: msg.reverse(), clickedMsgIndex: index}, () => this.props.app.setState({clickedConvo: true}));
   }
   submitMsg() {
     let to;
     let { sortedMsgs, clickedMsgIndex, newMsg } = this.state;
     if(sortedMsgs[clickedMsgIndex][0].from._id !== this.props.user._id) to = sortedMsgs[clickedMsgIndex][0].from._id;
     else to = sortedMsgs[clickedMsgIndex][0].to._id;
+    let clickedMsg = this.state.clickedMsg.slice();
+    clickedMsg.push({from: {_id: this.props.user._id, imgUrl: this.props.user.imgUrl}, content: newMsg})
+    this.setState({clickedMsg: clickedMsg, newMsg: ''});
     axios.post('/api/message', {to: to, content: newMsg})
-    .then(res => {
-      this.getMessages();
-      this.setState({newMsg: ''});
-    })
+  }
+  getOtherAvatar(msg) {
+    for(let i = 0; i < msg.length; i++) {
+      if(msg[i].from.imgUrl !== this.props.user.imgUrl) return msg[i].from.imgUrl;
+    }
+  }
+  getOtherName(msg) {
+    for(let i = 0; i < msg.length; i++) {
+      if(msg[i].from._id !== this.props.user._id) return msg[i].from.name.fname + '' + msg[i].from.name.lname;
+    }
   }
   render() {
     return (
       <div className="inbox-container">
-        <div className="inbox">
-        {this.props.app.state.clickedConvo ?
-          //display specific conversation
-        <div>
-          <div className="submit-msg-box">
-            <div className="submit-msg-textarea">
-              <input className="input-msg" placeholder="Type your message here..." onChange={(e) => this.setState({newMsg: e.target.value})} value={this.state.newMsg}/>
-              <div className="align-right"><Button style={{background: '#009090', color: 'white', margin: 5}} onClick={() => this.submitMsg()}>Send</Button></div>
+
+          {this.state.isLoaded ?
+          <div className="inbox">
+          {this.props.app.state.clickedConvo ?
+            //display specific conversation
+          <div>
+            {this.state.clickedMsg.map(msg =>
+            (msg.from._id === this.props.user._id ?
+            <div className="inbox-row" style={{background: 'rgba(0,90,90,0.1)'}}>
+              <div className="inbox-adjust" style={{justifyContent: "flex-end"}}>
+                <span>{msg.content}</span>
+              </div>
+              <Avatar src={msg.from.imgUrl}/>
+            </div> :
+            <div className="inbox-row">
+              <Avatar src={msg.from.imgUrl}/>
+              <div className="inbox-adjust">
+                <span>{msg.content}</span>
+              </div>
+            </div>))}
+            <div className="submit-msg-box">
+              <div className="submit-msg-textarea">
+                <input className="input-msg" placeholder="Type your message here..." onChange={(e) => this.setState({newMsg: e.target.value})} value={this.state.newMsg}/>
+                <div className="align-right"><Button style={{background: '#009090', color: 'white', margin: 5}} onClick={() => this.submitMsg()}>Send</Button></div>
+              </div>
+              <Avatar src={this.props.user.imgUrl} />
             </div>
-            <Avatar src={this.props.user.imgUrl} />
-          </div>
-          {this.state.sortedMsgs[this.state.clickedMsgIndex].map(msg =>
-          (msg.from._id === this.props.user._id ?
-          <div className="inbox-row" style={{background: 'rgba(0,90,90,0.1)'}}>
-            <div className="inbox-adjust">
-              <span>{msg.content}</span>
-            </div>
-            <Avatar src={msg.from.imgUrl}/>
           </div> :
-          <div className="inbox-row">
-            <Avatar src={msg.from.imgUrl}/>
+          //display list with latest msgs from other users that msg'd you
+          (this.state.sortedMsgs.length ?
+          this.state.sortedMsgs.map((msg, index) =>
+          <div className="inbox-row" onClick={(e) => this.getConvo(e, msg, index)}>
+            <Avatar src={this.getOtherAvatar(msg)}/>
             <div className="inbox-adjust">
-              <span>{msg.content}</span>
+              <div className="inbox-info">
+                <span>{this.getOtherName(msg)}</span>
+                <span>{this.getDate(msg[0].timestamp)}</span>
+              </div>
+              <div className="inbox-msg">
+                {msg[0].content}
+              </div>
             </div>
-          </div>))}
-        </div> :
-        //display list with latest msgs from other users that msg'd you
-        (this.state.sortedMsgs.length ?
-        this.state.sortedMsgs.map((msg, index) =>
-        <div className="inbox-row" onClick={(e) => this.getConvo(e, msg, index)}>
-          <Avatar src={msg[0].from.imgUrl}/>
-          <div className="inbox-adjust">
-            <div className="inbox-info">
-              <span>{msg[0].from.name.fname} {msg[0].from.name.lname}</span>
-              <span>{this.getDate(msg[0].timestamp)}</span>
-            </div>
-            <div className="inbox-msg">
-              {msg[0].content}
-            </div>
-          </div>
-        </div>) :
-        <div className="submit-msg-box">
-          You have no messages in your inbox, you should submit your first message to a specific user through his/her listing
-        </div>)}
-        </div>
+          </div>) :
+          <div className="submit-msg-box">
+            You have no messages in your inbox, you should submit your first message to a specific user through his/her listing
+          </div>)}</div> : <CircularProgress size={100} style={{color: '#009090'}} />}
       </div>
     )
   }

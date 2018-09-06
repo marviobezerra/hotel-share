@@ -130,7 +130,7 @@ module.exports = (User, Hotel, Listing) => {
         timestamp: new Date(),
       })).save()))
     .then(() => res.json({success: true}))
-    .ctach(() => res.json({success: false}));
+    .catch(() => res.json({success: false}));
   });
 
   router.post('/accept', (req, res) => {

@@ -9,6 +9,7 @@ import NewListing from './NewListing.jsx';
 import Account from './Account.jsx';
 import Messages from './Messages.jsx';
 import Bookings from './Bookings.jsx';
+import Requests from './Requests.jsx';
 
 
 export default class App extends React.Component {
@@ -73,7 +74,6 @@ export default class App extends React.Component {
     />;
   }
   render() {
-    console.log(this.state.user._id);
     return (
       <div style={{height: "100%"}}>
         <Appbar auth={this.state.auth} show={() => this.show()} logout={() => this.logout()} style={this.state.style} updateAppBarStyle={(val) => this.updateAppBarStyle(val)} app={this}/>
