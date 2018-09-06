@@ -188,7 +188,6 @@ class ListingWithDialog extends React.Component {
 
   handleMessageChange(e) {
     this.setState({listingMessage: e.target.value})
-    console.log(this.state.listingMessage)
   }
 
   handleClickOpen() {
@@ -201,7 +200,6 @@ class ListingWithDialog extends React.Component {
 
   handleOpenModal(listing) {
     this.setState({ openModal: true});
-    console.log(listing)
   };
 
   handleCloseModal() {
@@ -209,7 +207,6 @@ class ListingWithDialog extends React.Component {
   }
 
   handleMessageSubmit(listing) {
-    console.log(this)
     let message = this.state.listingMessage
     axios.post('/api/message/', {to: listing.user._id, content:message})
     .then(resp => {

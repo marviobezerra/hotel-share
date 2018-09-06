@@ -32,8 +32,6 @@ export default class Marker extends React.Component {
 
   componentDidMount() {
     let currentColor = this.state.badgeColor
-    console.log('Props')
-    console.log(this.props)
     if(this.props.selectedHotel){
       if(this.props.selectedHotel.text !== this.props.hotel.name){
         this.setState({
