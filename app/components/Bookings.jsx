@@ -48,7 +48,26 @@ export default class Bookings extends React.Component {
 
   renderGuest(bg) {
     return (
-      <List>
+
+      <div className="reqGuest-line">
+        <div className="host-info">
+          {bg.host.imgUrl ? <Avatar src={bg.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
+          <span className="host-center">{bg.host.name.fname} {bg.host.name.lname}</span>
+        </div>
+        <div className="hotel-info">
+          <div className="hotel-info-city">
+            <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{bg.listing.hotel.city}</span>
+            <span style={{fontSize: 14}}>{bg.from} - {bg.to}</span>
+          </div>
+          <span className="hotel-name">{bg.listing.hotel.name}</span>
+        </div>
+        <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}>
+          <LocationOn />
+        </IconButton>
+      </div>)
+
+
+      {/*<List>
         <ListItem>
           <Typography variant="subheader" align='left' color='inherit'> {bg.from} - {bg.to} </Typography>
         </ListItem>
@@ -65,13 +84,29 @@ export default class Bookings extends React.Component {
           <ListItemText style={{color:'green'}} primary={`${'$' + bg.price} `} />
         </ListItem>
         <Divider light />
-    </List>
+    </List> */}
   )
   }
 
   renderHost(bg) {
     return (
-      <List>
+      <div className="reqGuest-line">
+        <div className="host-info">
+          {reqHost.guest.imgUrl ? <Avatar src={reqHost.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
+          <span className="host-center">{reqHost.guest.name.fname} {reqHost.guest.name.lname}</span>
+        </div>
+        <div className="hotel-info">
+          <div className="hotel-info-city">
+            <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{reqHost.listing.hotel.city}</span>
+            <span style={{fontSize: 14}}>{reqHost.from} - {reqHost.to}</span>
+          </div>
+          <span className="hotel-name">{reqHost.listing.hotel.name}</span>
+        </div>
+        <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}>
+          <LocationOn />
+        </IconButton>
+      </div>)
+      {/*<List>
         <ListItem>
           <Typography variant="subheader" align='left' color='inherit'> {bg.from} - {bg.to} </Typography>
         </ListItem>
@@ -88,7 +123,7 @@ export default class Bookings extends React.Component {
           <ListItemText style={{color:'green'}} primary={`${'$' + bg.price} `} />
         </ListItem>
         <Divider light />
-    </List>
+    </List>*/}
     )
   }
 
@@ -126,7 +161,7 @@ export default class Bookings extends React.Component {
         >
           <DialogContent style={{ height: '75vh', width: '75vh'}}>
             <GoogleMapReact
-              bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
+              bootstrapURLKeys={{ key: 'Google Key'}}
               defaultCenter={{lat: this.state.lat, lng: this.state.long}}
               defaultZoom={14}
             >
