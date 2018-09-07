@@ -1,12 +1,8 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Email from '@material-ui/icons/Email';
-import Lock from '@material-ui/icons/Lock'
-import Button from '@material-ui/core/Button';
-
+import { TextField, InputAdornment, Button, Snackbar, SnackbarContent, IconButton } from '@material-ui/core/';
+import { Email, Lock, Close, Error } from '@material-ui/icons/';
 
 export default class LoginPage extends React.Component {
   constructor(props) {
@@ -14,6 +10,7 @@ export default class LoginPage extends React.Component {
     this.state = {
       username: '',
       password: '',
+      failedLoginAlert: false,
     }
   }
 
@@ -25,14 +22,27 @@ export default class LoginPage extends React.Component {
         this.props.login();
         axios.get('/api/account')
         .then(res => this.props.updateUser(res.data.user))
-      } else {
-        alert('Login unsuccessful!');
-      }
+      } else this.setState({failedLoginAlert: true});
     });
   }
 
   render() {
     return (
+    <div>
+      <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+        open={this.state.failedLoginAlert} autoHideDuration={6000} onClose={() => this.setState({failedLoginAlert: false})}>
+        <SnackbarContent aria-describedby="client-snackbar" style={{backgroundColor: "#b03030"}}
+          message={
+            <span id="client-snackbar" style={{display: "flex", alignItems: "center"}}>
+            <Error style={{backgroundColor: "b03030", marginRight: 20}} />Wrong login information!</span>}
+          action={[
+            <IconButton key="close" aria-label="Close" color="inherit"
+              onClick={() => this.setState({failedLoginAlert: false})}>
+              <Close />
+            </IconButton>,
+          ]}
+        />
+      </Snackbar>
       <div className="login-box">
         <TextField
           label="Email"
@@ -59,6 +69,7 @@ export default class LoginPage extends React.Component {
         />
         <Button variant="contained" onClick={(e) => this.login(e)} style={{margin: 20, backgroundColor: "#009090", color: "white"}}>Login</Button>
       </div>
+    </div>
     );
   }
 }
