@@ -17,7 +17,7 @@ export default class Bookings extends React.Component {
   componentDidMount() {
     this.props.updateAppBarStyle({height: 60, background: "#009090"});
     this.getRequests();
-    // setInterval(() => this.getRequests(), 5000);
+    setInterval(() => this.getRequests(), 5000);
   }
   getRequests() {
     // axios.get('/api/requestsGuest')
@@ -44,13 +44,22 @@ export default class Bookings extends React.Component {
       }
     });
   }
+  cancelReqGuest(id, i) {
+    axios.post('/api/cancelRequest', {request: id})
+    .then(res => {
+      this.setState({
+        reqGuest: [...this.state.reqGuest.slice(0, i), ...this.state.reqGuest.slice(i+1, this.state.reqGuest.length)],
+      });
+    })
+  }
   render() {
     let { reqGuest, reqHost } = this.state;
+    console.log(this.state.reqHost);
     return (
       <div className="requests-container">
         <div className="requests-guest-box">
           <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
-          {reqGuest.map(reqGuest =>
+          {reqGuest.map((reqGuest, i) =>
           <div className="reqGuest-line">
             <div className="host-info">
               {reqGuest.host.imgUrl ? <Avatar src={reqGuest.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
@@ -63,7 +72,7 @@ export default class Bookings extends React.Component {
               </div>
               <span className="hotel-name">{reqGuest.listing.hotel.name}</span>
             </div>
-            <Button style={{background: "#009090", color: "white", marginTop: 10, dis}}>Cancel</Button>
+            <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.cancelReqGuest(reqGuest._id, i)}>Cancel</Button>
           </div>)}
         </div>
         <div className="requests-host-box">

@@ -298,6 +298,7 @@ html, body, #root {
   background-color: #00909030;
   padding: 30px;
   margin-bottom: 10px;
+  width: 60%;
 }
 
 .hotel-info-city {

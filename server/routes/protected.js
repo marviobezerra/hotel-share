@@ -172,6 +172,12 @@ module.exports = (User, Hotel, Listing) => {
     .catch(() => res.json({success: false}));
   });
 
+  router.post('/cancelRequest', (req, res) => {
+   Request.remove({_id: req.body.request})
+   .then(() => res.json({success: true}))
+   .catch(() => res.json({success: false}));
+  });
+
   router.post('/accept', (req, res) => {
     Request.findById(req.body.request)
     .populate('listing')
