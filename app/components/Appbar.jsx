@@ -30,7 +30,7 @@ export default class Appbar extends React.Component {
 
   componentDidMount() {
     this.getNotifications();
-    // setInterval(() => this.getNotifications(), 5000);
+    setInterval(() => this.getNotifications(), 5000);
   }
 
   getNotifications() {

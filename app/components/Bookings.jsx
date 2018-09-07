@@ -39,19 +39,10 @@ export default class Bookings extends React.Component {
     })
   }
 
-  /* setAddress() {
-    geocoder.reverseGeocode( this.state.lat, this.state.long, function ( err, data ) {
-        // do something with data
-        console.log(data)
-    });
-  }*/
-
   renderGuest(bg) {
-    console.log(bg.host.gender)
-    console.log(bg.host.gender === 'Male')
     return (
-
-      <div className="reqGuest-line">
+      <div style={{display: "flex", justifyContent: "center"}}>
+      <div className="bookGuest-line">
         <div className="host-info">
           {bg.host.imgUrl ? <Avatar src={bg.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : bg.host.gender === 'Male' ? <Avatar src='https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png' style={{marginRight: 10, marginBottom: 10}}/> : <Avatar src='https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png' style={{marginRight: 10, marginBottom: 10}}/>}
           <span className="host-center">{bg.host.name.fname} {bg.host.name.lname}</span>
@@ -68,40 +59,24 @@ export default class Bookings extends React.Component {
           </span>
         </div>
       </div>
-
-
-      /*<List>
-        <ListItem>
-          <Typography variant="subheader" align='left' color='inherit'> {bg.from} - {bg.to} </Typography>
-        </ListItem>
-        <ListItem>
-          <Avatar alt="" src={bg.hotel.images[0]} />
-          <ListItemText primary={`${bg.hotel.name}`} />
-          <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}>
-            <LocationOn />
-          </IconButton>
-        </ListItem>
-        <ListItem>
-          <Avatar alt="" src={bg.host.imgUrl} />
-          <ListItemText primary={`${bg.host.name.fname} ${bg.host.name.lname}`} />
-          <ListItemText style={{color:'green'}} primary={`${'$' + bg.price} `} />
-        </ListItem>
-        <Divider light />
-    </List> */
+</div>
   )
   }
 
   renderHost(bg) {
-    console.log(bg)
     return (
-      <div className="reqGuest-line">
+      <div style={{display: "flex", justifyContent: "center"}}>
+      <div className="bookGuest-line">
         <div className="host-info">
-          {bg.guest.imgUrl ? <Avatar src={bg.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : bg.guest.gender === 'Male' ? <Avatar src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} style={{marginRight: 10, marginBottom: 10}}/> : <Avatar src={'https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png'} style={{marginRight: 10, marginBottom: 10}}/>}
+          {bg.guest.imgUrl ?
+            <Avatar src={bg.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> :
+            bg.guest.gender === 'Male' ?
+            <Avatar src='https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png' style={{marginRight: 10, marginBottom: 10}}/> :
+            <Avatar src='https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png' style={{marginRight: 10, marginBottom: 10}}/>}
           <span className="host-center">{bg.guest.name.fname} {bg.guest.name.lname}</span>
         </div>
         <div className="hotel-info">
           <div className="hotel-info-city">
-            <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{bg.hotel.city}</span>
             <span style={{fontSize: 14}}>{bg.from} - {bg.to}</span>
           </div>
           <span className="hotel-name">{bg.hotel.name}</span>
@@ -110,24 +85,7 @@ export default class Bookings extends React.Component {
           </IconButton>
         </div>
       </div>
-      /*<List>
-        <ListItem>
-          <Typography variant="subheader" align='left' color='inherit'> {bg.from} - {bg.to} </Typography>
-        </ListItem>
-        <ListItem>
-          <Avatar alt="" src={bg.hotel.images[0]} />
-          <ListItemText primary={`${bg.hotel.name}`} />
-          <IconButton onClick={() => this.handleOpenMap(bg.hotel.location.lat, bg.hotel.location.long, bg)}>
-            <LocationOn />
-          </IconButton>
-        </ListItem>
-        <ListItem>
-          <Avatar alt="" src={bg.guest.imgUrl} />
-          <ListItemText primary={`${bg.guest.name.fname} ${bg.guest.name.lname}`} />
-          <ListItemText style={{color:'green'}} primary={`${'$' + bg.price} `} />
-        </ListItem>
-        <Divider light />
-    </List>*/
+    </div>
     )
   }
 
@@ -146,7 +104,6 @@ export default class Bookings extends React.Component {
     Promise.all([bookingsGuest, bookingsHost])
     .then(res => {
       if(res[0].data.success && res[1].data.success) {
-        console.log(res[0].data, res[1].data);
         this.setState({bookingsGuest: res[0].data.bookings, bookingsHost: res[1].data.bookings})
       }
     });
@@ -156,7 +113,7 @@ export default class Bookings extends React.Component {
     const orderedBksHost = this.orderBookings(this.state.bookingsHost);
 
     return (
-      <div className="bookings-container" style={{display:'flex'}}>
+      <div className="bookings-container">
         <Dialog
           open={this.state.openMap}
           onClose={() => this.handleMapClose()}
@@ -176,12 +133,12 @@ export default class Bookings extends React.Component {
             </GoogleMapReact>
           </DialogContent>
           </Dialog>
-        <div className="bookings-guest-box" style={{flex:1}}>
-          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Guest </Typography>
+        <div style={{flex:1}}>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> GUEST </Typography>
           {this.state.bookingsGuest.length ? Object.keys(orderedBksGuest).map((city) =>
-            <div style={{justifyContent:'center'}}>
-              <List>
-                <ListItem>
+            <div style={{display: "flex", justifyContent:'center'}}>
+              <List style={{width: '100%'}}>
+                <ListItem style={{display: "flex", justifyContent: "center", flex: 1}}>
                   <Typography variant="title" align='center' color='inherit' style={{fontSize: '1.55rem'}}>{city}</Typography>
                 </ListItem>
                 {orderedBksGuest[city].map(bg => this.renderGuest(bg))}
@@ -189,12 +146,12 @@ export default class Bookings extends React.Component {
             </div>
           ): null}
         </div>
-        <div className="host-box" style={{flex:1}}>
-          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Host </Typography>
+        <div style={{flex:1}}>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: 'bold', fontSize: '1.75rem'}}> HOST </Typography>
           {this.state.bookingsHost.length ? Object.keys(orderedBksHost).map((city) =>
-            <div style={{justifyContent:'center'}}>
-              <List>
-                <ListItem>
+            <div style={{display: "flex", justifyContent:'center', flex: 1}}>
+              <List style={{width: '100%'}}>
+                <ListItem style={{display: "flex", justifyContent: "center", flex: 1}}>
                   <Typography variant="title" align='left' color='inherit' style={{fontSize: '1.55rem'}}>{city}</Typography>
                 </ListItem>
                 {orderedBksHost[city].map(bg => this.renderHost(bg))}
