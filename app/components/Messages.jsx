@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Avatar, CircularProgress } from '@material-ui/core/';
-
+import { AccountCircle } from '@material-ui/icons';
 
 export default class Messages extends React.Component {
   constructor(props) {
@@ -95,10 +95,11 @@ export default class Messages extends React.Component {
               <div className="inbox-adjust" style={{justifyContent: "flex-end"}}>
                 <span>{msg.content}</span>
               </div>
-              <Avatar src={msg.from.imgUrl}/>
+              {/* <Avatar src={msg.from.imgUrl}/> */}
+              {msg.from.imgUrl ? <Avatar src={msg.from.imgUrl}/> : <Avatar><AccountCircle /></Avatar>}
             </div> :
             <div className="inbox-row">
-              <Avatar src={msg.from.imgUrl}/>
+              {msg.from.imgUrl ? <Avatar src={msg.from.imgUrl}/> : <Avatar><AccountCircle /></Avatar>}
               <div className="inbox-adjust">
                 <span>{msg.content}</span>
               </div>
@@ -108,17 +109,18 @@ export default class Messages extends React.Component {
                 <input className="input-msg" placeholder="Type your message here..." onChange={(e) => this.setState({newMsg: e.target.value})} value={this.state.newMsg}/>
                 <div className="align-right"><Button style={{background: '#009090', color: 'white', margin: 5}} onClick={() => this.submitMsg()}>Send</Button></div>
               </div>
-              <Avatar src={this.props.user.imgUrl} />
+              {/* <Avatar src={this.props.user.imgUrl} /> */}
+              {this.props.user.imgUrl ? <Avatar src={this.props.user.imgUrl}/> : <Avatar><AccountCircle /></Avatar>}
             </div>
           </div> :
           //display list with latest msgs from other users that msg'd you
           (this.state.sortedMsgs.length ?
           this.state.sortedMsgs.map((msg, index) =>
           <div className="inbox-row" onClick={(e) => this.getConvo(e, msg, index)}>
-            <Avatar src={this.getOtherAvatar(msg)}/>
+            {this.getOtherAvatar(msg) ? <Avatar src={this.getOtherAvatar(msg)}/> : <Avatar><AccountCircle /></Avatar>}
             <div className="inbox-adjust">
               <div className="inbox-info">
-                <span>{this.getOtherName(msg)}</span>
+                <span style={{fontWeight: "bold"}}>{this.getOtherName(msg)}</span>
                 <span>{this.getDate(msg[0].timestamp)}</span>
               </div>
               <div className="inbox-msg">
