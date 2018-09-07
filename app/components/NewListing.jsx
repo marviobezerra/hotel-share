@@ -205,7 +205,6 @@ export default class NewListing extends React.Component {
               onClose={() => this.snackSuccessClose()}
             >
               <SnackbarContent
-                className="listingSuccess"
                 aria-describedby="client-snackbar"
                 style={{backgroundColor: "#009090"}}
                 message={
@@ -236,7 +235,6 @@ export default class NewListing extends React.Component {
                 onClose={() => this.snackFailClose()}
               >
               <SnackbarContent
-                className="listingSuccess"
                 aria-describedby="client-snackbar"
                 style={{backgroundColor: "#b03030"}}
                 message={
