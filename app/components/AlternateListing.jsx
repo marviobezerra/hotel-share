@@ -261,7 +261,7 @@ class ListingWithDialog extends React.Component {
     let image = images[0]
     let hotel = this.props.hotel
     const checkout = (
-     <StripeProvider apiKey="pk_test_WErovKnEZj5gl8fLybDSqw2J">
+     <StripeProvider apiKey="Stripe Key Here">
        <div className="checkout-form">
          <Elements><CheckoutForm book={() => this.handleMessageSubmit(this.state.listing)}/></Elements>
        </div>
@@ -413,35 +413,35 @@ class ListingWithDialog extends React.Component {
                                   {this.state.checkoutForm ? checkout : <div style={{display:'inline-flex'}}>
                                     <Avatar src={'https://i.imgur.com/dGo8DOk.png'} />
                                     <Button style={{backgroundColor:'#009090'}} onClick={() => this.setState({checkoutForm: true, listing})}>Submit</Button>
-                                    <Snackbar
-                                      varient='success'
-                                      anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                      }}
-                                      open={this.state.openSnack}
-                                      autoHideDuration={6000}
-                                      onClose={() => this.setState({openSnack:false, openModal: false})}
-                                      ContentProps={{
-                                        'aria-describedby': 'message-id',
-                                      }}
-                                      message={
-                                        <span id="message-id">
-                                          <CheckCircleIcon/>
-                                          Sent message to {listing.host.name.fname}!
-                                        </span>}
-                                      action={[
-                                        <IconButton
-                                          key="close"
-                                          aria-label="Close"
-                                          color="inherit"
-                                          onClick={() => this.setState({openSnack: false, openModal: false})}
-                                        >
-                                          <CloseIcon />
-                                        </IconButton>,
-                                      ]}
-                                    />
                                   </div>}
+                                  <Snackbar
+                                    varient='success'
+                                    anchorOrigin={{
+                                      vertical: 'bottom',
+                                      horizontal: 'left',
+                                    }}
+                                    open={this.state.openSnack}
+                                    autoHideDuration={6000}
+                                    onClose={() => this.setState({openSnack:false, openModal: false})}
+                                    ContentProps={{
+                                      'aria-describedby': 'message-id',
+                                    }}
+                                    message={
+                                      <span id="message-id">
+                                        <CheckCircleIcon/>
+                                        Sent message to {listing.host.name.fname}!
+                                      </span>}
+                                    action={[
+                                      <IconButton
+                                        key="close"
+                                        aria-label="Close"
+                                        color="inherit"
+                                        onClick={() => this.setState({openSnack: false, openModal: false})}
+                                      >
+                                        <CloseIcon />
+                                      </IconButton>,
+                                    ]}
+                                  />
                               </div>
                             </div>
                           </div>
