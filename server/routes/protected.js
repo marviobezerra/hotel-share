@@ -106,6 +106,7 @@ module.exports = (User, Hotel, Listing) => {
   });
 
   router.get('/bookingsHost', (req, res) => {
+    console.log('bookingsHost:', req.user);
     Booking.find({host: req.user._id})
     .populate([{path: 'hotel', select: 'city name images description location'}, {path: 'host guest', select: 'name imgUrl'}])
     .then((bookings) => res.json({success: true, bookings}))
@@ -170,6 +171,12 @@ module.exports = (User, Hotel, Listing) => {
     ))
     .then(() => res.json({success: true}))
     .catch(() => res.json({success: false}));
+  });
+
+  router.post('/cancelRequest', (req, res) => {
+   Request.remove({_id: req.body.request})
+   .then(() => res.json({success: true}))
+   .catch(() => res.json({success: false}));
   });
 
   router.post('/accept', (req, res) => {

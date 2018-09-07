@@ -87,7 +87,7 @@ export default class Messages extends React.Component {
 
           {this.state.isLoaded ?
           <div className="inbox">
-          {this.props.app.state.clickedConvo ?
+          {this.props.app.state.clickedConvo && this.state.clickedMsg.length ?
             //display specific conversation
           <div>
             {this.state.clickedMsg.map(msg =>
