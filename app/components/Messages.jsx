@@ -84,7 +84,6 @@ export default class Messages extends React.Component {
   render() {
     return (
       <div className="inbox-container">
-
           {this.state.isLoaded ?
           <div className="inbox">
           {this.props.app.state.clickedConvo && this.state.clickedMsg.length ?

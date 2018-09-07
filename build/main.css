@@ -272,6 +272,8 @@ html, body, #root {
   width: 100%;
   background-color: rgba(0,0,0,0.08);
   padding: 25px 0;
+  align-items: center;
+  padding: 30px;
 }
 .guest-box {
   flex: 1;
@@ -318,4 +320,9 @@ html, body, #root {
 .host-center {
   display: flex;
   align-items: center;
+}
+.display-row {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 }
