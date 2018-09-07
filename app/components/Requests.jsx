@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { Avatar, CircularProgress } from '@material-ui/core/';
+import { Avatar, CircularProgress, Typography } from '@material-ui/core/';
 import { AccountCircle } from '@material-ui/icons/';
 
 
@@ -62,7 +62,7 @@ export default class Bookings extends React.Component {
       (reqGuest.length && reqHost.length ?
       <div className="display-row">
         <div className="requests-guest-box">
-          <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> GUEST </Typography>
           {reqGuest.map((reqGuest, i) =>
           <div className="reqGuest-line">
             <div className="host-info">
@@ -80,7 +80,7 @@ export default class Bookings extends React.Component {
           </div>)}
         </div>
         <div className="requests-host-box">
-          <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> HOST </Typography>
           {reqHost.map((reqHost, i) =>
           <div className="reqGuest-line">
             <div className="host-info">
@@ -102,7 +102,7 @@ export default class Bookings extends React.Component {
       : (reqGuest.length ?
         (<div className="display-row">
           <div className="requests-guest-box">
-            <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+            <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> GUEST </Typography>
             {reqGuest.map((reqGuest, i) =>
             <div className="reqGuest-line">
               <div className="host-info">
@@ -120,19 +120,19 @@ export default class Bookings extends React.Component {
             </div>)}
           </div>
           <div className="requests-host-box">
-            <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+            <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> HOST </Typography>
             You have no requests as a host
           </div>
         </div>)
         :
         (<div className="display-row">
           <div className="requests-guest-box">
-          <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> GUEST </Typography>
           You have no requests as a guest
           </div>
           {reqHost.length ?
             <div className="requests-host-box">
-              <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+              <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> HOST </Typography>
               {reqHost.map((reqHost, i) =>
               <div className="reqGuest-line">
                 <div className="host-info">
@@ -152,7 +152,7 @@ export default class Bookings extends React.Component {
             </div>
             :
             <div className="requests-host-box">
-              <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+              <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{fontWeight: "bold", fontSize: '1.75rem'}}> HOST </Typography>
               You have no requests as a host
             </div>}
         </div>)))  :
@@ -161,57 +161,3 @@ export default class Bookings extends React.Component {
     )
   }
 }
-// guest yes
-// <div className="requests-guest-box">
-//   <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
-//   {reqGuest.map((reqGuest, i) =>
-//   <div className="reqGuest-line">
-//     <div className="host-info">
-//       {reqGuest.host.imgUrl ? <Avatar src={reqGuest.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
-//       <span className="host-center">{reqGuest.host.name.fname} {reqGuest.host.name.lname}</span>
-//     </div>
-//     <div className="hotel-info">
-//       <div className="hotel-info-city">
-//         <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{reqGuest.listing.hotel.city}</span>
-//         <span style={{fontSize: 14}}>{reqGuest.from} - {reqGuest.to}</span>
-//       </div>
-//       <span className="hotel-name">{reqGuest.listing.hotel.name}</span>
-//     </div>
-//     <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.cancelReqGuest(reqGuest._id, i)}>Cancel</Button>
-//   </div>)}
-// </div>
-//
-// guest no
-//
-// <div className="requests-guest-box">
-// <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
-// No guests
-// </div>
-//
-// host yes
-//
-// <div className="requests-host-box">
-//   <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
-//   {reqHost.map((reqHost, i) =>
-//   <div className="reqGuest-line">
-//     <div className="host-info">
-//       {reqHost.guest.imgUrl ? <Avatar src={reqHost.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
-//       <span className="host-center">{reqHost.guest.name.fname} {reqHost.guest.name.lname}</span>
-//     </div>
-//     <div className="hotel-info">
-//       <div className="hotel-info-city">
-//         <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{reqHost.listing.hotel.city}</span>
-//         <span style={{fontSize: 14}}>{reqHost.from} - {reqHost.to}</span>
-//       </div>
-//       <span className="hotel-name">{reqHost.listing.hotel.name}</span>
-//     </div>
-//     <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.acceptReq(reqHost._id, i)}>Accept</Button>
-//     <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.rejectReq(reqHost._id, i)}>Reject</Button>
-//   </div>)}
-// </div>
-//
-// host no
-// <div className="requests-host-box">
-//   <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
-//   No hosts
-// </div>
