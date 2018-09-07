@@ -19,6 +19,11 @@ import GridListTile from '@material-ui/core/GridListTile';
 import TextField from '@material-ui/core/TextField';
 import { Avatar, Snackbar} from '@material-ui/core/';
 import Modal from '@material-ui/core/Modal';
+import 'emoji-mart/css/emoji-mart.css'
+import emojiMartPicker from 'emoji-mart-picker';
+import { Picker } from 'emoji-mart'
+import {Elements, StripeProvider} from 'react-stripe-elements';
+import CheckoutForm from './CheckoutForm.jsx';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import seattle from '../../assets/images/seattle.jpg'
@@ -181,8 +186,11 @@ class ListingWithDialog extends React.Component {
       open: false,
       openModal: false,
       openSnack: false,
+      openPicker: false,
       scroll: 'paper',
-      listingMessage: ''
+      listingMessage: '',
+      listing: null,
+      checkoutForm: false,
     };
   }
 
@@ -219,10 +227,10 @@ class ListingWithDialog extends React.Component {
     .then(resp => {
       if(resp.data.success) this.setState({openSnack: true, listingMessage: ''});
       else {
-        alert(resp)
+        console.log("HandleMessageSubmit Success False", resp)
       }
     })
-    .catch((err) => alert(err))
+    .catch((err) => console.log("HandleMessageSubmit Error", err))
 
     console.log(this.props)
     console.log(listing)
@@ -240,17 +248,25 @@ class ListingWithDialog extends React.Component {
     .then(resp => {
       if(resp.data.success) this.setState({openSnack: true, listingMessage: ''});
       else {
-        console.log(resp)
-        alert(resp)
+        console.log('Request Success false', resp)
       }
     })
-    .catch((err) => (alert(err), console.log(err)))
+    .catch((err) => (console.log(err)))
+
+    this.setState({checkoutForm: false})
   }
 
   render() {
     const classes = this.props.classes
     let image = images[0]
     let hotel = this.props.hotel
+    const checkout = (
+     <StripeProvider apiKey="pk_test_WErovKnEZj5gl8fLybDSqw2J">
+       <div className="checkout-form">
+         <Elements><CheckoutForm book={() => this.handleMessageSubmit(this.state.listing)}/></Elements>
+       </div>
+     </StripeProvider>
+   )
     return (
       <div className={classes.root}>
         <ButtonBase
@@ -363,30 +379,40 @@ class ListingWithDialog extends React.Component {
                                 </Typography>
                               </div>
                               <div style={{display:'flex', flexDirection:'column'}}>
-                                <TextField
-                                  style={{width:'100%'}}
-                                  defaultValue={`Message ${listing.host.name.fname} ${listing.host.name.lname}`}
-                                  placeHolder="Direct Message"
-                                  id="bootstrap-input"
-                                  multiline='true'
-                                  fullWidth='true'
-                                  onChange={(e) => this.handleMessageChange(e)}
-                                  InputProps={{
-                                    disableUnderline: true,
-                                    classes: {
-                                      root: classes.bootstrapRoot,
-                                      input: classes.bootstrapInput,
-                                    },
-                                  }}
-                                  InputLabelProps={{
-                                    shrink: true,
-                                    className: classes.bootstrapFormLabel,
-                                  }}
-                                />
-                                <br /><br />
-                                  <div style={{display:'inline-flex'}}>
+                                <div style={{display:'flex'}}>
+                                  <TextField
+                                    style={{width:'100%'}}
+                                    placeholder={`Message ${listing.host.name.fname} ${listing.host.name.lname}`}
+                                    defaultValue="Direct Message"
+                                    id="bootstrap-input"
+                                    multiline='true'
+                                    fullWidth='true'
+                                    onChange={(e) => this.handleMessageChange(e)}
+                                    value={this.state.listingMessage}
+                                    InputProps={{
+                                      disableUnderline: true,
+                                      classes: {
+                                        root: classes.bootstrapRoot,
+                                        input: classes.bootstrapInput,
+                                      },
+                                    }}
+                                    InputLabelProps={{
+                                      shrink: true,
+                                      className: classes.bootstrapFormLabel,
+                                    }}
+                                  />
+                                  <Button onClick={() => this.setState({openPicker: true})}><h1>😄</h1></Button>
+                                  {this.state.openPicker ?
+                                  <Picker style={{ position: 'absolute', bottom: '20px', right: '20px' }}  title='Pick your emoji…' emoji='point_up'  set='emojione' onClick={(emoji, event) => {
+                                    let newMessage = this.state.listingMessage + emoji.native;
+                                    this.setState({openPicker: false, listingMessage: newMessage})
+                                    console.log(this.state)
+                                  }} /> : <div></div>}
+                                </div>
+                                <br />
+                                  {this.state.checkoutForm ? checkout : <div style={{display:'inline-flex'}}>
                                     <Avatar src={'https://i.imgur.com/dGo8DOk.png'} />
-                                    <Button style={{backgroundColor:'#009090'}} onClick={() => this.handleMessageSubmit(listing)}>Submit</Button>
+                                    <Button style={{backgroundColor:'#009090'}} onClick={() => this.setState({checkoutForm: true, listing})}>Submit</Button>
                                     <Snackbar
                                       varient='success'
                                       anchorOrigin={{
@@ -415,7 +441,7 @@ class ListingWithDialog extends React.Component {
                                         </IconButton>,
                                       ]}
                                     />
-                                  </div>
+                                  </div>}
                               </div>
                             </div>
                           </div>

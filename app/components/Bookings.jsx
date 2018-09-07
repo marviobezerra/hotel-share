@@ -165,7 +165,7 @@ export default class Bookings extends React.Component {
         >
           <DialogContent style={{ height: '75vh', width: '75vh'}}>
             <GoogleMapReact
-              bootstrapURLKeys={{ key: 'Google Key'}}
+              bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
               defaultCenter={{lat: this.state.lat, lng: this.state.long}}
               defaultZoom={14}
             >
