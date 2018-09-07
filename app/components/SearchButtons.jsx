@@ -105,7 +105,8 @@ class SearchButtons extends React.Component {
 
     return (
       <div>
-        <Button color="primary" variant={this.state.cityFill ? "contained": "outlined"}
+      <br/>
+        <Button style={{color:'#009090', padding: '10px'}} variant={this.state.cityFill ? "contained": "outlined"}
           onMouseOver={() => (this.setState({cityFill : true}))} onMouseLeave={() => (this.setState({cityFill : false}))}
           onClick={(e) => this.handleClick(e, 'openCity')}>
           City
@@ -134,7 +135,7 @@ class SearchButtons extends React.Component {
             </Fade>
           )}
         </Popper>
-        <Button color="primary" variant={this.state.dateFill ? "contained": "outlined"}
+        <Button style={{color:'#009090', padding: '10px'}} variant={this.state.dateFill ? "contained": "outlined"}
           onMouseOver={() => (this.setState({dateFill : true}))} onMouseLeave={() => (this.setState({dateFill : false}))}
           onClick={(e) => this.handleClick(e, 'openDates')}>
           Dates
@@ -176,7 +177,7 @@ class SearchButtons extends React.Component {
             </Fade>
           )}
         </Popper>
-        <Button color="primary" variant={this.state.guestsFill ? "contained": "outlined"}
+        <Button style={{color:'#009090', padding: '10px'}} variant={this.state.guestsFill ? "contained": "outlined"}
           onMouseOver={() => (this.setState({guestsFill : true}))} onMouseLeave={() => (this.setState({guestsFill : false}))}
           onClick={(e) => this.handleClick(e, 'openGuests')}>
           Guests
@@ -205,6 +206,7 @@ class SearchButtons extends React.Component {
             </Fade>
           )}
         </Popper>
+      <br />
       </div>
     )
   }
