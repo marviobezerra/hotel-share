@@ -99,6 +99,7 @@ export default class Bookings extends React.Component {
   componentDidMount() {
     this.props.updateAppBarStyle({height: 60, background: "#009090"});
     this.getBookings();
+    setInterval(() => this.getBookings(), 10000);
   }
   getBookings() {
     let bookingsGuest = axios.get('/api/bookingsGuest');
@@ -112,7 +113,9 @@ export default class Bookings extends React.Component {
     });
   }
   render() {
-    const orderedBks = this.orderBookings(this.state.bookingsGuest);
+    const orderedBksGuest = this.orderBookings(this.state.bookingsGuest);
+    const orderedBksHost = this.orderBookings(this.state.bookingsHost);
+
     return (
       <div className="bookings-container">
         <Dialog
@@ -134,28 +137,28 @@ export default class Bookings extends React.Component {
             </GoogleMapReact>
           </DialogContent>
           </Dialog>
-        <div className="guest-box">
-          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Host </Typography>
-          {this.state.bookingsGuest.length ? Object.keys(orderedBks).map((city) =>
+        <div className="bookings-guest-box">
+          <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+          {this.state.bookingsGuest.length ? Object.keys(orderedBksGuest).map((city) =>
             <div>
               <List>
                 <ListItem>
                   <Typography variant="title" align='left' color='inherit' style={{fontSize: '1.55rem'}}>{city}</Typography>
                 </ListItem>
-                {orderedBks[city].map(bg => this.renderGuest(bg))}
+                {orderedBksGuest[city].map(bg => this.renderGuest(bg))}
               </List>
             </div>
           ): null}
         </div>
         <div className="host-box">
-          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Guest </Typography>
-          {this.state.bookingsGuest.length ? Object.keys(orderedBks).map((city) =>
+          <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Host </Typography>
+          {this.state.bookingsHost.length ? Object.keys(orderedBksHost).map((city) =>
             <div>
               <List>
                 <ListItem>
                   <Typography variant="title" align='left' color='inherit' style={{fontSize: '1.55rem'}}>{city}</Typography>
                 </ListItem>
-                {orderedBks[city].map(bg => this.renderHost(bg))}
+                {orderedBksHost[city].map(bg => this.renderHost(bg))}
               </List>
             </div>
           ): null}

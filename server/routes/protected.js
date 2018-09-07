@@ -106,6 +106,7 @@ module.exports = (User, Hotel, Listing) => {
   });
 
   router.get('/bookingsHost', (req, res) => {
+    console.log('bookingsHost:', req.user);
     Booking.find({host: req.user._id})
     .populate([{path: 'hotel', select: 'city name images description location'}, {path: 'host guest', select: 'name imgUrl'}])
     .then((bookings) => res.json({success: true, bookings}))

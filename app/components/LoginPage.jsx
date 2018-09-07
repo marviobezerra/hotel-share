@@ -21,9 +21,13 @@ export default class LoginPage extends React.Component {
     e.preventDefault();
     axios.post('/api/login', this.state)
     .then(resp => {
-      if(resp.data.success) this.props.login();
-      axios.get('/api/account')
-      .then(res => this.props.updateUser(res.data.user))
+      if (resp.data.success) {
+        this.props.login();
+        axios.get('/api/account')
+        .then(res => this.props.updateUser(res.data.user))
+      } else {
+        alert('Login unsuccessful!');
+      }
     });
   }
 
