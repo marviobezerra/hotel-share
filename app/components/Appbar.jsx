@@ -30,7 +30,7 @@ export default class Appbar extends React.Component {
 
   componentDidMount() {
     this.getNotifications();
-    setInterval(() => this.getNotifications(), 5000);
+    // setInterval(() => this.getNotifications(), 5000);
   }
 
   getNotifications() {
@@ -70,13 +70,28 @@ export default class Appbar extends React.Component {
     this.setState({anchorEl2: null});
     axios.post('/api/readNotification', {notification: id})
     .then(res => {
-      console.log(res.data.success);
       this.getNotifications();
     })
   }
   readMessages() {
     for(let i = 0; i < this.state.message.length; i++) {
       axios.post('/api/readNotification', {notification: this.state.message[i]._id})
+      .then(res => {
+        this.getNotifications();
+      })
+    }
+  }
+  readBookings() {
+    for(let i = 0; i < this.state.accept.length; i++) {
+      axios.post('/api/readNotification', {notification: this.state.accept[i]._id})
+      .then(res => {
+        this.getNotifications();
+      })
+    }
+  }
+  readRequests() {
+    for(let i = 0; i < this.state.request.length; i++) {
+      axios.post('/api/readNotification', {notification: this.state.request[i]._id})
       .then(res => {
         this.getNotifications();
       })
@@ -90,6 +105,10 @@ export default class Appbar extends React.Component {
     return '/main';
   }
   render() {
+    console.log('all notifications', this.state.notifications);
+    console.log('bookings',this.state.accept);
+    console.log('requests',this.state.request);
+
     return (
       <div>
         <AppBar position="static" style={this.props.style}>
@@ -103,8 +122,18 @@ export default class Appbar extends React.Component {
                         {this.state.message.length? <Avatar style={{background: 'red', position: 'absolute', top: -5, right: -5, height: 20, width: 20, fontSize: 12}}>{this.state.message.length}</Avatar> : null}
                       </Link>
                     </Avatar>
-                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}><Link to='/bookings'><CardTravel style={{color: 'white', position: 'relative'}}/></Link></Avatar>
-                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}><Link to='/requests'><Gavel style={{color: 'white', position: 'relative'}}/></Link></Avatar>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}>
+                      <Link to='/bookings' onClick={() => this.readBookings()}>
+                        <CardTravel style={{color: 'white', position: 'relative'}}/>
+                        {this.state.accept.length? <Avatar style={{background: 'red', position: 'absolute', top: -5, right: -5, height: 20, width: 20, fontSize: 12}}>{this.state.accept.length}</Avatar> : null}
+                      </Link>
+                    </Avatar>
+                    <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}>
+                      <Link to='/requests' onClick={() => this.readRequests()}>
+                        <Gavel style={{color: 'white', position: 'relative'}}/>
+                        {this.state.request.length? <Avatar style={{background: 'red', position: 'absolute', top: -5, right: -5, height: 20, width: 20, fontSize: 12}}>{this.state.request.length}</Avatar> : null}
+                      </Link>
+                    </Avatar>
                     <Avatar style={{background: 'rgba(0, 0, 0, 0.08)', overflow: 'initial', marginRight: 15}}
                       aria-owns={this.state.anchorEl2 ? 'notification-menu' : null}
                       aria-haspopup="true"

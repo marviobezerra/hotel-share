@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { Avatar } from '@material-ui/core/';
+import { Avatar, CircularProgress } from '@material-ui/core/';
 import { AccountCircle } from '@material-ui/icons/';
 
 
@@ -11,6 +11,7 @@ export default class Bookings extends React.Component {
     this.state = {
       reqGuest: [],
       reqHost: [],
+      isLoaded: false,
     }
   }
 
@@ -25,9 +26,7 @@ export default class Bookings extends React.Component {
     Promise.all([requestsGuest, requestsHost])
     .then(res => {
       if(res[0].data.success && res[1].data.success) {
-        this.setState({reqGuest: res[0].data.requests, reqHost: res[1].data.requests}, () => {
-          console.log(this.state.reqGuest[0]);
-        })
+        this.setState({reqGuest: res[0].data.requests, reqHost: res[1].data.requests, isLoaded: true});
       }
     });
   }
@@ -57,9 +56,11 @@ export default class Bookings extends React.Component {
   }
   render() {
     let { reqGuest, reqHost } = this.state;
-    console.log(this.state.reqHost);
     return (
       <div className="requests-container">
+      {this.state.isLoaded ?
+      (reqGuest.length && reqHost.length ?
+      <div className="display-row">
         <div className="requests-guest-box">
           <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
           {reqGuest.map((reqGuest, i) =>
@@ -97,10 +98,120 @@ export default class Bookings extends React.Component {
             <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.rejectReq(reqHost._id, i)}>Reject</Button>
           </div>)}
         </div>
-
-
-
       </div>
+      : (reqGuest.length ?
+        (<div className="display-row">
+          <div className="requests-guest-box">
+            <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+            {reqGuest.map((reqGuest, i) =>
+            <div className="reqGuest-line">
+              <div className="host-info">
+                {reqGuest.host.imgUrl ? <Avatar src={reqGuest.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
+                <span className="host-center">{reqGuest.host.name.fname} {reqGuest.host.name.lname}</span>
+              </div>
+              <div className="hotel-info">
+                <div className="hotel-info-city">
+                  <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{reqGuest.listing.hotel.city}</span>
+                  <span style={{fontSize: 14}}>{reqGuest.from} - {reqGuest.to}</span>
+                </div>
+                <span className="hotel-name">{reqGuest.listing.hotel.name}</span>
+              </div>
+              <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.cancelReqGuest(reqGuest._id, i)}>Cancel</Button>
+            </div>)}
+          </div>
+          <div className="requests-host-box">
+            <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+            You have no requests as a host
+          </div>
+        </div>)
+        :
+        (<div className="display-row">
+          <div className="requests-guest-box">
+          <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+          You have no requests as a guest
+          </div>
+          {reqHost.length ?
+            <div className="requests-host-box">
+              <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+              {reqHost.map((reqHost, i) =>
+              <div className="reqGuest-line">
+                <div className="host-info">
+                  {reqHost.guest.imgUrl ? <Avatar src={reqHost.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
+                  <span className="host-center">{reqHost.guest.name.fname} {reqHost.guest.name.lname}</span>
+                </div>
+                <div className="hotel-info">
+                  <div className="hotel-info-city">
+                    <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{reqHost.listing.hotel.city}</span>
+                    <span style={{fontSize: 14}}>{reqHost.from} - {reqHost.to}</span>
+                  </div>
+                  <span className="hotel-name">{reqHost.listing.hotel.name}</span>
+                </div>
+                <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.acceptReq(reqHost._id, i)}>Accept</Button>
+                <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.rejectReq(reqHost._id, i)}>Reject</Button>
+              </div>)}
+            </div>
+            :
+            <div className="requests-host-box">
+              <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+              You have no requests as a host
+            </div>}
+        </div>)))  :
+    <CircularProgress size={100} style={{color: '#009090'}} />}
+    </div>
     )
   }
 }
+// guest yes
+// <div className="requests-guest-box">
+//   <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+//   {reqGuest.map((reqGuest, i) =>
+//   <div className="reqGuest-line">
+//     <div className="host-info">
+//       {reqGuest.host.imgUrl ? <Avatar src={reqGuest.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
+//       <span className="host-center">{reqGuest.host.name.fname} {reqGuest.host.name.lname}</span>
+//     </div>
+//     <div className="hotel-info">
+//       <div className="hotel-info-city">
+//         <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{reqGuest.listing.hotel.city}</span>
+//         <span style={{fontSize: 14}}>{reqGuest.from} - {reqGuest.to}</span>
+//       </div>
+//       <span className="hotel-name">{reqGuest.listing.hotel.name}</span>
+//     </div>
+//     <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.cancelReqGuest(reqGuest._id, i)}>Cancel</Button>
+//   </div>)}
+// </div>
+//
+// guest no
+//
+// <div className="requests-guest-box">
+// <p style={{fontSize: 24, textDecoration: "underline"}}>GUEST</p>
+// No guests
+// </div>
+//
+// host yes
+//
+// <div className="requests-host-box">
+//   <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+//   {reqHost.map((reqHost, i) =>
+//   <div className="reqGuest-line">
+//     <div className="host-info">
+//       {reqHost.guest.imgUrl ? <Avatar src={reqHost.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : <AccountCircle style={{height: 100, width: 100}}/>}
+//       <span className="host-center">{reqHost.guest.name.fname} {reqHost.guest.name.lname}</span>
+//     </div>
+//     <div className="hotel-info">
+//       <div className="hotel-info-city">
+//         <span style={{fontSize: 20, fontWeight: "bold", marginRight: 30}}>{reqHost.listing.hotel.city}</span>
+//         <span style={{fontSize: 14}}>{reqHost.from} - {reqHost.to}</span>
+//       </div>
+//       <span className="hotel-name">{reqHost.listing.hotel.name}</span>
+//     </div>
+//     <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.acceptReq(reqHost._id, i)}>Accept</Button>
+//     <Button style={{background: "#009090", color: "white", marginTop: 10}} onClick={() => this.rejectReq(reqHost._id, i)}>Reject</Button>
+//   </div>)}
+// </div>
+//
+// host no
+// <div className="requests-host-box">
+//   <p style={{fontSize: 24, textDecoration: "underline"}}>HOST</p>
+//   No hosts
+// </div>

@@ -205,15 +205,18 @@ html, body, #root {
   align-items: center;
   min-height: 100%;
   padding: 30px;
+  background-color: rgba(0,0,0,0.08);
 }
 .inbox {
   border: solid 1px rgba(0,0,0,0.14);
-  font-size: 14px;
+  font-size: 16px;
   width: 50%;
+  background-color: white;
+
 }
 .inbox-row {
   display: flex;
-  padding: 15px;
+  padding: 30px;
   border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 .inbox-info {
@@ -272,6 +275,8 @@ html, body, #root {
   width: 100%;
   background-color: rgba(0,0,0,0.08);
   padding: 25px 0;
+  align-items: center;
+  padding: 30px;
 }
 .guest-box {
   flex: 1;
@@ -318,4 +323,9 @@ html, body, #root {
 .host-center {
   display: flex;
   align-items: center;
+}
+.display-row {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 }
