@@ -47,13 +47,14 @@ export default class Bookings extends React.Component {
   }*/
 
   renderGuest(bg) {
-    console.log(bg)
+    console.log(bg.host.gender)
+    console.log(bg.host.gender === 'Male')
     return (
 
       <div className="reqGuest-line">
         <div className="host-info">
-          {bg.guest.imgUrl ? <Avatar src={bg.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : bg.host.gender === 'Male' ? <Avatar src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} style={{marginRight: 10, marginBottom: 10}}/> : <Avatar src={'https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png'} style={{marginRight: 10, marginBottom: 10}}/>}
-          <span className="host-center">{bg.guest.name.fname} {bg.guest.name.lname}</span>
+          {bg.host.imgUrl ? <Avatar src={bg.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : bg.host.gender === 'Male' ? <Avatar src='https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png' style={{marginRight: 10, marginBottom: 10}}/> : <Avatar src='https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png' style={{marginRight: 10, marginBottom: 10}}/>}
+          <span className="host-center">{bg.host.name.fname} {bg.host.name.lname}</span>
         </div>
         <div className="hotel-info">
           <div className="hotel-info-city">
@@ -95,8 +96,8 @@ export default class Bookings extends React.Component {
     return (
       <div className="reqGuest-line">
         <div className="host-info">
-          {bg.host.imgUrl ? <Avatar src={bg.host.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : bg.host.gender === 'Male' ? <Avatar src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} style={{marginRight: 10, marginBottom: 10}}/> : <Avatar src={'https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png'} style={{marginRight: 10, marginBottom: 10}}/>}
-          <span className="host-center">{bg.host.name.fname} {bg.host.name.lname}</span>
+          {bg.guest.imgUrl ? <Avatar src={bg.guest.imgUrl} style={{marginRight: 10, marginBottom: 10}}/> : bg.guest.gender === 'Male' ? <Avatar src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} style={{marginRight: 10, marginBottom: 10}}/> : <Avatar src={'https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png'} style={{marginRight: 10, marginBottom: 10}}/>}
+          <span className="host-center">{bg.guest.name.fname} {bg.guest.name.lname}</span>
         </div>
         <div className="hotel-info">
           <div className="hotel-info-city">
@@ -155,7 +156,7 @@ export default class Bookings extends React.Component {
     const orderedBksHost = this.orderBookings(this.state.bookingsHost);
 
     return (
-      <div className="bookings-container">
+      <div className="bookings-container" style={{display:'flex'}}>
         <Dialog
           open={this.state.openMap}
           onClose={() => this.handleMapClose()}
@@ -164,7 +165,7 @@ export default class Bookings extends React.Component {
         >
           <DialogContent style={{ height: '75vh', width: '75vh'}}>
             <GoogleMapReact
-              bootstrapURLKeys={{ key: 'Google Key'}}
+              bootstrapURLKeys={{ key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
               defaultCenter={{lat: this.state.lat, lng: this.state.long}}
               defaultZoom={14}
             >
@@ -175,7 +176,7 @@ export default class Bookings extends React.Component {
             </GoogleMapReact>
           </DialogContent>
           </Dialog>
-        <div className="bookings-guest-box">
+        <div className="bookings-guest-box" style={{flex:1}}>
           <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Guest </Typography>
           {this.state.bookingsGuest.length ? Object.keys(orderedBksGuest).map((city) =>
             <div style={{justifyContent:'center'}}>
@@ -188,7 +189,7 @@ export default class Bookings extends React.Component {
             </div>
           ): null}
         </div>
-        <div className="host-box">
+        <div className="host-box" style={{flex:1}}>
           <Typography variant="headline" gutterBottom='true' align='center' color='inherit' style={{weight: 'bold', textDecoration: 'underline', fontSize: '1.75rem'}}> Host </Typography>
           {this.state.bookingsHost.length ? Object.keys(orderedBksHost).map((city) =>
             <div style={{justifyContent:'center'}}>

@@ -206,7 +206,6 @@ class ListingWithDialog extends React.Component {
   }
 
   handleOpenModal(listing) {
-    console.log(listing)
     this.setState({ openModal: true});
   };
 
@@ -308,117 +307,125 @@ class ListingWithDialog extends React.Component {
             </Typography>
             <div>
               <List >
-                {hotel.listings.map((listing) => (
-                  <div>
-                    <ListItem>
-                      <Button onClick={() => this.handleOpenModal(listing)}>
-                        <ListItemText style={{color:'#009090'}} primary={'Price: $'+listing.price+' From: '+listing.from+' To: '+listing.to} />
-                      </Button>
-                      <Modal
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        open={this.state.openModal}
-                        onClose={() => this.handleCloseModal()}
-                      >
-                        <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
-                          <div style={{display:'inline-flex'}}>
-                            {listing.host.imgUrl ? <img style={{borderRadius: '50%'}} className={classes.userImg} src={listing.host.imgUrl} /> : listing.host.gender === 'Male' ? <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png'} />}
-                            <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent: 'center', width:'100%'}}>
-                              <Typography variant="headline" id="modal-title" align='center' color='inherit'>
-                                {listing.host.name.fname} {listing.host.name.lname}
+                {hotel.listings.map((li) => {
+                  let listing = li
+                  return (
+                    <div>
+                      <ListItem>
+                        <Button onClick={() => {
+                          console.log(listing._id)
+                          this.handleOpenModal(listing)}
+                        }>
+                          {listing.host.imgUrl ? <img style={{borderRadius: '50%'}} className={classes.userImg} src={listing.host.imgUrl} /> : listing.host.gender === 'Male' ? <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png'} />}
+                          <ListItemText style={{color:'#009090'}} primary={'Price: $'+listing.price+' From: '+listing.from+' To: '+listing.to} />
+                        </Button>
+                        <Modal
+                          aria-labelledby="simple-modal-title"
+                          aria-describedby="simple-modal-description"
+                          open={this.state.openModal}
+                          onClose={() => this.handleCloseModal()}
+                        >
+                          <div style={{top: '50%', left: '50%', transform: `translate(-50%, -50%`,}} className={classes.paper}>
+                            <div style={{display:'inline-flex'}}>
+                              {listing.host.imgUrl ? <img style={{borderRadius: '50%'}} className={classes.userImg} src={listing.host.imgUrl} /> : listing.host.gender === 'Male' ? <img className={classes.userImg} src={'https://cdn.iconscout.com/public/images/icon/free/png-256/avatar-user-boy-389cd1eb1d503149-256x256.png'} /> : <img className={classes.userImg} src={'https://curaflo.com/wp-content/uploads/2017/04/female-avatar3.png'} />}
+                              <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent: 'center', width:'100%'}}>
+                                <Typography variant="headline" id="modal-title" align='center' color='inherit'>
+                                  {listing.host.name.fname} {listing.host.name.lname}
+                                </Typography>
+                                {listing.host.languages.length > 0 ? <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">{this.getLanguages(listing.host.languages)}</Typography> : <div></div>}
+                                <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">
+                                  Gender: {listing.host.gender}
+                                </Typography>
+                              </div>
+                            </div>
+                            <br/>
+                            <div style={{border: '2px solid #009090', borderRadius: '5px'}} >
+                              <Typography style={{width:'100%'}} variant="title" align="center" id="simple-modal-description" color="primary">
+                                Dates: {listing.from} - {listing.to}
                               </Typography>
-                              {listing.host.languages.length > 0 ? <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">{this.getLanguages(listing.host.languages)}</Typography> : <div></div>}
-                              <Typography variant="subheading" align='center' id="simple-modal-description" color="textPrimary">
-                                Gender: {listing.host.gender}
+                              <Typography variant="title" id="modal-title" align="center" color="textSecondary">
+                                {listing.info}
+                              </Typography>
+                              <Typography variant="title" id="modal-title" align="center" color="textSecondary">
+                                Price: ${listing.price}
+                              </Typography>
+                              <Typography variant="subheading" id="simple-modal-description" align="center" color="primary">
+                                Guests: {listing.guests}
+                              </Typography>
+                              <Typography variant="subheading" id="simple-modal-description" align="center" color="primary">
+                                Room: {listing.room}
                               </Typography>
                             </div>
-                          </div>
-                          <br/>
-                          <div style={{border: '2px solid #009090', borderRadius: '5px'}} >
-                            <Typography style={{width:'100%'}} variant="title" align="center" id="simple-modal-description" color="primary">
-                              Dates: {listing.from} - {listing.to}
-                            </Typography>
-                            <Typography variant="title" id="modal-title" align="center" color="textSecondary">
-                              {listing.info}
-                            </Typography>
-                            <Typography variant="title" id="modal-title" align="center" color="textSecondary">
-                              Price: ${listing.price}
-                            </Typography>
-                            <Typography variant="subheading" id="simple-modal-description" align="center" color="primary">
-                              Guests: {listing.guests}
-                            </Typography>
-                            <Typography variant="subheading" id="simple-modal-description" align="center" color="primary">
-                              Room: {listing.room}
-                            </Typography>
-                          </div>
-                          <div>
-                            <div style={{width:'100%'}}>
-                              <Typography variant="subheading" align="center" id="simple-modal-description" color="primary">
-                                Send {listing.host.name.fname} a message!
-                              </Typography>
-                            </div>
-                            <div style={{display:'flex', flexDirection:'column'}}>
-                              <TextField
-                                style={{width:'100%'}}
-                                defaultValue={`Message ${listing.host.name.fname} ${listing.host.name.lname}`}
-                                placeHolder="Direct Message"
-                                id="bootstrap-input"
-                                multiline='true'
-                                fullWidth='true'
-                                onChange={(e) => this.handleMessageChange(e)}
-                                InputProps={{
-                                  disableUnderline: true,
-                                  classes: {
-                                    root: classes.bootstrapRoot,
-                                    input: classes.bootstrapInput,
-                                  },
-                                }}
-                                InputLabelProps={{
-                                  shrink: true,
-                                  className: classes.bootstrapFormLabel,
-                                }}
-                              />
-                              <br /><br />
-                                <div style={{display:'inline-flex'}}>
-                                  <Avatar src={'https://i.imgur.com/dGo8DOk.png'} />
-                                  <Button style={{backgroundColor:'#009090'}} onClick={() => this.handleMessageSubmit(listing)}>Submit</Button>
-                                  <Snackbar
-                                    varient='success'
-                                    anchorOrigin={{
-                                      vertical: 'bottom',
-                                      horizontal: 'left',
-                                    }}
-                                    open={this.state.openSnack}
-                                    autoHideDuration={6000}
-                                    onClose={() => this.setState({openSnack:false, openModal: false})}
-                                    ContentProps={{
-                                      'aria-describedby': 'message-id',
-                                    }}
-                                    message={
-                                      <span id="message-id">
-                                        <CheckCircleIcon/>
-                                        Sent message to {listing.host.name.fname}!
-                                      </span>}
-                                    action={[
-                                      <IconButton
-                                        key="close"
-                                        aria-label="Close"
-                                        color="inherit"
-                                        onClick={() => this.setState({openSnack: false, openModal: false})}
-                                      >
-                                        <CloseIcon />
-                                      </IconButton>,
-                                    ]}
-                                  />
-                                </div>
+                            <div>
+                              <div style={{width:'100%'}}>
+                                <Typography variant="subheading" align="center" id="simple-modal-description" color="primary">
+                                  Send {listing.host.name.fname} a message!
+                                </Typography>
+                              </div>
+                              <div style={{display:'flex', flexDirection:'column'}}>
+                                <TextField
+                                  style={{width:'100%'}}
+                                  defaultValue={`Message ${listing.host.name.fname} ${listing.host.name.lname}`}
+                                  placeHolder="Direct Message"
+                                  id="bootstrap-input"
+                                  multiline='true'
+                                  fullWidth='true'
+                                  onChange={(e) => this.handleMessageChange(e)}
+                                  InputProps={{
+                                    disableUnderline: true,
+                                    classes: {
+                                      root: classes.bootstrapRoot,
+                                      input: classes.bootstrapInput,
+                                    },
+                                  }}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    className: classes.bootstrapFormLabel,
+                                  }}
+                                />
+                                <br /><br />
+                                  <div style={{display:'inline-flex'}}>
+                                    <Avatar src={'https://i.imgur.com/dGo8DOk.png'} />
+                                    <Button style={{backgroundColor:'#009090'}} onClick={() => this.handleMessageSubmit(listing)}>Submit</Button>
+                                    <Snackbar
+                                      varient='success'
+                                      anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                      }}
+                                      open={this.state.openSnack}
+                                      autoHideDuration={6000}
+                                      onClose={() => this.setState({openSnack:false, openModal: false})}
+                                      ContentProps={{
+                                        'aria-describedby': 'message-id',
+                                      }}
+                                      message={
+                                        <span id="message-id">
+                                          <CheckCircleIcon/>
+                                          Sent message to {listing.host.name.fname}!
+                                        </span>}
+                                      action={[
+                                        <IconButton
+                                          key="close"
+                                          aria-label="Close"
+                                          color="inherit"
+                                          onClick={() => this.setState({openSnack: false, openModal: false})}
+                                        >
+                                          <CloseIcon />
+                                        </IconButton>,
+                                      ]}
+                                    />
+                                  </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </Modal>
-                    </ListItem>
-                    <Divider light />
-                  </div>
-                ))}
+                        </Modal>
+                      </ListItem>
+                      <Divider light />
+                    </div>
+                  )
+                }
+                )}
               </List>
             </div>
           </DialogContent>

@@ -104,109 +104,111 @@ class SearchButtons extends React.Component {
     const idGuests = openGuests ? 'simple-popper' : null;
 
     return (
-      <div>
-      <br/>
-        <Button style={{color:'#009090', padding: '10px'}} variant={this.state.cityFill ? "contained": "outlined"}
-          onMouseOver={() => (this.setState({cityFill : true}))} onMouseLeave={() => (this.setState({cityFill : false}))}
-          onClick={(e) => this.handleClick(e, 'openCity')}>
-          City
-        </Button>
-        <Popper id={idCity} open={openCity} anchorEl={anchorEl} transition>
-          {({ TransitionProps }) => (
-            <Fade {...TransitionProps} timeout={350}>
-              <Paper>
-                <TextField
-                  label="City"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LocationCity />
-                      </InputAdornment>
-                    ),
-                  }}
-                  type="text"
-                  style={{width: "50%", margin: 2}}
-                  onChange={((e) => this.setState({updatedCity: e.target.value}))}
-                />
-                <Button variant="contained" onClick={() => this.updateHotels(this.props.getHotels)} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
-                  Update
-                </Button>
-              </Paper>
-            </Fade>
-          )}
-        </Popper>
-        <Button style={{color:'#009090', padding: '10px'}} variant={this.state.dateFill ? "contained": "outlined"}
-          onMouseOver={() => (this.setState({dateFill : true}))} onMouseLeave={() => (this.setState({dateFill : false}))}
-          onClick={(e) => this.handleClick(e, 'openDates')}>
-          Dates
-        </Button>
-        <Popper id={idDates} open={openDates} anchorEl={anchorEl} transition>
-          {({ TransitionProps }) => (
-            <Fade {...TransitionProps} timeout={350}>
-              <Paper>
-                <TextField
-                  label="From"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <DateRange />
-                      </InputAdornment>
-                    ),
-                  }}
-                  type="date"
-                  style={{width: "50%", margin: 2}}
-                  onChange={(e) => this.setState({updatedFrom: e.target.value})}
-                />
-                <TextField
-                  label="To"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <DateRange />
-                      </InputAdornment>
-                    ),
-                  }}
-                  type="date"
-                  style={{width: "50%", margin: 2}}
-                  onChange={(e) => this.setState({updatedTo: e.target.value})}
-                />
-                <Button variant="contained" onClick={() => this.updateHotels()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
-                  Update
-                </Button>
-              </Paper>
-            </Fade>
-          )}
-        </Popper>
-        <Button style={{color:'#009090', padding: '10px'}} variant={this.state.guestsFill ? "contained": "outlined"}
-          onMouseOver={() => (this.setState({guestsFill : true}))} onMouseLeave={() => (this.setState({guestsFill : false}))}
-          onClick={(e) => this.handleClick(e, 'openGuests')}>
-          Guests
-        </Button>
-        <Popper id={idGuests} open={openGuests} anchorEl={anchorEl} transition>
-          {({ TransitionProps }) => (
-            <Fade {...TransitionProps} timeout={350}>
-              <Paper>
-                <TextField
-                  label="Guests"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <People />
-                      </InputAdornment>
-                    ),
-                  }}
-                  type="number"
-                  style={{width: "50%", margin: 2}}
-                  onChange={(e) => this.setState({updatedGuests: e.target.value})}
-                />
-                <Button variant="contained" onClick={() => this.updateHotels()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
-                  Update
-                </Button>
-              </Paper>
-            </Fade>
-          )}
-        </Popper>
-      <br />
+      <div style={{display: 'flex'}}>
+        <div style={{display: 'flex', justifyContent:'space-evenly', flex: 1}}>
+          <Button style={{color:'#009090', padding: '10px'}} variant={this.state.cityFill ? "contained": "outlined"}
+            onMouseOver={() => (this.setState({cityFill : true}))} onMouseLeave={() => (this.setState({cityFill : false}))}
+            onClick={(e) => this.handleClick(e, 'openCity')}>
+            City
+          </Button>
+          <Popper id={idCity} open={openCity} anchorEl={anchorEl} transition>
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <Paper>
+                  <TextField
+                    label="City"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LocationCity />
+                        </InputAdornment>
+                      ),
+                    }}
+                    type="text"
+                    style={{width: "50%", margin: 2}}
+                    onChange={((e) => this.setState({updatedCity: e.target.value}))}
+                  />
+                  <Button variant="contained" onClick={() => this.updateHotels(this.props.getHotels)} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+                    Update
+                  </Button>
+                </Paper>
+              </Fade>
+            )}
+          </Popper>
+          <Button style={{color:'#009090', padding: '10px'}} variant={this.state.dateFill ? "contained": "outlined"}
+            onMouseOver={() => (this.setState({dateFill : true}))} onMouseLeave={() => (this.setState({dateFill : false}))}
+            onClick={(e) => this.handleClick(e, 'openDates')}>
+            Dates
+          </Button>
+          <Popper id={idDates} open={openDates} anchorEl={anchorEl} transition>
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <Paper>
+                  <TextField
+                    label="From"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <DateRange />
+                        </InputAdornment>
+                      ),
+                    }}
+                    type="date"
+                    style={{width: "50%", margin: 2}}
+                    onChange={(e) => this.setState({updatedFrom: e.target.value})}
+                  />
+                  <TextField
+                    label="To"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <DateRange />
+                        </InputAdornment>
+                      ),
+                    }}
+                    type="date"
+                    style={{width: "50%", margin: 2}}
+                    onChange={(e) => this.setState({updatedTo: e.target.value})}
+                  />
+                  <Button variant="contained" onClick={() => this.updateHotels()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+                    Update
+                  </Button>
+                </Paper>
+              </Fade>
+            )}
+          </Popper>
+          <Button style={{color:'#009090', padding: '10px'}} variant={this.state.guestsFill ? "contained": "outlined"}
+            onMouseOver={() => (this.setState({guestsFill : true}))} onMouseLeave={() => (this.setState({guestsFill : false}))}
+            onClick={(e) => this.handleClick(e, 'openGuests')}>
+            Guests
+          </Button>
+          <Popper id={idGuests} open={openGuests} anchorEl={anchorEl} transition>
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <Paper>
+                  <TextField
+                    label="Guests"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <People />
+                        </InputAdornment>
+                      ),
+                    }}
+                    type="number"
+                    style={{width: "50%", margin: 2}}
+                    onChange={(e) => this.setState({updatedGuests: e.target.value})}
+                  />
+                  <Button variant="contained" onClick={() => this.updateHotels()} style={{margin: 20, backgroundColor: "orange", color: "white"}}>
+                    Update
+                  </Button>
+                </Paper>
+              </Fade>
+            )}
+          </Popper>
+        </div>
+        <div style={{flex:2}}>
+        </div>
       </div>
     )
   }

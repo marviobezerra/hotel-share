@@ -57,7 +57,8 @@ const styles = theme => ({
   },
   divContainer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor:'rgba(0,0,0,0.08)'
   },
   gridList: {
     width: '100%',
@@ -183,13 +184,14 @@ class SimpleMap extends React.Component {
     const classes = this.props.classStyle
     return (
       <div className={classes.divContainer}>
+        <br />
         <SearchButtons updateCity={(val) => this.props.updateCity(val)} getHotels={() => this.getHotels()}
         updateTo={(val) => this.props.updateTo(val)} updateFrom={(val) => this.props.updateFrom(val)}
         updateGuests={(val) => this.props.updateGuests(val)} setCityData={() => this.forceUpdate()}/>
-
+        <br />
         <div className={classes.largeContainer}>
           <div className={classes.cards}>
-            <Paper style={{maxHeight: window.innerHeight, overflow:'auto'}}>
+            <Paper style={{maxHeight: window.innerHeight, overflow:'auto', backgroundColor:'rgba(0,0,0,0.08)'}}>
               <GridList cellHeight={'auto'} className={classes.gridList} cols={1}>
                 {
                   this.state.selectedHotel ?
@@ -215,7 +217,7 @@ class SimpleMap extends React.Component {
         <div style={{flex:2}}>
           <div style={{ height: '100vh', width: '100%'}}>
             <GoogleMapReact
-              bootstrapURLKeys={{key: 'Google Key'}}
+              bootstrapURLKeys={{key: 'AIzaSyBEnTOO3y2ArEsQiWsZBw1m9jbNNR2vCqw'}}
               defaultCenter={this.state.center}
               defaultZoom={this.state.zoom}
             >
@@ -263,7 +265,7 @@ function ListingsPage(props) {
   console.log(props)
 
   return (
-    <div>
+    <div style={{backgroundColor:'rgba(0,0,0,0.08)'}}>
       <SimpleMap updateAppBarStyle={props.updateAppBarStyle} city={props.city} from={props.from}
         to={props.to} guests={props.guests} classStyle = {classes} className={classes.hotelMap}
         updateCity={(val) => props.updateCity(val)} updateTo={(val) => props.updateTo(val)}
