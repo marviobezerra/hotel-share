@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --content-base build/",
-    "server": "nodemon server/server.js"
+    "start": "node server/server.js",
+    "build:pre": "rimraf build && copyfiles -f app/index.html build/. && copyfiles -f app/main.css build/.",
+    "build:prod": "npm run build:pre && webpack -p",
+    "build:dev": "npm run build:pre && webpack",
+    "start:dev": "npm run build:pre && concurrently \"webpack-dev-server --content-base build/\" \"nodemon server/server.js\""
   },
   "repository": {
     "type": "git",
@@ -53,6 +54,8 @@
     "webpack": "^2.7.0"
   },
   "devDependencies": {
+    "concurrently": "^4.0.1",
+    "copyfiles": "^2.1.0",
     "file-loader": "^2.0.0",
     "webpack-dev-server": "^2.9.1"
   }

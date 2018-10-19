@@ -1,4 +1,6 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
+const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
@@ -54,7 +56,7 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use(new LocalStrategy((username, password, done) => {
-  User.findOne({email: username}, (err, user) => {
+  User.findOne({ email: username }, (err, user) => {
     if (err) return done(err);
     if (!user) return done(null, false);
     if (user.password !== password) return done(null, false);
@@ -68,6 +70,12 @@ app.use(passport.session());
 app.use('/api', routes(City, Hotel));
 app.use('/api', auth(passport, axios, User));
 app.use('/api', protected(User, Hotel, Listing));
+
+app.use(express.static(path.join(__dirname, '..', 'build')));
+// Handle React routing, return all requests to React app
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
